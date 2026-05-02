@@ -1,0 +1,931 @@
+================================================================================
+FORMALIZATION PLAN
+Paper: "A Characterization of the Entropies of Multidimensional Shifts of Finite Type"
+Authors: Michael Hochman and Tom Meyerovitch
+ArXiv: math/0703206v1 (2007)
+Target proof assistant: Lean 4 + Mathlib4
+================================================================================
+
+OVERVIEW OF THE PAPER
+----------------------
+The paper proves three main theorems:
+
+  Theorem 1.1 (Main): For d >= 2, the class of entropies of d-dimensional
+    shifts of finite type (SFTs) is exactly the class of non-negative right
+    recursively enumerable (r.e.) real numbers.
+
+  Theorem 1.2: For d >= 2, the class of entropies of d-dimensional sofic
+    shifts equals that of d-dimensional SFTs.
+
+  Theorem 1.3: The entropy of an irreducible SFT is computable.
+
+Theorem 1.1 has two directions:
+  (Necessity) Every SFT entropy is right r.e.       [Section 3]
+  (Sufficiency) Every right r.e. h >= 0 is an SFT entropy [Sections 4-8]
+
+The sufficiency direction is by far the harder part. It constructs an SFT
+of prescribed entropy using three steps: a base SFT with uniform density
+of 1's (Section 6), a pruning layer driven by a Turing machine that kills
+points with too-high density (Section 7), and a random-bit layer that
+raises entropy to exactly h (Section 8).
+
+
+================================================================================
+PART 0 — MATHLIB AUDIT
+================================================================================
+
+Before writing any new code, verify what Mathlib4 already provides and
+where gaps exist. The relevant Mathlib areas are:
+
+  (A) Topology and compactness
+      - Topology.Basic, Topology.MetricSpace
+      - Topology.Algebra.InfiniteSum
+      - The product topology on function spaces: Pi.topologicalSpace
+        (This will model Sigma^{Z^d} = (Fin d -> Z) -> Sigma)
+      - Compactness of products: Tychonoff (TopologicalSpace.Pi)
+
+  (B) Measure theory
+      - MeasureTheory.Measure.MeasureSpace
+      - MeasureTheory.Measure.Probability
+      - MeasureTheory.MeasurableSpace
+      - Weak-* topology on probability measures: not fully in Mathlib yet;
+        the space of probability measures with weak convergence is partially
+        developed in Mathlib (MeasureTheory.Measure.ProbabilityMeasure).
+      - Measure-theoretic entropy: NOT in Mathlib as of 2025. This will need
+        to be defined from scratch.
+
+  (C) Computability
+      - Computability.TuringMachine (basic Turing machine model is present)
+      - Computability.Primrec, Computability.Partrec
+      - Computable reals: NOT directly in Mathlib. The notion of right
+        recursive enumerability (upper semi-recursive reals) needs to be
+        formalized. One approach: define it via sequences of rationals.
+
+  (D) Algebra and combinatorics
+      - Data.Finset.Basic, Data.Fintype.Basic
+      - Data.ZMod, Algebra.Group.Basic
+      - Int.instAddGroupInt for Z
+      - The group Z^d: use Fin d -> Z (a Pi type), or PiLp 1 (fun _ => Z)
+
+  (E) Real analysis / limits
+      - Analysis.SpecificLimits.Basic
+      - Topology.Algebra.Order.LiminfLimsup
+      - Subadditive sequences and Fekete's lemma: likely needs to be
+        formalized. Fekete's lemma states that for subadditive a_n,
+        lim a_n/n = inf a_n/n. A version for Z^d may not exist in Mathlib.
+
+KEY GAPS (things to build from scratch):
+  - SymbolicDynamics.Basic: full shift, subshifts, SFTs, sofic systems
+  - TopologicalEntropy (may partially overlap with ongoing Mathlib PRs)
+  - MeasureTheoreticEntropy
+  - RightRecursivelyEnumerable: definition and basic properties
+  - Multidimensional Fekete's lemma (convergence of (1/n^d) log N(F_n))
+  - Mozes' theorem on substitution systems (Theorem 5.1)
+  - The full construction in Sections 5-8
+
+RECOMMENDATION: Check whether the Lean4 "SymbolicDynamics" community projects
+or Mathlib PRs exist. As of 2025, topological entropy has been partially
+added to Mathlib (see Mathlib.Dynamics.TopologicalEntropy). Check this first.
+
+
+================================================================================
+PART 1 — FOUNDATIONAL DEFINITIONS (Paper Section 2)
+================================================================================
+
+This is the prerequisite layer. All later results depend on these.
+
+------------------------------------------------------------
+Module 1.1 — The Full Shift and Patterns
+------------------------------------------------------------
+
+The setting is: fix a finite alphabet Sigma and dimension d : N, d >= 1.
+
+  DEFINITION: The full shift.
+    def FullShift (Sigma : Type*) (d : N) : Type* :=
+      (Fin d -> Z) -> Sigma
+    -- or more idiomatically using ZLattice notation
+    -- This is the space of all colorings of Z^d by Sigma.
+    -- Lean type: (Fin d → ℤ) → Σ
+
+  DEFINITION: F-patterns.
+    For a finite set F : Finset (Fin d -> Z), an F-pattern is a function
+    F -> Sigma. In Lean: { f : (Fin d -> Z) -> Sigma // support ⊆ F }
+    or simply (↑F -> Sigma).
+
+  DEFINITION: Congruence of patterns.
+    Patterns a : Sigma^F and b : Sigma^{F+u} are congruent if
+    a(v) = b(v + u) for all v in F.
+    -- In Lean: a pattern type needs a translation equivalence relation.
+
+  DEFINITION: Restriction.
+    If E ⊆ F and a : Sigma^F, then a|_E : Sigma^E is the restriction.
+    In Lean: Function.restrict or Finset.restrict.
+
+  DEFINITION: Cylinder sets.
+    For a finite F and pattern a : Sigma^F,
+      [a] := { x : FullShift Sigma d | x|_F = a }
+    In Lean: setOf (fun x => ∀ v ∈ F, x v = a v)
+
+  TOPOLOGY: Product topology on FullShift.
+    The product topology (Pi.topologicalSpace) is already provided by
+    Mathlib. The cylinder sets generate this topology.
+
+    KEY LEMMA: FullShift Sigma d is compact (Tychonoff) when Sigma is finite.
+    This follows from Pi.compactSpace in Mathlib.
+
+    KEY LEMMA: FullShift Sigma d is metrizable.
+    A natural metric: d(x, y) = 2^{-n} where n = min{ |u|_inf : x(u) ≠ y(u) }.
+    Or use existing MetricSpace instance for Pi types.
+
+------------------------------------------------------------
+Module 1.2 — The Shift Action
+------------------------------------------------------------
+
+  DEFINITION: The shift map.
+    For u : Fin d -> Z, define sigma^u : FullShift Sigma d -> FullShift Sigma d by
+      (sigma^u x)(v) = x(v + u)
+    In Lean:
+      def shiftMap (u : Fin d → ℤ) (x : FullShift Σ d) : FullShift Σ d :=
+        fun v => x (v + u)
+
+  LEMMA: This defines a group action of (Z^d, +) on FullShift Sigma d.
+    shiftMap 0 = id
+    shiftMap (u + v) = shiftMap u ∘ shiftMap v
+    In Lean: MulAction or AddAction instance.
+
+  LEMMA: Each sigma^u is a homeomorphism.
+    This uses the continuity of function composition with addition in Z^d.
+
+------------------------------------------------------------
+Module 1.3 — Subshifts
+------------------------------------------------------------
+
+  DEFINITION: A Z^d-subshift is a closed, shift-invariant subset of FullShift.
+    structure Subshift (Sigma : Type*) (d : N) where
+      carrier : Set (FullShift Sigma d)
+      isClosed : IsClosed carrier
+      isInvariant : ∀ u x, x ∈ carrier -> shiftMap u x ∈ carrier
+
+    Or: use a SubMulAction / closed invariant subset approach.
+
+  LEMMA: Intersection of subshifts is a subshift.
+  LEMMA: Full shift is a subshift.
+  LEMMA: The empty set is a subshift.
+
+------------------------------------------------------------
+Module 1.4 — Shifts of Finite Type (SFTs)
+------------------------------------------------------------
+
+  DEFINITION: A d-dimensional SFT is defined by:
+    - A finite alphabet Sigma
+    - A finite "window" set F : Finset (Fin d -> Z)
+    - A syntax L : Finset (Sigma^F) (the allowed F-patterns)
+
+    A coloring x is admissible for L if for every u : Z^d,
+    the pattern x|_{F+u} is congruent to some pattern in L.
+
+    def SFT_admissible (F : Finset _) (L : Finset _) (x : FullShift Sigma d) :=
+      ∀ u : Fin d → ℤ, ∃ p ∈ L, ∀ v ∈ F, x (v + u) = p v
+
+    The SFT defined by L is:
+      X_L := { x | SFT_admissible F L x }
+
+  LEMMA: X_L is a subshift (closed and shift-invariant).
+    Closedness: X_L is an intersection of clopen sets, one per u : Z^d.
+    Invariance: direct from the definition.
+
+  DEFINITION: One-step SFT.
+    An SFT where F = {0,1}^d (the unit hypercube).
+    LEMMA (paper §2): Every SFT is isomorphic to a one-step SFT.
+
+  DEFINITION: Global vs local admissibility.
+    - A pattern a : Sigma^E is GLOBALLY admissible for X if it appears in X,
+      i.e., exists x in X and u s.t. x|_E agrees with a up to translation.
+    - a is LOCALLY admissible for L if a|_{F+u} is congruent to a pattern
+      in L whenever F + u ⊆ E.
+
+    FACT: globally admissible => locally admissible. (Not conversely in general.)
+
+------------------------------------------------------------
+Module 1.5 — Irreducible SFTs
+------------------------------------------------------------
+
+  DEFINITION: An SFT X is irreducible if there exists a gap r > 0 such that:
+    for every A, B : Finset (Fin d -> Z) with ||u - v||_inf >= r for all
+    u in A, v in B, and for every pair of globally admissible patterns
+    a : Sigma^A and b : Sigma^B, there exists x in X with x|_A = a and x|_B = b.
+
+    In Lean: this requires the sup-norm on Z^d.
+    def supNorm (u : Fin d → ℤ) : ℤ := Finset.sup Finset.univ (fun i => |u i|)
+
+------------------------------------------------------------
+Module 1.6 — Sofic Systems
+------------------------------------------------------------
+
+  DEFINITION: A sofic system is a factor of an SFT.
+    More precisely, Y is sofic if there exists an SFT X and a continuous,
+    surjective, shift-commuting map phi : X -> Y.
+
+  DEFINITION: Block codes and one-block maps.
+    A factor map phi : X -> Y arises from a block code:
+      phi_0 : Sigma^F -> Delta  (a local function)
+      phi(x)(u) = phi_0(x|_{F+u})
+
+    A one-block map has F = {0}: phi(x)(u) = phi_0(x(u)).
+
+  LEMMA: Every factor map is topologically conjugate to one arising from
+    a one-block map (after re-coding).
+
+
+================================================================================
+PART 2 — TOPOLOGICAL ENTROPY (Paper Section 2.2)
+================================================================================
+
+------------------------------------------------------------
+Module 2.1 — Pattern Counting Function
+------------------------------------------------------------
+
+  DEFINITION: For a subshift X and finite set F, let
+    N_X(F) := #{a : Sigma^F | a is globally admissible for X}
+    In Lean: Finset.card (Set.Finite.toFinset ...)
+
+  DEFINITION: The boxes F_n := {1,...,n}^d.
+    In Lean: Finset.Icc (fun _ => (1 : Z)) (fun _ => n) or
+             Finset.pi (Finset.Icc 1 n) in the product.
+
+  LEMMA: n -> (1/n^d) * log (N_X(F_n)) is a decreasing sequence (for SFTs).
+    This follows from sub-multiplicativity of N_X and Fekete's lemma.
+
+------------------------------------------------------------
+Module 2.2 — Fekete's Lemma in Z^d
+------------------------------------------------------------
+
+  This is a key analytic tool. In one dimension: if a_n is subadditive
+  (a_{m+n} <= a_m + a_n), then lim a_n/n = inf a_n/n.
+
+  For multidimensional entropy: the relevant version says that
+  n -> (1/|F_n|) log N_X(F_n) converges to its infimum.
+
+  STATUS IN MATHLIB: Mathlib has Subadditive.tendsto_div in some form.
+  Check: Mathlib.Analysis.MeanInequalities or search for "subadditive".
+
+  LEMMA (Multidimensional Fekete): If f : N -> R satisfies
+    f(m + n) <= f(m) + f(n) (in the appropriate multi-index sense),
+    then lim f(n)/n^d = inf f(n)/n^d.
+  This may need to be proved from scratch using the 1D version applied
+  iteratively.
+
+------------------------------------------------------------
+Module 2.3 — Definition and Basic Properties of Entropy
+------------------------------------------------------------
+
+  DEFINITION:
+    h(X) := lim_{n→∞} (1/n^d) * log(N_X(F_n))
+           = inf_{n≥1} (1/n^d) * log(N_X(F_n))
+
+    In Lean: use Real.log (base 2 by convention in the paper).
+    def topologicalEntropy (X : Subshift Sigma d) : Real :=
+      iInf (fun n : N => (1 / n^d : Real) * Real.log (N_X (box n)))
+
+    NOTE: One must prove the limit exists (equals the infimum). This
+    requires the Fekete/subadditive lemma above.
+
+  LEMMA: h(X) >= 0.
+    Since N_X(F_n) >= 1 for nonempty X (the empty pattern is globally admissible).
+
+  LEMMA: h(Sigma^{Z^d}) = log |Sigma|.
+    N(F_n) = |Sigma|^{n^d}, so (1/n^d) * n^d * log|Sigma| = log|Sigma|.
+
+  LEMMA: h(X × Y) = h(X) + h(Y) for the product subshift.
+    N_{X × Y}(F_n) = N_X(F_n) * N_Y(F_n).
+
+  LEMMA: h is an isomorphism invariant.
+
+  LEMMA: h(X') = h(X) for the "cylinder" extension defined in Section 4:
+    X' = {x' : Sigma^{Z^{d+1}} | ∀ j ∈ Z ∀ x ∈ X ∀ u ∈ Z^d, x'(u,j) = x(u)}
+    This reduces to showing h(X') = h(X).
+
+------------------------------------------------------------
+Module 2.4 — Invariant Measures and the Variational Principle
+------------------------------------------------------------
+
+  DEFINITION: M(X) = set of shift-invariant Borel probability measures on X.
+
+  FACT: M(X) is nonempty and compact in the weak-* topology.
+    (Follows from the Krylov-Bogolyubov theorem.)
+
+  DEFINITION: Measure-theoretic entropy h(mu) for mu in M(X).
+    This is defined via the Shannon entropy of the partition into cylinder sets:
+      h(mu) = sup_P h(mu, P) over finite partitions P.
+    For subshifts, it suffices to take the generator (partition by
+    the symbol at the origin).
+
+    STATUS: Measure-theoretic entropy is a significant undertaking.
+    Check Mathlib.MeasureTheory.Entropy for any existing infrastructure.
+
+  THEOREM (Variational Principle):
+    h(X) = max_{mu ∈ M(X)} h(mu)
+    The max is achieved.
+
+    This is a major theorem; it is used (but not proved) in Section 3.
+    For the paper's purposes, it is cited as a known result.
+    In the formalization: this can initially be stated as an axiom or
+    cited via sorry, with a note that its proof requires the full
+    ergodic-theory development. The variational principle for Z^d
+    is due to Misiurewicz (reference [19] in the paper).
+
+  FACT USED IN SECTION 3: The entropy function mu -> h(mu) is
+    upper semi-continuous in the weak-* topology on M(X).
+
+
+================================================================================
+PART 3 — COMPUTABILITY THEORY SETUP
+================================================================================
+
+------------------------------------------------------------
+Module 3.1 — Computable Real Numbers
+------------------------------------------------------------
+
+  DEFINITION: h : Real is computable if there exists a computable function
+    r : N -> Q such that |h - r(n)| < 1/n for all n.
+
+    In Lean, this can be modeled using:
+      def IsComputable (h : Real) : Prop :=
+        ∃ r : N →. Q, Computable r ∧ ∀ n : N, |h - (r n).get ... | < 1/n
+
+    Or use the existing Computability framework in Mathlib and model real
+    approximation via computable sequences.
+
+------------------------------------------------------------
+Module 3.2 — Right Recursively Enumerable Reals
+------------------------------------------------------------
+
+  DEFINITION: h : Real is RIGHT recursively enumerable (right r.e., or
+    "upper semi-recursive") if there exists a computable sequence r : N -> Q
+    such that r(n) >= h for all n, and r(n) -> h.
+
+    Equivalently: the right Dedekind cut { q : Q | q > h } is a recursively
+    enumerable set of rationals.
+
+    In Lean:
+      def IsRightRE (h : Real) : Prop :=
+        ∃ r : N → Q, Computable r ∧
+          (∀ n, (h : Real) ≤ r n) ∧
+          Filter.Tendsto (fun n => (r n : Real)) Filter.atTop (nhds h)
+
+  DEFINITION: LEFT recursively enumerable: same with r(n) <= h and r(n) -> h.
+
+  LEMMA: h is computable iff it is both left r.e. and right r.e.
+    Proof: If h is computable by r_c, then r(n) = r_c(n) + 1/n is right r.e.
+    and s(n) = r_c(n) - 1/n is left r.e. Conversely, given r(n) from above
+    and s(n) from below, search for k with r(k) - s(k) < 1/n.
+
+  LEMMA: The class of right r.e. reals is countable.
+    Since algorithms are countable.
+
+  LEMMA: Every computable real is right r.e. (but not conversely).
+
+  LEMMA: There exist right r.e. reals that are not computable.
+    (This follows from the existence of non-computable r.e. sets.)
+
+------------------------------------------------------------
+Module 3.3 — Computable Sequences and Effective Objects
+------------------------------------------------------------
+
+  The formalization will need:
+
+  - Computable maps N -> N, N -> Q, N -> Finset(...).
+  - Computably enumerable sets (Σ_1 sets in arithmetic).
+  - The halting problem and undecidability of the domino problem
+    (used in the paper but not proved — these can be assumed via sorry
+    or axiomatized).
+
+  KEY REMARK: The paper uses the fact that determining whether N_X(F_n) > 0
+  (i.e., whether the SFT is nonempty) is undecidable (Berger's theorem,
+  reference [2]). This is cited but not proved. For the formalization,
+  this can be an axiom or a sorry.
+
+
+================================================================================
+PART 4 — SECTION 3: ENTROPIES ARE RIGHT R.E. (Necessity Direction)
+================================================================================
+
+This is the easier direction and a natural first milestone.
+
+------------------------------------------------------------
+Module 4.1 — Local Admissibility Count is Computable
+------------------------------------------------------------
+
+  DEFINITION: For a syntax L ⊆ Sigma^F and box F_n:
+    N̄_n := #{a ∈ Sigma^{F_n} | a is locally admissible for L}
+    "locally admissible" = for every translate F+u ⊆ F_n, the restriction
+    a|_{F+u} is congruent to some pattern in L.
+
+  LEMMA: N̄_n is computable.
+    N̄_n is a finite count over a decidable predicate (finite alphabet,
+    finite window F, finite box F_n).
+    In Lean: this amounts to showing Finset.filter (locally_admissible L F) ...
+    has decidable membership, which holds since L and F are finite.
+
+  LEMMA: N̄_n >= N_X(F_n) (locally admissible >= globally admissible).
+    Any globally admissible pattern is locally admissible.
+
+------------------------------------------------------------
+Module 4.2 — Theorem 3.1: h(X) is Right R.E.
+------------------------------------------------------------
+
+  THEOREM 3.1: (1/n^d) log N̄_n → h(X) from above.
+
+  Proof sketch:
+  (a) Lower bound: N̄_n >= N_X(F_n), so (1/n^d) log N̄_n >= h(X).
+
+  (b) Upper bound: Construct measures ν_n on Sigma^{Z^d} as follows:
+    - W_n := set of locally admissible F_n-patterns.
+    - Color each translate F_n + u (for u in n*Z^d) independently,
+      uniformly from W_n.
+    - ν_n = (1/|F_n|) Σ_{u ∈ F_n} σ^u (uniform measure on W_n)
+
+    Then ν_n is a shift-invariant probability measure on Sigma^{Z^d},
+    and h(ν_n) = (1/n^d) log N̄_n.
+
+    Choose a subsequence ν_{n(k)} converging weak-* to ν.
+    By upper semi-continuity: h(ν) >= limsup h(ν_{n(k)}) = h̃.
+
+    Show ν(X) = 1 (i.e., ν is supported on X):
+      ν([a]) = 0 for any a ∉ L (i.e., any forbidden pattern a).
+      This follows because the probability that a forbidden pattern
+      appears at any fixed translate goes to 0.
+
+    Then h(X) >= h(ν) >= h̃ by the variational principle.
+    Combined with the lower bound, h̃ = h(X), and convergence is from above.
+
+  LEAN PROOF STRUCTURE:
+    This proof requires:
+    (1) The construction of ν_n: measure on a product space with i.i.d.
+        uniform coordinates. In Lean: use MeasureTheory.Measure.pi.
+    (2) The entropy formula h(ν_n) = (1/n^d) log N̄_n.
+        This uses the fact that ν_n is a product measure with |W_n| equally
+        likely states — a standard entropy calculation.
+    (3) Weak-* compactness: follows from compactness of M(Sigma^{Z^d}).
+    (4) Upper semi-continuity of entropy.
+    (5) The variational principle.
+
+    NOTE: Steps (4) and (5) are the hardest and may need to be stated
+    as axioms (or sorry'd) initially.
+
+  COROLLARY: h(X) is right r.e.
+    The sequence r(n) = (1/n^d) log N̄_n is a computable sequence of rationals
+    converging to h(X) from above.
+
+------------------------------------------------------------
+Module 4.3 — Theorem 3.2: Entropy of Sofic Shifts is Right R.E.
+------------------------------------------------------------
+
+  The argument is analogous to Theorem 3.1, using the factor map:
+  Count M̃_n = #{phi(a) | a ∈ W_n} (images under the block code).
+  Show (1/n^d) log M̃_n → h(Y) from above.
+
+------------------------------------------------------------
+Module 4.4 — Entropy of Irreducible SFTs is Computable (Theorem 1.3)
+------------------------------------------------------------
+
+  This requires constructing a lower approximation sequence s(n) with
+  s(n) <= h(X) and s(n) → h(X).
+
+  KEY TOOL: Lemma 3.4 (dichotomy).
+
+  LEMMA 3.4: Let X be a nonempty irreducible SFT and a ∈ Sigma^{Q_k}.
+    Exactly one of:
+    (1) a ≠ b|_{Q_k} for every large enough N and every locally admissible
+        b ∈ Sigma^{Q_N}. [i.e., a is not globally admissible]
+    (2) For every large enough N and every locally admissible b ∈ Sigma^{Q_N},
+        a and b are sqrt(N)-compatible.
+    In the first case a is not globally admissible; in the second it is.
+
+  Here Q_n = {-n,...,n-1,n}^d (the symmetric cube), and two patterns
+  a ∈ Sigma^{Q_k} and b ∈ Sigma^{Q_N} are r-compatible if n >= k + r + 1
+  and a ∪ (b|_{Q_n \ Q_{k+r}}) is globally admissible.
+
+  PROOF OF 3.4:
+    Uses compactness + the irreducibility gap r.
+    (1) is the case when a is not globally admissible.
+    (2) is proved using irreducibility: if a is globally admissible and b
+    is locally admissible with n large (sqrt(N) > r), then by irreducibility
+    there exists a joining of a and b.
+
+  COROLLARY 3.5: For a nonempty irreducible SFT, it is decidable whether
+    a finite pattern a is globally admissible.
+
+  PROOF OF THEOREM 1.3:
+    We know h(X) is right r.e. (gives upper approximations r(n)).
+    For lower approximations s(n):
+    - Let k(n) = N_X(Q_n) (globally admissible patterns on Q_n).
+    - k(n) is computable by Corollary 3.5.
+    - (1/|Q_n|) log k(n) → h(X) from below (standard argument).
+    - Find the smallest r' such that all globally admissible patterns on
+      Q_{n+r'+1} are r'-compatible with each a_i.
+    - Set s(n) = (1/|Q_{n+r'}|) log k(n).
+    - Show s(n) → h(X) and s(n) <= h(X).
+    Since both s(n) <= h(X) <= r(n) and both converge, h(X) is computable.
+
+  LEAN PROOF STRUCTURE:
+    This is more self-contained than the variational principle arguments.
+    It mainly requires:
+    - The definition of Q_n, r-compatibility
+    - Compactness argument for Lemma 3.4
+    - The decidability corollary
+    - A combinatorial growth argument
+
+
+================================================================================
+PART 5 — SECTION 4: OUTLINE OF THE MAIN CONSTRUCTION
+================================================================================
+
+The sufficiency direction (constructing an SFT of prescribed entropy h)
+requires three main steps. This section just fixes the reduction strategy.
+
+REDUCTION: It suffices to prove the result for d = 2 and h ∈ [0, 1].
+  - d > 2 case: given X ⊆ Sigma^{Z^d}, define X' ⊆ Sigma^{Z^{d+1}} by
+    making x' constant in the last coordinate. Then h(X') = h(X), and X'
+    is a (d+1)-dimensional SFT.
+    LEAN: prove h(X') = h(X) directly.
+  - Reduction to [0,1]: use the product SFT X × {0,1}^n to scale entropy by n,
+    i.e., h(X × {0,1}^{Z^2}) = h(X) + 1 (since h({0,1}^{Z^2}) = 1).
+    LEAN: use h(X × Y) = h(X) + h(Y).
+
+THREE STEPS OF THE CONSTRUCTION:
+  Step 1 (Section 6): Build a base 2D SFT X with:
+    - A marked symbol "1" appearing with very uniform density in each x ∈ X.
+    - The density δ(x) = upper_density(1's in x) = limsup (1/|F_n|)|{u: x(u)=1}|
+      can take any value in [0,1] across different x ∈ X.
+    - h(X) = 0.
+
+  Step 2 (Section 7): Superimpose a Turing machine layer over X to get Y:
+    - "Kills" points in X where δ(x) > h.
+    - sup{δ(y) : y ∈ Y} = h (achieved by some y ∈ Y).
+    - h(Y) = 0.
+
+  Step 3 (Section 8): Extend Y to Z by adding independent random bits
+    at each occurrence of "1":
+    - Each "1" in y ∈ Y gets independently a symbol from {α, β}.
+    - h(Z) = h (computed from the density of 1's).
+
+
+================================================================================
+PART 6 — SECTION 5: SUBSTITUTIONS AND SUPERPOSITIONS
+================================================================================
+
+------------------------------------------------------------
+Module 6.1 — Substitution Systems
+------------------------------------------------------------
+
+  DEFINITION: A substitution rule s : Sigma -> Sigma^{F_k} where F_k = {1,...,k}^2.
+    s maps each symbol to a k×k block of symbols.
+
+  DEFINITION: s-blocks. Start with a_0 = some symbol. Apply s iteratively
+    to get patterns a_n on F_{k^n}. A point x ∈ Sigma^{Z^2} is admissible
+    for s if every finite subpattern of x appears in some a_n.
+
+  DEFINITION: W = subshift of admissible points for s.
+
+  THEOREM 5.1 (Mozes, [20]):
+    If s has UNIQUE DERIVATION, then there exists an SFT W̃ ⊆ Delta^{Z^2}
+    and a one-block factor map phi : W̃ -> W that is injective on a
+    full-measure set for every invariant measure on W̃.
+
+  LEAN STATUS: This is a deep theorem that relies on Robinson's tiling
+    techniques. Its full formalization is a major project in itself.
+    RECOMMENDATION: State this as an axiom (theorem_mozes) initially.
+
+  DEFINITION: Unique derivation. For a given substitution s, a point x has
+    unique derivation if there is a unique y with s_∞(y) = x (where s_∞
+    is the extension of s to the whole lattice).
+
+  PROPOSITION 5.2: h(W̃) = 0.
+    Proof: N_{F_n}(W) is bounded by a sub-exponential function.
+
+------------------------------------------------------------
+Module 6.2 — Superposition
+------------------------------------------------------------
+
+  DEFINITION: A system Y is superimposed over X if:
+    - Each symbol sigma ∈ Sigma is replaced by a pair (sigma, delta) ∈ Sigma × Delta.
+    - New syntax rules add constraints on the Delta layer.
+    - There is a projection map pi : Y -> X' ⊆ X.
+
+  LEAN: This can be modeled by product alphabets and syntax extension.
+  Define:
+    def superimpose (X : SFT Sigma d) (rules : ...) : SFT (Sigma × Delta) d
+
+  KEY PROPERTY: If Y is superimposed over X then h(Y) >= h(X) (since Y
+    projects onto a subshift of X, preserving or adding entropy).
+
+
+================================================================================
+PART 7 — SECTION 6: CONSTRUCTING THE BASE SFT
+================================================================================
+
+------------------------------------------------------------
+Module 7.1 — The 2-Net Substitution
+------------------------------------------------------------
+
+  DEFINITION: Consider the alphabet {o, •} and substitution rule:
+    • ↦ (o •)    o ↦ (o o)
+        (• o)        (• o)
+    (a 2×2 rule)
+
+  DEFINITION: W = subshift associated to this substitution.
+
+  DEFINITION: A set E ⊆ Z^2 is a 2-NET if E = ∪_{n≥1} (I_n × J_n) where:
+    - I_n, J_n are translates of 2^n * Z
+    - The I_n are pairwise disjoint, as are the J_n.
+    Each I_n × J_n is called the n-th level of E.
+
+  PROPOSITION 6.1: For w ∈ W, E(w) := {u ∈ Z^2 : w(u) = •} is a 2-net.
+    Proved by induction on the substitution levels.
+
+  LEAN: Define the 2-net predicate, state and prove Proposition 6.1
+    by induction on the substitution patterns.
+
+------------------------------------------------------------
+Module 7.2 — Marking the Columns
+------------------------------------------------------------
+
+  Superimpose on W̃ (the SFT version of W) additional symbols:
+    - A 0/1 symbol per column of each level of the 2-net.
+    - Arrow symbols (←→, ⟺) that propagate this value across each row.
+    - Constraints ensuring the 0/1 value is constant on each row × level.
+
+  RESULT: A new SFT X where:
+    - Each x ∈ X induces a {0,1} coloring of each level I_n × J_n.
+    - This coloring is constant on rows of each level.
+    - Any sequence ρ_n ∈ {0,1} can be realized.
+    - δ(x) = Σ_{n≥1} ρ_n * 2^{-n} ∈ [0,1].
+    - h(X) = 0.
+
+  LEAN: This requires encoding the arrow symbols and writing down the
+    explicit syntax for the SFT X. The key lemma is:
+      ∀ x ∈ X, δ(x) = ∑_{n≥1} ρ_n(x) * 2^{-n}
+    and
+      ∀ ρ : N → {0,1}, ∃ x ∈ X, ∀ n, ρ_n(x) = ρ n.
+    The second statement shows the density can take any value in [0,1].
+
+
+================================================================================
+PART 8 — SECTION 7: PRUNING (THE TURING MACHINE LAYER)
+================================================================================
+
+This is the most technically involved part.
+
+------------------------------------------------------------
+Module 8.1 — The Board Substitution
+------------------------------------------------------------
+
+  DEFINITION: The alphabet Sigma_R = {|, -, ⌐, ⌐, ⌞, ⌞, ⊤, ⊥, ⊣, ├, +, ■, □}.
+    These symbols represent the boundary and interior of "boards" —
+    rectangular regions that tile Z^2 hierarchically.
+
+  DEFINITION: The substitution rule maps each symbol to a 5×5 block.
+    The patterns b_n = s^n(■) are 5^n × 5^n patterns called n-boards.
+
+  DEFINITION: B_n = the set of positions making up the boundary (rows and
+    columns) of an n-board frame. This satisfies a recursion:
+      B_{n+1} = B_n ∪ (B_n + 5^n) ∪ (B_n + 3·5^n) ∪ (B_n + 4·5^n)
+
+  PROPERTIES:
+    - |B_n| = 4^n.
+    - B_n is a "grid" of rows and columns within the 5^n × 5^n box.
+    - Each r ∈ R = subshift for this substitution induces a disjoint
+      collection of boards with the ■ symbol appearing periodically.
+
+  LEAN: Define the recursion for B_n, prove |B_n| = 4^n, and establish
+    that the substitution system R has unique derivation (used for Mozes).
+
+------------------------------------------------------------
+Module 8.2 — Turing Machine Representation in SFTs
+------------------------------------------------------------
+
+  DEFINITION: A Turing machine T with data alphabet {0,1} and state set Q.
+    The machine reads/writes on a one-sided infinite tape indexed by N.
+    Configurations: (position, state, tape) ∈ N × Q × {0,1}^N.
+    Transition function: T : Config -> Config.
+
+  LEAN: The Mathlib Computability.TuringMachine may be used here or
+    adapted. Define:
+      structure TuringMachine where
+        states : Fintype Q
+        alphabet : Fintype A
+        transition : Q × A → Q × A × {L, R}
+        initialState : Q
+        haltState : Q
+
+  REPRESENTATION IN SFT: Given X (base SFT) and R̃ (board SFT from Mozes),
+    construct SFT Y_T superimposed over X × R̃ such that:
+    - Each board B induced by r ∈ R̃ has a "computation layer".
+    - The bottom row of B gives the input to T (from the 0/1 values in x).
+    - Each subsequent row represents the next configuration of T.
+    - A point (x,r) is in Y_T iff for each board B induced by r,
+      when T runs on the column values of x along B, it does not halt
+      within |rows of B| steps.
+
+  PROPOSITION 7.1: This construction yields an SFT Y_T with:
+    (1) (x,r) ∈ X × R̃ is represented in Y_T iff for each board B,
+        T running on x's input does not halt in (height of B) steps.
+    (2) h(Y_T) = 0.
+
+  LEAN PROOF STRUCTURE:
+    (2): N_{Y_T}(F_N) ≤ N_{X × R̃}(F_N) * 2^{ε(N) * N^2} where ε(N) → 0.
+    This uses the fact that: outside boards, each cell has a unique
+    admissible extension; inside boards, the computation is deterministic
+    (since T is deterministic and the input is fixed by x).
+
+------------------------------------------------------------
+Module 8.3 — The Pruning Algorithm
+------------------------------------------------------------
+
+  ALGORITHM 7.3: Given input (x_n)_{n∈Z} ∈ {0,1}^Z:
+    For N = 1, 2, 3, ...:
+      (1) Calculate r(N) (approximation to h from above).
+      (2) Calculate δ_N = (1/2^N) #{m ∈ M_N : x_m = 1}
+          where M_N is a specific set of indices.
+      (3) If δ_N > r(N) + 2^{-N} then halt.
+
+  LEMMA 7.2: There exist sets M_n ⊆ I_{m·2^n} such that
+    {i_m : m ∈ M_n} is a complete set of residues modulo 2^n.
+    (This uses the arithmetic of the recursion I_{n+1} = I_n ∪ ... )
+
+  PROPOSITION 7.4: The algorithm halts on input (x_n) iff δ(x) > h.
+    When it halts, the number of steps depends only on δ(x) (not on x).
+
+  PROPOSITION 7.5: (x, r) ∈ X × R̃ is represented in Y_T iff δ(x) ≤ h.
+
+  LEAN: These proofs are combinatorial/analytic. Key ingredients:
+    - The formula δ(x) = Σ ρ_n · 2^{-n} (from Section 6).
+    - The sets M_N exist by Lemma 7.2 (a number-theory argument using gcd(2^n, 5) = 1).
+    - The bound δ_N ∈ [δ(x) - 2^{-N}, δ(x) + 2^{-N}].
+
+
+================================================================================
+PART 9 — SECTION 8: ADDING ENTROPY
+================================================================================
+
+  CONSTRUCTION: Let Z be the SFT superimposed over Y by adding symbols
+    α, β over each occurrence of symbol 1, with no further constraints.
+
+  CLAIM: h(Z) = h = sup{δ(y) : y ∈ Y}.
+
+  PROOF:
+    Upper bound: N_Z(F_n) ≤ N_Y(F_n) · 2^{f_n(y)·n^2} for any y ∈ Y,
+      where f_n(y) = (1/n^2)|{u ∈ F_n : y(u) = 1}|.
+      Summing and using f_n(y) ≤ h + ε_n → h:
+      limsup (1/n^2) log N_Z(F_n) ≤ h(Y) + h = 0 + h = h.
+
+    Lower bound: Choose y_n ∈ Y with f_n(y_n) → h.
+      N_Z(F_n) ≥ 2^{f_n(y_n) · n^2} · N_Y(F_n).
+      Taking liminf: h(Z) ≥ lim f_n(y_n) = h.
+
+  LEAN: The upper and lower bound arguments are straightforward calculations.
+    The main ingredient is:
+    - The existence of y_n with f_n(y_n) → h, which follows from the
+      construction of Y (the supremum of δ is achieved).
+
+  CONCLUSION: This completes the proof of Theorem 1.1.
+    The SFT Z has entropy exactly h, and it is a legitimate SFT.
+
+
+================================================================================
+PART 10 — SUGGESTED FORMALIZATION ORDER AND MILESTONES
+================================================================================
+
+Given the complexity of this paper, the formalization is best broken into
+milestones. Here is a suggested order from easiest to hardest:
+
+  MILESTONE 0 — Infrastructure (est. effort: medium)
+    - Define FullShift, Subshift, SFT, sofic systems.
+    - Define pattern, restriction, cylinder sets.
+    - Define the shift action and prove it is a group action.
+    - Define N_X(F) (pattern count).
+    - State but sorry: Fekete lemma for Z^d.
+    - Define topological entropy h(X) using inf or limit.
+
+  MILESTONE 1 — Easy properties of entropy (est. effort: medium)
+    - h(X) >= 0.
+    - h(full shift) = log |Sigma|.
+    - h(X × Y) = h(X) + h(Y).
+    - h is an isomorphism invariant.
+
+  MILESTONE 2 — Computability setup (est. effort: medium)
+    - Define IsRightRE (right r.e. real).
+    - Define IsComputable (computable real).
+    - Prove: computable iff right r.e. and left r.e.
+    - Prove: every computable real is right r.e.
+
+  MILESTONE 3 — Theorem 3.1 necessity direction (est. effort: large)
+    - Define locally admissible, N̄_n.
+    - Prove N̄_n is computable.
+    - State (axiom) weak-* compactness of M(X).
+    - State (axiom) upper semi-continuity of entropy.
+    - State (axiom) variational principle.
+    - Prove Theorem 3.1 using these axioms.
+    - Corollary: h(X) is right r.e.
+
+  MILESTONE 4 — Irreducible SFTs (est. effort: large)
+    - Define irreducible SFT with gap r.
+    - Define Q_n (symmetric cubes), r-compatibility.
+    - Prove Lemma 3.4 (compactness + irreducibility).
+    - Prove Corollary 3.5 (decidability of global admissibility).
+    - Prove Theorem 1.3 (entropy of irreducible SFT is computable).
+
+  MILESTONE 5 — Sofic shifts (est. effort: small, given Milestone 3)
+    - Define sofic systems and block codes.
+    - Prove Theorem 3.2.
+    - Prove Corollary 3.3.
+    - Prove Theorem 1.2.
+
+  MILESTONE 6 — Base SFT construction (est. effort: very large)
+    - Define the {o, •} substitution and its SFT realization.
+    - Define 2-nets and prove Proposition 6.1.
+    - Construct the column-marking SFT X.
+    - Prove the density formula δ(x) = Σ ρ_n 2^{-n}.
+    - Prove h(X) = 0.
+
+  MILESTONE 7 — Mozes' theorem (est. effort: enormous, may be axiom)
+    - State the substitution theorem 5.1 as an axiom.
+    - Define unique derivation.
+    - Prove Proposition 5.2 (h = 0 for substitution SFT).
+
+  MILESTONE 8 — Turing machine layer and pruning (est. effort: enormous)
+    - Define the board substitution (Section 7.1).
+    - Define Turing machine representation in SFTs (Section 7.2).
+    - State Proposition 7.1.
+    - Prove Lemma 7.2, Algorithm 7.3, Proposition 7.4, 7.5.
+
+  MILESTONE 9 — Adding entropy (est. effort: medium, given Milestone 8)
+    - Prove h(Z) = h from Milestone 8.
+    - Conclude Theorem 1.1.
+
+Total estimated formalization effort (with all sorrys resolved): ~2-5 person-years.
+With key axioms sorryed (variational principle, Mozes): ~6-18 months.
+
+
+================================================================================
+PART 11 — RECOMMENDED LEAN 4 PROJECT STRUCTURE
+================================================================================
+
+FormFormalizedSymbolicDynamics/
+  lakefile.lean               -- declare Mathlib dependency
+  SymbolicDynamics/
+    FullShift.lean            -- full shift, shift action, topology
+    Subshift.lean             -- subshifts, SFTs, sofic systems
+    Entropy.lean              -- topological entropy h(X)
+    Irreducible.lean          -- irreducible SFTs, gap, Lemma 3.4
+  Computability/
+    RightRE.lean              -- right r.e. reals, left r.e. reals
+    ComputableReal.lean       -- computable reals
+  NecessityDirection/
+    LocalCount.lean           -- N̄_n, computability
+    Theorem31.lean            -- entropy is right r.e.
+    IrreducibleComputable.lean -- Theorem 1.3
+  SufficiencyDirection/
+    Substitutions.lean        -- substitution rules, W, Mozes theorem
+    BaseSFT.lean              -- Section 6: X with uniform density
+    Boards.lean               -- Section 7.1: board substitution
+    TuringLayer.lean          -- Section 7.2: Y_T
+    Pruning.lean              -- Section 7.3: Algorithm 7.3, Prop 7.4-7.5
+    AddingEntropy.lean        -- Section 8: Z with entropy h
+  MainTheorems.lean           -- Theorem 1.1, 1.2, 1.3
+
+
+================================================================================
+PART 12 — KEY DEPENDENCIES AND POTENTIAL OBSTACLES
+================================================================================
+
+1. VARIATIONAL PRINCIPLE: The proof of Theorem 3.1 uses the variational
+   principle h(X) = max h(mu). This is a nontrivial theorem in ergodic theory
+   not fully in Mathlib. If Mathlib does not have it, this should be stated
+   as an axiom (axiom variationalPrinciple) with a clear docstring.
+
+2. MOZES' THEOREM (Theorem 5.1): The realization of substitution systems as
+   SFTs. This is used in the sufficiency direction. Robinson's technique is
+   also referenced. Both are deep results. Consider axiomatizing both.
+
+3. FEKETE'S LEMMA IN Z^d: The existence of the entropy limit uses a
+   multidimensional Fekete lemma. Check Mathlib; if absent, a proof from
+   the 1D case by induction on d is straightforward.
+
+4. THE HALTING PROBLEM AND UNDECIDABILITY: The paper cites Berger's theorem
+   (undecidability of the domino problem) informally. This can be assumed
+   or axiomatized without impeding the formalization of the paper's own proofs.
+
+5. MEASURE-THEORETIC ENTROPY: Needed for the variational principle proof
+   (though not for the statement). This is a major undertaking.
+   For Milestone 3, stating h(mu) via axiom suffices.
+
+6. COMPACTNESS OF M(X): The proof of Theorem 3.1 takes a weak-* limit of
+   measures. This requires the Prokhorov theorem or direct compactness for
+   shift-invariant measures, which may not be in Mathlib.
+
+
+================================================================================
+END OF PLAN
+================================================================================
