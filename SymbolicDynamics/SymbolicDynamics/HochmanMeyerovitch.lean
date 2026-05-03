@@ -8,6 +8,9 @@ import Mathlib.Topology.Compactness.Compact
 import Mathlib.Topology.Separation.Hausdorff
 import Mathlib.Topology.Homeomorph.Defs
 import Mathlib.Data.Set.Card
+import Mathlib.Data.Fintype.Pi
+import Mathlib.Data.Fintype.BigOperators
+import Mathlib.Data.Int.Interval
 
 /-! ## 0.1  Lat d — the group ℤ^d -/
 
@@ -412,3 +415,9 @@ theorem N_X_pos_of_nonempty {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpac
   refine ⟨Pattern.ofColoring F x, x, hx, 0, ?_⟩
   intro v
   simp [Pattern.ofColoring]
+
+/-! ## C1  box — the cube {0,...,n-1}^d in ℤ^d -/
+
+/-- The discrete cube `{0,...,n-1}^d ⊆ ℤ^d`. -/
+def box (d n : ℕ) : Finset (Lat d) :=
+  Fintype.piFinset (fun _ : Fin d => Finset.Ico (0 : ℤ) (n : ℤ))

@@ -72,7 +72,7 @@ Tick the checkbox when the item compiles without errors.
 - [x] B5  `theorem N_X_pos_of_nonempty`
 
 ### C — Boxes F_n = {0,...,n-1}^d
-- [ ] C1  `def box (d n : ℕ) : Finset (Lat d)`
+- [x] C1  `def box (d n : ℕ) : Finset (Lat d)`
 - [ ] C2  `theorem box_card`  (`(box d n).card = n ^ d`)
 - [ ] C3  `theorem box_mono`  (`m ≤ n → box d m ⊆ box d n`)
 - [ ] C4  `theorem box_zero`  (`box d 0 = ∅`)
