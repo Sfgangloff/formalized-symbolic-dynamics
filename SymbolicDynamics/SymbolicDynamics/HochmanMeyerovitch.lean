@@ -11,6 +11,7 @@ import Mathlib.Data.Set.Card
 import Mathlib.Data.Fintype.Pi
 import Mathlib.Data.Fintype.BigOperators
 import Mathlib.Data.Int.Interval
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 /-! ## 0.1  Lat d — the group ℤ^d -/
 
@@ -161,7 +162,7 @@ def translateFinset {d : ℕ} (u : Lat d) (F : Finset (Lat d)) : Finset (Lat d) 
 @[simp]
 theorem mem_translateFinset {d : ℕ} {u : Lat d} {F : Finset (Lat d)} {v : Lat d} :
     v ∈ translateFinset u F ↔ v - u ∈ F := by
-  simp [translateFinset, Finset.mem_image]
+  simp only [translateFinset, Finset.mem_image]
   constructor
   · rintro ⟨w, hw, rfl⟩; simpa using hw
   · intro hv; exact ⟨v - u, hv, by simp⟩
@@ -459,3 +460,11 @@ theorem N_X_submultiplicative {α : Type*} {d : ℕ} [Fintype α] [TopologicalSp
     rcases Finset.mem_union.mp hv with hvF | hvG
     · exact congr_fun (congr_arg Prod.fst hpq) ⟨v, hvF⟩
     · exact congr_fun (congr_arg Prod.snd hpq) ⟨v, hvG⟩
+
+/-! ## D2  logN — log of the box pattern count -/
+
+/-- `logN X n` is `log (N_X X (box d n))`, the log of the count of globally admissible
+    patterns on the box `F_n = {0,...,n-1}^d`. -/
+noncomputable def logN {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
+    (X : Subshift α d) (n : ℕ) : ℝ :=
+  Real.log (N_X X (box d n))

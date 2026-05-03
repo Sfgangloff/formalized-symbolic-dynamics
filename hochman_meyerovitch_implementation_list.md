@@ -79,7 +79,7 @@ Tick the checkbox when the item compiles without errors.
 
 ### D — Subadditive structure and Fekete
 - [x] D1  `theorem N_X_submultiplicative`
-- [ ] D2  `def logN (X : Subshift α d) (n : ℕ) : ℝ`
+- [x] D2  `def logN (X : Subshift α d) (n : ℕ) : ℝ`
 - [ ] D3  `theorem logN_subadditive`
 - [ ] D4  `theorem Fekete_1d`  [sorry — check Mathlib first]
 - [ ] D5  `theorem logN_div_pow_tendsto`  [sorry]
