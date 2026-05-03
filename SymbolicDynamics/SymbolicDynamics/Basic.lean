@@ -180,4 +180,34 @@ def cylinder {α : Type*} {d : ℕ} {F : Finset (Lat d)} (p : Pattern α F) (u :
     Set (FullShift α d) :=
   {x | AppearsAt p x u}
 
+/-! ## 0.22  mem_cylinder_iff -/
+
+@[simp]
+theorem mem_cylinder_iff {α : Type*} {d : ℕ} {F : Finset (Lat d)} (p : Pattern α F)
+    (u : Lat d) (x : FullShift α d) :
+    x ∈ cylinder p u ↔ ∀ v : F, x (v.val + u) = p v :=
+  Iff.rfl
+
+/-! ## 0.23  cylinder_isOpen -/
+
+theorem cylinder_isOpen {α : Type*} {d : ℕ} {F : Finset (Lat d)} [TopologicalSpace α]
+    [DiscreteTopology α] (p : Pattern α F) (u : Lat d) :
+    IsOpen (cylinder p u) := by
+  simp only [cylinder, AppearsAt, Set.setOf_forall]
+  apply isOpen_iInter_of_finite
+  intro v
+  change IsOpen ((fun x : FullShift α d => x (v.val + u)) ⁻¹' {p v})
+  exact (continuous_apply (v.val + u)).isOpen_preimage _ (isOpen_discrete _)
+
+/-! ## 0.24  cylinder_isClosed -/
+
+theorem cylinder_isClosed {α : Type*} {d : ℕ} {F : Finset (Lat d)} [TopologicalSpace α]
+    [T1Space α] (p : Pattern α F) (u : Lat d) :
+    IsClosed (cylinder p u) := by
+  simp only [cylinder, AppearsAt, Set.setOf_forall]
+  apply isClosed_iInter
+  intro v
+  change IsClosed ((fun x : FullShift α d => x (v.val + u)) ⁻¹' {p v})
+  exact IsClosed.preimage (continuous_apply (v.val + u)) isClosed_singleton
+
 end Pattern
