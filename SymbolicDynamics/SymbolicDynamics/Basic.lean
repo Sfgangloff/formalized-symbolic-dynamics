@@ -6,6 +6,7 @@ import Mathlib.Algebra.Group.Pi.Basic
 import Mathlib.Algebra.Group.Action.Defs
 import Mathlib.Topology.Compactness.Compact
 import Mathlib.Topology.Separation.Hausdorff
+import Mathlib.Topology.Homeomorph.Defs
 
 /-! ## 0.1  Lat d — the group ℤ^d -/
 
@@ -111,5 +112,16 @@ instance instT2Space {α : Type*} {d : ℕ} [TopologicalSpace α] [T2Space α] :
 theorem shiftMap_continuous {α : Type*} {d : ℕ} [TopologicalSpace α] (u : Lat d) :
     Continuous (shiftMap u (α := α)) :=
   continuous_pi fun v => continuous_apply (v + u)
+
+/-! ## A1  shiftMap_homeomorph — σ^u is a homeomorphism -/
+
+def shiftMap_homeomorph {α : Type*} {d : ℕ} [TopologicalSpace α] (u : Lat d) :
+    FullShift α d ≃ₜ FullShift α d where
+  toFun := shiftMap u
+  invFun := shiftMap (-u)
+  left_inv x := by rw [← shiftMap_add]; simp [neg_add_cancel]
+  right_inv x := by rw [← shiftMap_add]; simp [add_neg_cancel]
+  continuous_toFun := shiftMap_continuous u
+  continuous_invFun := shiftMap_continuous (-u)
 
 end FullShift
