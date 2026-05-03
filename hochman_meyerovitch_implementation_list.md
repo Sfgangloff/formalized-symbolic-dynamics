@@ -88,7 +88,7 @@ Tick the checkbox when the item compiles without errors.
 - [x] E1  `def topEntropy [Fintype α] (X : Subshift α d) : ℝ`
 - [x] E2  `theorem topEntropy_nonneg`
 - [x] E3  `theorem topEntropy_fullShift`
-- [ ] E4  `theorem topEntropy_antitone`
+- [x] E4  `theorem topEntropy_antitone`  (monotone in subshift inclusion)
 
 ### F — Computability definitions
 - [ ] F1  `def IsRightRE (h : ℝ) : Prop`

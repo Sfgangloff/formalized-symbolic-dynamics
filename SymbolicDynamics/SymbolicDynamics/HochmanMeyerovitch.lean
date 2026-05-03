@@ -662,3 +662,36 @@ theorem topEntropy_fullShift {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpa
     · intro hy; exact ⟨1, le_rfl, by rw [hlogN 1 le_rfl]; exact hy.symm⟩
   rw [himg]
   exact csInf_singleton _
+
+/-! ## E4  topEntropy_antitone — entropy is monotone in subshift inclusion -/
+
+theorem topEntropy_antitone {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
+    {X Y : Subshift α d} (hXY : X.carrier ⊆ Y.carrier) :
+    topEntropy X ≤ topEntropy Y := by
+  unfold topEntropy
+  have hbdd : BddBelow ((fun n : ℕ => logN X n / (n : ℝ) ^ d) '' Set.Ici 1) := by
+    refine ⟨0, ?_⟩
+    rintro x ⟨k, hk, rfl⟩
+    have : (1 : ℝ) ≤ k := by exact_mod_cast hk
+    apply div_nonneg (Real.log_natCast_nonneg _)
+    positivity
+  apply le_csInf
+  · exact Set.Nonempty.image _ ⟨1, Set.mem_Ici.mpr le_rfl⟩
+  rintro y ⟨n, hn, rfl⟩
+  have hN : N_X X (box d n) ≤ N_X Y (box d n) := by
+    unfold N_X
+    refine Set.ncard_le_ncard ?_ (Set.toFinite _)
+    rintro p ⟨x, hxX, u, happ⟩
+    exact ⟨x, hXY hxX, u, happ⟩
+  have hlog : logN X n ≤ logN Y n := by
+    unfold logN
+    by_cases hX_zero : N_X X (box d n) = 0
+    · rw [hX_zero]; push_cast; rw [Real.log_zero]
+      exact Real.log_natCast_nonneg _
+    apply Real.log_le_log
+    · exact_mod_cast Nat.pos_of_ne_zero hX_zero
+    · exact_mod_cast hN
+  have hX_in : logN X n / (n : ℝ) ^ d ∈
+      (fun n : ℕ => logN X n / (n : ℝ) ^ d) '' Set.Ici 1 := ⟨n, hn, rfl⟩
+  calc sInf _ ≤ logN X n / (n : ℝ) ^ d := csInf_le hbdd hX_in
+    _ ≤ logN Y n / (n : ℝ) ^ d := by gcongr
