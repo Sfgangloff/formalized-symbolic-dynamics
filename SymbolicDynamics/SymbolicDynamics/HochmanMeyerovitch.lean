@@ -605,3 +605,60 @@ theorem topEntropy_nonneg {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace 
     have hn' : (1 : ℝ) ≤ n := by exact_mod_cast hn
     apply div_nonneg (Real.log_natCast_nonneg _)
     positivity
+
+/-! ## E3  topEntropy_fullShift -/
+
+theorem topEntropy_fullShift {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α] :
+    topEntropy (Subshift.univ α d) = Real.log (Fintype.card α) := by
+  classical
+  unfold topEntropy
+  have hcount : ∀ n : ℕ, 1 ≤ n →
+      N_X (Subshift.univ α d) (box d n) = (Fintype.card α) ^ (n ^ d) := by
+    intro n hn
+    unfold N_X
+    by_cases hα : Nonempty α
+    · have heq : {p : Pattern α (box d n) |
+                  Pattern.GloballyAdmissible (Subshift.univ α d) p} = Set.univ := by
+        ext p
+        simp only [Set.mem_setOf_eq, Set.mem_univ, iff_true]
+        refine ⟨fun v => if h : v ∈ box d n then p ⟨v, h⟩ else Classical.arbitrary α,
+                Set.mem_univ _, 0, fun v => ?_⟩
+        change (fun w => if h : w ∈ box d n then p ⟨w, h⟩ else Classical.arbitrary α)
+                 (v.val + 0) = p v
+        simp [v.property]
+      rw [heq, Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fun,
+          Fintype.card_coe, box_card]
+    · rw [not_nonempty_iff] at hα
+      haveI := hα
+      have hb : (box d n).Nonempty := by
+        rw [← Finset.card_pos, box_card]; positivity
+      haveI : Nonempty ↥(box d n) := hb.coe_sort
+      haveI : IsEmpty (Pattern α (box d n)) := inferInstance
+      have hN : ({p : Pattern α (box d n) |
+                  Pattern.GloballyAdmissible (Subshift.univ α d) p}).ncard = 0 := by
+        rw [Set.ncard_eq_zero (Set.toFinite _)]
+        ext p
+        exact (IsEmpty.false p).elim
+      rw [hN, Fintype.card_eq_zero, zero_pow (by positivity : n ^ d ≠ 0)]
+  have hlogN : ∀ n ≥ 1,
+      logN (Subshift.univ α d) n / (n : ℝ) ^ d = Real.log (Fintype.card α) := by
+    intro n hn
+    unfold logN
+    rw [hcount n hn]
+    have hnd_pos : (0 : ℝ) < (n : ℝ) ^ d := by
+      have : (0 : ℝ) < n := by exact_mod_cast Nat.one_le_iff_ne_zero.mp hn |>.bot_lt
+      positivity
+    have hnd_ne : ((n : ℝ) ^ d) ≠ 0 := ne_of_gt hnd_pos
+    push_cast
+    rw [Real.log_pow]
+    push_cast
+    field_simp
+  have himg : (fun n : ℕ => logN (Subshift.univ α d) n / (n : ℝ) ^ d) '' Set.Ici 1
+            = {Real.log (Fintype.card α)} := by
+    ext y
+    simp only [Set.mem_image, Set.mem_Ici, Set.mem_singleton_iff]
+    refine ⟨?_, ?_⟩
+    · rintro ⟨n, hn, rfl⟩; exact hlogN n hn
+    · intro hy; exact ⟨1, le_rfl, by rw [hlogN 1 le_rfl]; exact hy.symm⟩
+  rw [himg]
+  exact csInf_singleton _

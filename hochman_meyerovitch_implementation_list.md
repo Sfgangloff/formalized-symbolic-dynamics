@@ -87,7 +87,7 @@ Tick the checkbox when the item compiles without errors.
 ### E — Topological entropy
 - [x] E1  `def topEntropy [Fintype α] (X : Subshift α d) : ℝ`
 - [x] E2  `theorem topEntropy_nonneg`
-- [ ] E3  `theorem topEntropy_fullShift`
+- [x] E3  `theorem topEntropy_fullShift`
 - [ ] E4  `theorem topEntropy_antitone`
 
 ### F — Computability definitions
