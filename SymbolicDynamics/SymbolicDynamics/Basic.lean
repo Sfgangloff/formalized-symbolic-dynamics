@@ -162,4 +162,22 @@ theorem mem_translateFinset {d : ℕ} {u : Lat d} {F : Finset (Lat d)} {v : Lat 
   · rintro ⟨w, hw, rfl⟩; simpa using hw
   · intro hv; exact ⟨v - u, hv, by simp⟩
 
+/-! ## 0.19  AppearsAt — pattern p occurs at position u in coloring x -/
+
+def AppearsAt {α : Type*} {d : ℕ} {F : Finset (Lat d)} (p : Pattern α F)
+    (x : FullShift α d) (u : Lat d) : Prop :=
+  ∀ v : F, x (v.val + u) = p v
+
+/-! ## 0.20  Appears — pattern p occurs somewhere in x -/
+
+def Appears {α : Type*} {d : ℕ} {F : Finset (Lat d)} (p : Pattern α F)
+    (x : FullShift α d) : Prop :=
+  ∃ u : Lat d, AppearsAt p x u
+
+/-! ## 0.21  cylinder — the clopen set of colorings extending p at offset u -/
+
+def cylinder {α : Type*} {d : ℕ} {F : Finset (Lat d)} (p : Pattern α F) (u : Lat d) :
+    Set (FullShift α d) :=
+  {x | AppearsAt p x u}
+
 end Pattern
