@@ -242,4 +242,119 @@ def univ (α : Type*) (d : ℕ) [TopologicalSpace α] : Subshift α d where
   isClosed := isClosed_univ
   isInvariant := fun _ _ _ => Set.mem_univ _
 
+/-! ## A2  bot — the empty subshift -/
+
+def bot (α : Type*) (d : ℕ) [TopologicalSpace α] : Subshift α d where
+  carrier := ∅
+  isClosed := isClosed_empty
+  isInvariant := fun _ _ hx => absurd hx (Set.notMem_empty _)
+
+/-! ## A3  inter — intersection of two subshifts -/
+
+def inter {α : Type*} {d : ℕ} [TopologicalSpace α]
+    (X Y : Subshift α d) : Subshift α d where
+  carrier := X.carrier ∩ Y.carrier
+  isClosed := X.isClosed.inter Y.isClosed
+  isInvariant := fun u x ⟨hxX, hxY⟩ =>
+    ⟨X.isInvariant u x hxX, Y.isInvariant u x hxY⟩
+
+/-! ## A4  iInter — arbitrary indexed intersection of subshifts -/
+
+def iInter {α : Type*} {d : ℕ} [TopologicalSpace α] {ι : Type*}
+    (Xs : ι → Subshift α d) : Subshift α d where
+  carrier := ⋂ i, (Xs i).carrier
+  isClosed := isClosed_iInter (fun i => (Xs i).isClosed)
+  isInvariant := fun u x hx =>
+    Set.mem_iInter.mpr (fun i => (Xs i).isInvariant u x (Set.mem_iInter.mp hx i))
+
 end Subshift
+
+/-! ## 0.29  SFT_admissible — coloring x is admissible for window F and allowed patterns L -/
+
+/-- A coloring `x` is admissible for the syntax `(F, L)` if the F-pattern at every offset is in L.
+-/
+def SFT_admissible {α : Type*} {d : ℕ} (F : Finset (Lat d))
+    (L : Finset (Pattern α F)) (x : FullShift α d) : Prop :=
+  ∀ u : Lat d, Pattern.ofColoring F (FullShift.shiftMap u x) ∈ L
+
+/-! ## 0.30  SFT_carrier -/
+
+/-- The carrier set of the SFT with window `F` and syntax `L`. -/
+def SFT_carrier {α : Type*} {d : ℕ} (F : Finset (Lat d))
+    (L : Finset (Pattern α F)) : Set (FullShift α d) :=
+  {x | SFT_admissible F L x}
+
+/-! ## 0.31  SFT_carrier_isInvariant -/
+
+theorem SFT_carrier_isInvariant {α : Type*} {d : ℕ} (F : Finset (Lat d))
+    (L : Finset (Pattern α F)) :
+    ∀ (u : Lat d) (x : FullShift α d), x ∈ SFT_carrier F L →
+      FullShift.shiftMap u x ∈ SFT_carrier F L := by
+  intro u x hx w
+  simp only [SFT_carrier, Set.mem_setOf_eq, SFT_admissible] at hx ⊢
+  show Pattern.ofColoring F (FullShift.shiftMap w (FullShift.shiftMap u x)) ∈ L
+  rw [← FullShift.shiftMap_add]
+  exact hx (w + u)
+
+/-! ## 0.32  SFT_carrier_isClosed -/
+
+theorem SFT_carrier_isClosed {α : Type*} {d : ℕ} [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) :
+    IsClosed (SFT_carrier F L) := by
+  have heq : SFT_carrier F L =
+      ⋂ u : Lat d, (fun x => Pattern.ofColoring F (FullShift.shiftMap u x)) ⁻¹' ↑L := by
+    ext x
+    simp only [SFT_carrier, SFT_admissible, Set.mem_setOf_eq,
+               Set.mem_iInter, Set.mem_preimage, Finset.mem_coe]
+  rw [heq]
+  apply isClosed_iInter
+  intro u
+  apply IsClosed.preimage
+  · apply continuous_pi; intro v; exact continuous_apply (v.val + u)
+  · exact L.finite_toSet.isClosed
+
+/-! ## 0.33  mkSFT -/
+
+/-- The SFT with window `F` and allowed patterns `L`. -/
+def mkSFT {α : Type*} {d : ℕ} [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) : Subshift α d where
+  carrier   := SFT_carrier F L
+  isClosed  := SFT_carrier_isClosed F L
+  isInvariant := SFT_carrier_isInvariant F L
+
+/-! ## 0.34  mem_mkSFT -/
+
+@[simp]
+theorem mem_mkSFT {α : Type*} {d : ℕ} [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) (x : FullShift α d) :
+    x ∈ mkSFT F L ↔ SFT_admissible F L x :=
+  Iff.rfl
+
+/-! ## 0.35  locallyAdmissible — finite pattern is locally admissible for (F, L) -/
+
+/-- Pattern `a` over `E` is locally admissible for syntax `(F, L)` if for every
+    translate `F + u ⊆ E` the de-translated restriction lands in `L`. -/
+def locallyAdmissible {α : Type*} {d : ℕ} {E : Finset (Lat d)}
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) (a : Pattern α E) : Prop :=
+  ∀ u : Lat d, ∀ (h : ∀ v : F, v.val + u ∈ E),
+    (fun v : F => a ⟨v.val + u, h v⟩) ∈ L
+
+/-! ## 0.36  ShiftIrreducible — X is r-irreducible -/
+
+/-- Subshift `X` is `r`-irreducible if every two globally admissible patterns on
+    supports that are at least `r` apart (in ℓ∞) can be simultaneously realized. -/
+def ShiftIrreducible {α : Type*} {d : ℕ} [TopologicalSpace α]
+    (X : Subshift α d) (r : ℕ) : Prop :=
+  ∀ (A B : Finset (Lat d)),
+    (∀ u ∈ A, ∀ v ∈ B, (r : ℤ) ≤ Lat.supNorm (u - v)) →
+    ∀ (a : Pattern α A) (b : Pattern α B),
+      (∃ x ∈ X, Pattern.AppearsAt a x 0) →
+      (∃ x ∈ X, Pattern.AppearsAt b x 0) →
+      ∃ x ∈ X, Pattern.AppearsAt a x 0 ∧ Pattern.AppearsAt b x 0
+
+/-! ## 0.37  IsIrreducibleShift -/
+
+/-- A subshift is irreducible if it is `r`-irreducible for some `r > 0`. -/
+def IsIrreducibleShift {α : Type*} {d : ℕ} [TopologicalSpace α]
+    (X : Subshift α d) : Prop :=
+  ∃ r : ℕ, 0 < r ∧ ShiftIrreducible X r
