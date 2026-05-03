@@ -427,3 +427,8 @@ def box (d n : ℕ) : Finset (Lat d) :=
 @[simp]
 theorem box_card (d n : ℕ) : (box d n).card = n ^ d := by
   simp [box, Fintype.card_piFinset, Int.card_Ico]
+
+/-! ## C3  box_mono -/
+
+theorem box_mono {d m n : ℕ} (hmn : m ≤ n) : box d m ⊆ box d n :=
+  Fintype.piFinset_subset _ _ (fun _ => Finset.Ico_subset_Ico_right (by exact_mod_cast hmn))
