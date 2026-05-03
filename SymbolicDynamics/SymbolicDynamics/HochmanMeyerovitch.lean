@@ -358,3 +358,38 @@ def ShiftIrreducible {α : Type*} {d : ℕ} [TopologicalSpace α]
 def IsIrreducibleShift {α : Type*} {d : ℕ} [TopologicalSpace α]
     (X : Subshift α d) : Prop :=
   ∃ r : ℕ, 0 < r ∧ ShiftIrreducible X r
+
+namespace Pattern
+
+/-! ## B1  GloballyAdmissible — pattern appears in some point of X -/
+
+/-- Pattern `p` is globally admissible for `X` if it appears somewhere in some point of `X`. -/
+def GloballyAdmissible {α : Type*} {d : ℕ} [TopologicalSpace α]
+    {F : Finset (Lat d)} (X : Subshift α d) (p : Pattern α F) : Prop :=
+  ∃ x ∈ X, Appears p x
+
+/-! ## B2  globallyAdmissible_iff_exists_offset -/
+
+@[simp]
+theorem globallyAdmissible_iff_exists_offset {α : Type*} {d : ℕ} [TopologicalSpace α]
+    {F : Finset (Lat d)} (X : Subshift α d) (p : Pattern α F) :
+    GloballyAdmissible X p ↔ ∃ x ∈ X, ∃ u : Lat d, AppearsAt p x u :=
+  Iff.rfl
+
+/-! ## B3  globally_imp_locally — global admissibility implies local admissibility -/
+
+theorem globally_imp_locally {α : Type*} {d : ℕ} [TopologicalSpace α] [T1Space α]
+    {E : Finset (Lat d)} (F : Finset (Lat d)) (L : Finset (Pattern α F)) (p : Pattern α E)
+    (hp : GloballyAdmissible (mkSFT F L) p) : locallyAdmissible F L p := by
+  obtain ⟨x, hxX, offset, happ⟩ := hp
+  intro u hu
+  have hadm : SFT_admissible F L x := (mem_mkSFT F L x).mp hxX
+  have key : ofColoring F (FullShift.shiftMap (u + offset) x) ∈ L := hadm (u + offset)
+  have heq : ofColoring F (FullShift.shiftMap (u + offset) x) =
+      fun v : F => p ⟨v.val + u, hu v⟩ := by
+    ext v
+    simp only [ofColoring, FullShift.shiftMap, ← add_assoc]
+    exact happ ⟨v.val + u, hu v⟩
+  rwa [heq] at key
+
+end Pattern
