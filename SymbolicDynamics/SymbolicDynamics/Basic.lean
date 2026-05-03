@@ -125,3 +125,25 @@ def shiftMap_homeomorph {α : Type*} {d : ℕ} [TopologicalSpace α] (u : Lat d)
   continuous_invFun := shiftMap_continuous (-u)
 
 end FullShift
+
+/-! ## 0.14  Pattern — a finite window coloring -/
+
+/-- A pattern over alphabet `α` with support `F ⊆ ℤ^d`. -/
+abbrev Pattern (α : Type*) {d : ℕ} (F : Finset (Lat d)) := F → α
+
+namespace Pattern
+
+/-! ## 0.15  ofColoring — restrict a full coloring to a finite window -/
+
+/-- Restrict a coloring to a finite support. -/
+def ofColoring {α : Type*} {d : ℕ} (F : Finset (Lat d)) (x : FullShift α d) : Pattern α F :=
+  fun v => x v.val
+
+/-! ## 0.16  restrict — restrict a pattern to a sub-window -/
+
+/-- Restrict a pattern on `F` to a sub-finset `G ⊆ F`. -/
+def restrict {α : Type*} {d : ℕ} {F : Finset (Lat d)} (G : Finset (Lat d)) (hGF : G ⊆ F)
+    (p : Pattern α F) : Pattern α G :=
+  fun v => p ⟨v.val, hGF v.property⟩
+
+end Pattern
