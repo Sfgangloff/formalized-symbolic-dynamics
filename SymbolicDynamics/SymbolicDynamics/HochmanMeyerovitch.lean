@@ -7,6 +7,7 @@ import Mathlib.Algebra.Group.Action.Defs
 import Mathlib.Topology.Compactness.Compact
 import Mathlib.Topology.Separation.Hausdorff
 import Mathlib.Topology.Homeomorph.Defs
+import Mathlib.Data.Set.Card
 
 /-! ## 0.1  Lat d — the group ℤ^d -/
 
@@ -393,3 +394,10 @@ theorem globally_imp_locally {α : Type*} {d : ℕ} [TopologicalSpace α] [T1Spa
   rwa [heq] at key
 
 end Pattern
+
+/-! ## B4  N_X — number of globally admissible F-patterns in a subshift -/
+
+/-- The number of globally admissible `F`-patterns in subshift `X`. -/
+noncomputable def N_X {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
+    (X : Subshift α d) (F : Finset (Lat d)) : ℕ :=
+  Set.ncard {p : Pattern α F | Pattern.GloballyAdmissible X p}

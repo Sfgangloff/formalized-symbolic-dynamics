@@ -68,7 +68,7 @@ Tick the checkbox when the item compiles without errors.
 - [ ] B1  `def Pattern.GloballyAdmissible`
 - [ ] B2  `theorem Pattern.globallyAdmissible_iff_exists_offset`
 - [ ] B3  `theorem Pattern.globally_imp_locally`
-- [ ] B4  `def N_X [Fintype α] (X : Subshift α d) (F : Finset (Lat d)) : ℕ`
+- [x] B4  `def N_X [Fintype α] (X : Subshift α d) (F : Finset (Lat d)) : ℕ`
 - [ ] B5  `theorem N_X_pos_of_nonempty`
 
 ### C — Boxes F_n = {0,...,n-1}^d
