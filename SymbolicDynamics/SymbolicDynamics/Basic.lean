@@ -106,4 +106,10 @@ instance instCompactSpace {α : Type*} {d : ℕ} [TopologicalSpace α] [CompactS
 instance instT2Space {α : Type*} {d : ℕ} [TopologicalSpace α] [T2Space α] :
     T2Space (FullShift α d) := inferInstance
 
+/-! ## 0.13  shiftMap_continuous -/
+
+theorem shiftMap_continuous {α : Type*} {d : ℕ} [TopologicalSpace α] (u : Lat d) :
+    Continuous (shiftMap u (α := α)) :=
+  continuous_pi fun v => continuous_apply (v + u)
+
 end FullShift
