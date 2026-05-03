@@ -9,65 +9,65 @@ Tick the checkbox when the item compiles without errors.
 ## Checklist
 
 ### Lat — the lattice ℤ^d
-- [ ] 0.1  `abbrev Lat (d : ℕ) := Fin d → ℤ`
-- [ ] 0.2  `def Lat.supNorm`
-- [ ] 0.3  `theorem Lat.supNorm_zero`
-- [ ] 0.4  `theorem Lat.supNorm_nonneg`
+- [x] 0.1  `abbrev Lat (d : ℕ) := Fin d → ℤ`
+- [x] 0.2  `def Lat.supNorm`
+- [x] 0.3  `theorem Lat.supNorm_zero`
+- [x] 0.4  `theorem Lat.supNorm_nonneg`
 
 ### FullShift — α^{ℤ^d}
-- [ ] 0.5  `abbrev FullShift (α : Type*) (d : ℕ) : Type* := Lat d → α`
-- [ ] 0.5b `@[ext] lemma FullShift.ext`  (register funext as the ext lemma)
-- [ ] 0.6  `def FullShift.shiftMap`
-- [ ] 0.7  `theorem FullShift.shiftMap_zero`
-- [ ] 0.8  `theorem FullShift.shiftMap_add`
-- [ ] 0.9  `instance FullShift.instAddAction`
-- [ ] 0.10 `theorem FullShift.vadd_eq_shiftMap`
-- [ ] 0.11 `theorem FullShift.shiftMap_bijective`
-- [ ] 0.12 `instance FullShift` topology instances (TopologicalSpace, CompactSpace, T2Space)
-- [ ] 0.13 `theorem FullShift.shiftMap_continuous`
+- [x] 0.5  `abbrev FullShift (α : Type*) (d : ℕ) : Type* := Lat d → α`
+- [x] 0.5b `@[ext] lemma FullShift.ext`  (register funext as the ext lemma)
+- [x] 0.6  `def FullShift.shiftMap`
+- [x] 0.7  `theorem FullShift.shiftMap_zero`
+- [x] 0.8  `theorem FullShift.shiftMap_add`
+- [x] 0.9  `instance FullShift.instAddAction`
+- [x] 0.10 `theorem FullShift.vadd_eq_shiftMap`
+- [x] 0.11 `theorem FullShift.shiftMap_bijective`
+- [x] 0.12 `instance FullShift` topology instances (TopologicalSpace, CompactSpace, T2Space)
+- [x] 0.13 `theorem FullShift.shiftMap_continuous`
 
 ### A — Missing subshift infrastructure
-- [ ] A1  `def FullShift.shiftMap_homeomorph` (σ^u is a homeomorphism)
-- [ ] A2  `def Subshift.bot` (empty subshift)
-- [ ] A3  `def Subshift.inter` (intersection of two subshifts)
-- [ ] A4  `def Subshift.iInter` (arbitrary indexed intersection)
+- [x] A1  `def FullShift.shiftMap_homeomorph` (σ^u is a homeomorphism)
+- [x] A2  `def Subshift.bot` (empty subshift)
+- [x] A3  `def Subshift.inter` (intersection of two subshifts)
+- [x] A4  `def Subshift.iInter` (arbitrary indexed intersection)
 
 ### Pattern
-- [ ] 0.14 `abbrev Pattern (α : Type*) {d : ℕ} (F : Finset (Lat d)) : Type* := F → α`
-- [ ] 0.15 `def Pattern.ofColoring`
-- [ ] 0.16 `def Pattern.restrict`
-- [ ] 0.17 `def Pattern.translateFinset`
-- [ ] 0.18 `theorem Pattern.mem_translateFinset`
-- [ ] 0.19 `def Pattern.AppearsAt`
-- [ ] 0.20 `def Pattern.Appears`
-- [ ] 0.21 `def Pattern.cylinder`
-- [ ] 0.22 `theorem Pattern.mem_cylinder_iff`
-- [ ] 0.23 `theorem Pattern.cylinder_isOpen`
-- [ ] 0.24 `theorem Pattern.cylinder_isClosed`
+- [x] 0.14 `abbrev Pattern (α : Type*) {d : ℕ} (F : Finset (Lat d)) : Type* := F → α`
+- [x] 0.15 `def Pattern.ofColoring`
+- [x] 0.16 `def Pattern.restrict`
+- [x] 0.17 `def Pattern.translateFinset`
+- [x] 0.18 `theorem Pattern.mem_translateFinset`
+- [x] 0.19 `def Pattern.AppearsAt`
+- [x] 0.20 `def Pattern.Appears`
+- [x] 0.21 `def Pattern.cylinder`
+- [x] 0.22 `theorem Pattern.mem_cylinder_iff`
+- [x] 0.23 `theorem Pattern.cylinder_isOpen`
+- [x] 0.24 `theorem Pattern.cylinder_isClosed`
 
 ### Subshift
-- [ ] 0.25 `structure Subshift`
-- [ ] 0.26 `instance Subshift.Membership`
-- [ ] 0.27 `theorem Subshift.mem_iff`
-- [ ] 0.28 `def Subshift.univ`
+- [x] 0.25 `structure Subshift`
+- [x] 0.26 `instance Subshift.Membership`
+- [x] 0.27 `theorem Subshift.mem_iff`
+- [x] 0.28 `def Subshift.univ`
 
 ### SFT
-- [ ] 0.29 `def SFT_admissible`
-- [ ] 0.30 `def SFT_carrier`
-- [ ] 0.31 `theorem SFT_carrier_isInvariant`
-- [ ] 0.32 `theorem SFT_carrier_isClosed`
-- [ ] 0.33 `def mkSFT`
-- [ ] 0.34 `theorem mem_mkSFT`
+- [x] 0.29 `def SFT_admissible`
+- [x] 0.30 `def SFT_carrier`
+- [x] 0.31 `theorem SFT_carrier_isInvariant`
+- [x] 0.32 `theorem SFT_carrier_isClosed`
+- [x] 0.33 `def mkSFT`
+- [x] 0.34 `theorem mem_mkSFT`
 
 ### Local admissibility and irreducibility
-- [ ] 0.35 `def locallyAdmissible`
-- [ ] 0.36 `def ShiftIrreducible`
-- [ ] 0.37 `def IsIrreducibleShift`
+- [x] 0.35 `def locallyAdmissible`
+- [x] 0.36 `def ShiftIrreducible`
+- [x] 0.37 `def IsIrreducibleShift`
 
 ### B — Global admissibility and pattern count
-- [ ] B1  `def Pattern.GloballyAdmissible`
-- [ ] B2  `theorem Pattern.globallyAdmissible_iff_exists_offset`
-- [ ] B3  `theorem Pattern.globally_imp_locally`
+- [x] B1  `def Pattern.GloballyAdmissible`
+- [x] B2  `theorem Pattern.globallyAdmissible_iff_exists_offset`
+- [x] B3  `theorem Pattern.globally_imp_locally`
 - [x] B4  `def N_X [Fintype α] (X : Subshift α d) (F : Finset (Lat d)) : ℕ`
 - [x] B5  `theorem N_X_pos_of_nonempty`
 
@@ -110,3 +110,14 @@ Tick the checkbox when the item compiles without errors.
 
 ### I — Theorem 3.1
 - [ ] I1  `theorem topEntropy_rightRE`
+
+---
+
+## Dependencies (helper modules in `SymbolicDynamics/Dependencies/`)
+
+### Computable ℚ — arithmetic on ℚ for the F-section
+- [ ] DEP.Q.1  `Primrec` instance for ℚ via the `(num, den)` pair encoding
+- [ ] DEP.Q.2  `Computable` rational addition `(· + ·) : ℚ → ℚ → ℚ`
+- [ ] DEP.Q.3  `Computable` rational reciprocal `1 / (·) : ℚ → ℚ`
+- [ ] DEP.Q.4  `Computable` natural-cast `(· : ℕ → ℚ)`
+- [ ] DEP.Q.5  `Computable` of `fun n : ℕ => 1 / ((n : ℚ) + 1)`
