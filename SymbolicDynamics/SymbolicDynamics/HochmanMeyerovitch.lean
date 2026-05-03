@@ -593,3 +593,15 @@ theorem logN_div_pow_tendsto {α : Type*} [Fintype α] [TopologicalSpace α]
 noncomputable def topEntropy {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
     (X : Subshift α d) : ℝ :=
   sInf ((fun n : ℕ => logN X n / (n : ℝ) ^ d) '' Set.Ici 1)
+
+/-! ## E2  topEntropy_nonneg -/
+
+theorem topEntropy_nonneg {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
+    (X : Subshift α d) :
+    0 ≤ topEntropy X := by
+  apply le_csInf
+  · exact Set.Nonempty.image _ ⟨1, Set.mem_Ici.mpr le_rfl⟩
+  · rintro x ⟨n, hn, rfl⟩
+    have hn' : (1 : ℝ) ≤ n := by exact_mod_cast hn
+    apply div_nonneg (Real.log_natCast_nonneg _)
+    positivity
