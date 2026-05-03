@@ -4,6 +4,8 @@ import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.Finset.Lattice.Fold
 import Mathlib.Algebra.Group.Pi.Basic
 import Mathlib.Algebra.Group.Action.Defs
+import Mathlib.Topology.Compactness.Compact
+import Mathlib.Topology.Separation.Hausdorff
 
 /-! ## 0.1  Lat d — the group ℤ^d -/
 
@@ -92,5 +94,16 @@ theorem shiftMap_bijective {α : Type*} {d : ℕ} (u : Lat d) :
     exact this
   · intro x
     exact ⟨shiftMap (-u) x, by ext v; simp [shiftMap]⟩
+
+/-! ## 0.12  Topology instances on FullShift -/
+
+instance instTopologicalSpace {α : Type*} {d : ℕ} [TopologicalSpace α] :
+    TopologicalSpace (FullShift α d) := inferInstance
+
+instance instCompactSpace {α : Type*} {d : ℕ} [TopologicalSpace α] [CompactSpace α] :
+    CompactSpace (FullShift α d) := inferInstance
+
+instance instT2Space {α : Type*} {d : ℕ} [TopologicalSpace α] [T2Space α] :
+    T2Space (FullShift α d) := inferInstance
 
 end FullShift
