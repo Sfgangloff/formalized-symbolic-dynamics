@@ -146,4 +146,20 @@ def restrict {α : Type*} {d : ℕ} {F : Finset (Lat d)} (G : Finset (Lat d)) (h
     (p : Pattern α F) : Pattern α G :=
   fun v => p ⟨v.val, hGF v.property⟩
 
+/-! ## 0.17  translateFinset — shift a finite support by u -/
+
+/-- Translate the support `F` by lattice vector `u`. -/
+def translateFinset {d : ℕ} (u : Lat d) (F : Finset (Lat d)) : Finset (Lat d) :=
+  F.image (· + u)
+
+/-! ## 0.18  mem_translateFinset -/
+
+@[simp]
+theorem mem_translateFinset {d : ℕ} {u : Lat d} {F : Finset (Lat d)} {v : Lat d} :
+    v ∈ translateFinset u F ↔ v - u ∈ F := by
+  simp [translateFinset, Finset.mem_image]
+  constructor
+  · rintro ⟨w, hw, rfl⟩; simpa using hw
+  · intro hv; exact ⟨v - u, hv, by simp⟩
+
 end Pattern
