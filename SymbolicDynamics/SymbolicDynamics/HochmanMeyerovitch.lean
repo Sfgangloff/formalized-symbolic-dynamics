@@ -421,3 +421,9 @@ theorem N_X_pos_of_nonempty {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpac
 /-- The discrete cube `{0,...,n-1}^d ⊆ ℤ^d`. -/
 def box (d n : ℕ) : Finset (Lat d) :=
   Fintype.piFinset (fun _ : Fin d => Finset.Ico (0 : ℤ) (n : ℤ))
+
+/-! ## C2  box_card -/
+
+@[simp]
+theorem box_card (d n : ℕ) : (box d n).card = n ^ d := by
+  simp [box, Fintype.card_piFinset, Int.card_Ico]

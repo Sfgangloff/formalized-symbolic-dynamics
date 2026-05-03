@@ -73,7 +73,7 @@ Tick the checkbox when the item compiles without errors.
 
 ### C — Boxes F_n = {0,...,n-1}^d
 - [x] C1  `def box (d n : ℕ) : Finset (Lat d)`
-- [ ] C2  `theorem box_card`  (`(box d n).card = n ^ d`)
+- [x] C2  `theorem box_card`  (`(box d n).card = n ^ d`)
 - [ ] C3  `theorem box_mono`  (`m ≤ n → box d m ⊆ box d n`)
 - [ ] C4  `theorem box_zero`  (`box d 0 = ∅`)
 
