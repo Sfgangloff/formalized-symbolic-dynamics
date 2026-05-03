@@ -211,3 +211,35 @@ theorem cylinder_isClosed {α : Type*} {d : ℕ} {F : Finset (Lat d)} [Topologic
   exact IsClosed.preimage (continuous_apply (v.val + u)) isClosed_singleton
 
 end Pattern
+
+/-! ## 0.25  Subshift — closed shift-invariant subset of FullShift α d -/
+
+structure Subshift (α : Type*) (d : ℕ) [TopologicalSpace α] where
+  carrier : Set (FullShift α d)
+  isClosed : IsClosed carrier
+  isInvariant : ∀ (u : Lat d) (x : FullShift α d), x ∈ carrier → FullShift.shiftMap u x ∈ carrier
+
+namespace Subshift
+
+/-! ## 0.26  Membership -/
+
+instance instMembership {α : Type*} {d : ℕ} [TopologicalSpace α] :
+    Membership (FullShift α d) (Subshift α d) where
+  mem (X : Subshift α d) (x : FullShift α d) := x ∈ X.carrier
+
+/-! ## 0.27  mem_iff -/
+
+@[simp]
+theorem mem_iff {α : Type*} {d : ℕ} [TopologicalSpace α]
+    (X : Subshift α d) (x : FullShift α d) :
+    x ∈ X ↔ x ∈ X.carrier :=
+  Iff.rfl
+
+/-! ## 0.28  univ — the full shift as a subshift -/
+
+def univ (α : Type*) (d : ℕ) [TopologicalSpace α] : Subshift α d where
+  carrier := Set.univ
+  isClosed := isClosed_univ
+  isInvariant := fun _ _ _ => Set.mem_univ _
+
+end Subshift
