@@ -85,7 +85,7 @@ Tick the checkbox when the item compiles without errors.
 - [x] D5  `theorem logN_div_pow_tendsto`  (1D, via Fekete + D3)
 
 ### E — Topological entropy
-- [ ] E1  `def topEntropy [Fintype α] (X : Subshift α d) : ℝ`
+- [x] E1  `def topEntropy [Fintype α] (X : Subshift α d) : ℝ`
 - [ ] E2  `theorem topEntropy_nonneg`
 - [ ] E3  `theorem topEntropy_fullShift`
 - [ ] E4  `theorem topEntropy_antitone`

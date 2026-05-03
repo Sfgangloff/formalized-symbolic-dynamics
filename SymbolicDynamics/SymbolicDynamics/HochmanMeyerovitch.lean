@@ -585,3 +585,11 @@ theorem logN_div_pow_tendsto {α : Type*} [Fintype α] [TopologicalSpace α]
     apply div_nonneg
     · exact Real.log_natCast_nonneg _
     · exact hn'.le
+
+/-! ## E1  topEntropy — topological entropy of a subshift -/
+
+/-- Topological entropy: the infimum of `logN X n / n^d` over `n ≥ 1`.
+    For 1D subshifts, this equals `(logN_subadditive X).lim` by Fekete's lemma. -/
+noncomputable def topEntropy {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
+    (X : Subshift α d) : ℝ :=
+  sInf ((fun n : ℕ => logN X n / (n : ℝ) ^ d) '' Set.Ici 1)
