@@ -12,6 +12,7 @@ import Mathlib.Data.Fintype.Pi
 import Mathlib.Data.Fintype.BigOperators
 import Mathlib.Data.Int.Interval
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.Subadditive
 
 /-! ## 0.1  Lat d — the group ℤ^d -/
 
@@ -468,3 +469,13 @@ theorem N_X_submultiplicative {α : Type*} {d : ℕ} [Fintype α] [TopologicalSp
 noncomputable def logN {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
     (X : Subshift α d) (n : ℕ) : ℝ :=
   Real.log (N_X X (box d n))
+
+/-! ## D3  logN_subadditive — 1D subadditivity of logN  [sorry] -/
+
+/-- In one dimension, `logN X` is a subadditive sequence. The proof uses
+    the box decomposition `box 1 (m+n) = box 1 m ∪ translate(box 1 n, m)` together
+    with shift invariance of `N_X` and submultiplicativity (D1). -/
+theorem logN_subadditive {α : Type*} [Fintype α] [TopologicalSpace α]
+    (X : Subshift α 1) :
+    Subadditive (logN X) := by
+  sorry
