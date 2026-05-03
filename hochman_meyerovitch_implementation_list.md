@@ -75,7 +75,7 @@ Tick the checkbox when the item compiles without errors.
 - [x] C1  `def box (d n : ℕ) : Finset (Lat d)`
 - [x] C2  `theorem box_card`  (`(box d n).card = n ^ d`)
 - [x] C3  `theorem box_mono`  (`m ≤ n → box d m ⊆ box d n`)
-- [ ] C4  `theorem box_zero`  (`box d 0 = ∅`)
+- [x] C4  `theorem box_zero`  (`box d 0 = ∅`, requires `0 < d`)
 
 ### D — Subadditive structure and Fekete
 - [ ] D1  `theorem N_X_submultiplicative`

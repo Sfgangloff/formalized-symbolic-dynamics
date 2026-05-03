@@ -432,3 +432,9 @@ theorem box_card (d n : ℕ) : (box d n).card = n ^ d := by
 
 theorem box_mono {d m n : ℕ} (hmn : m ≤ n) : box d m ⊆ box d n :=
   Fintype.piFinset_subset _ _ (fun _ => Finset.Ico_subset_Ico_right (by exact_mod_cast hmn))
+
+/-! ## C4  box_zero -/
+
+theorem box_zero {d : ℕ} (hd : 0 < d) : box d 0 = ∅ := by
+  haveI : Nonempty (Fin d) := ⟨⟨0, hd⟩⟩
+  simp [box]
