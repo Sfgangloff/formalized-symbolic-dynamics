@@ -13,6 +13,8 @@ import Mathlib.Data.Fintype.BigOperators
 import Mathlib.Data.Int.Interval
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.Subadditive
+import Mathlib.Computability.Partrec
+import Mathlib.Data.Rat.Denumerable
 
 /-! ## 0.1  Lat d — the group ℤ^d -/
 
@@ -695,3 +697,11 @@ theorem topEntropy_antitone {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpac
       (fun n : ℕ => logN X n / (n : ℝ) ^ d) '' Set.Ici 1 := ⟨n, hn, rfl⟩
   calc sInf _ ≤ logN X n / (n : ℝ) ^ d := csInf_le hbdd hX_in
     _ ≤ logN Y n / (n : ℝ) ^ d := by gcongr
+
+/-! ## F1  IsRightRE — right recursively enumerable real -/
+
+/-- `h : ℝ` is right recursively enumerable if it is the limit of a computable sequence
+    of rationals approaching from above. -/
+def IsRightRE (h : ℝ) : Prop :=
+  ∃ r : ℕ → ℚ, Computable r ∧ (∀ n, h ≤ (r n : ℝ)) ∧
+    Filter.Tendsto (fun n => (r n : ℝ)) Filter.atTop (nhds h)

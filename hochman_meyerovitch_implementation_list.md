@@ -91,7 +91,7 @@ Tick the checkbox when the item compiles without errors.
 - [x] E4  `theorem topEntropy_antitone`  (monotone in subshift inclusion)
 
 ### F — Computability definitions
-- [ ] F1  `def IsRightRE (h : ℝ) : Prop`
+- [x] F1  `def IsRightRE (h : ℝ) : Prop`
 - [ ] F2  `def IsLeftRE (h : ℝ) : Prop`
 - [ ] F3  `def IsComputableReal (h : ℝ) : Prop`
 - [ ] F4  `theorem computable_imp_rightRE`
