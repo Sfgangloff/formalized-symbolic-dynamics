@@ -80,4 +80,17 @@ instance instAddAction {α : Type*} {d : ℕ} : AddAction (Lat d) (FullShift α 
 theorem vadd_eq_shiftMap {α : Type*} {d : ℕ} (u : Lat d) (x : FullShift α d) :
     u +ᵥ x = shiftMap u x := rfl
 
+/-! ## 0.11  shiftMap_bijective -/
+
+theorem shiftMap_bijective {α : Type*} {d : ℕ} (u : Lat d) :
+    Function.Bijective (shiftMap u (α := α)) := by
+  constructor
+  · intro x y h
+    ext v
+    have := congr_fun h (v - u)
+    simp only [shiftMap, sub_add_cancel] at this
+    exact this
+  · intro x
+    exact ⟨shiftMap (-u) x, by ext v; simp [shiftMap]⟩
+
 end FullShift
