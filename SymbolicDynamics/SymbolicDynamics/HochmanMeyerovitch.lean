@@ -438,3 +438,24 @@ theorem box_mono {d m n : ℕ} (hmn : m ≤ n) : box d m ⊆ box d n :=
 theorem box_zero {d : ℕ} (hd : 0 < d) : box d 0 = ∅ := by
   haveI : Nonempty (Fin d) := ⟨⟨0, hd⟩⟩
   simp [box]
+
+/-! ## D1  N_X_submultiplicative — N_X is submultiplicative on disjoint unions -/
+
+theorem N_X_submultiplicative {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
+    (X : Subshift α d) {F G : Finset (Lat d)} :
+    N_X X (F ∪ G) ≤ N_X X F * N_X X G := by
+  unfold N_X
+  rw [← Set.ncard_prod]
+  refine Set.ncard_le_ncard_of_injOn
+    (fun p : Pattern α (F ∪ G) =>
+      ((fun v : F => p ⟨v.val, Finset.mem_union_left _ v.property⟩),
+       (fun v : G => p ⟨v.val, Finset.mem_union_right _ v.property⟩)))
+    ?_ ?_ (Set.toFinite _)
+  · rintro p ⟨x, hxX, u, happ⟩
+    exact ⟨⟨x, hxX, u, fun v => happ ⟨v.val, _⟩⟩,
+           ⟨x, hxX, u, fun v => happ ⟨v.val, _⟩⟩⟩
+  · intro p _ q _ hpq
+    ext ⟨v, hv⟩
+    rcases Finset.mem_union.mp hv with hvF | hvG
+    · exact congr_fun (congr_arg Prod.fst hpq) ⟨v, hvF⟩
+    · exact congr_fun (congr_arg Prod.snd hpq) ⟨v, hvG⟩

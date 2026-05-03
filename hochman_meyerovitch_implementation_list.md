@@ -78,7 +78,7 @@ Tick the checkbox when the item compiles without errors.
 - [x] C4  `theorem box_zero`  (`box d 0 = ∅`, requires `0 < d`)
 
 ### D — Subadditive structure and Fekete
-- [ ] D1  `theorem N_X_submultiplicative`
+- [x] D1  `theorem N_X_submultiplicative`
 - [ ] D2  `def logN (X : Subshift α d) (n : ℕ) : ℝ`
 - [ ] D3  `theorem logN_subadditive`
 - [ ] D4  `theorem Fekete_1d`  [sorry — check Mathlib first]
