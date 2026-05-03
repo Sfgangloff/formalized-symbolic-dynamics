@@ -470,12 +470,100 @@ noncomputable def logN {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
     (X : Subshift α d) (n : ℕ) : ℝ :=
   Real.log (N_X X (box d n))
 
-/-! ## D3  logN_subadditive — 1D subadditivity of logN  [sorry] -/
+/-! ## D3  logN_subadditive — 1D subadditivity of logN -/
 
-/-- In one dimension, `logN X` is a subadditive sequence. The proof uses
-    the box decomposition `box 1 (m+n) = box 1 m ∪ translate(box 1 n, m)` together
-    with shift invariance of `N_X` and submultiplicativity (D1). -/
+/-- In one dimension, `logN X` is a subadditive sequence. -/
 theorem logN_subadditive {α : Type*} [Fintype α] [TopologicalSpace α]
     (X : Subshift α 1) :
     Subadditive (logN X) := by
-  sorry
+  intro m n
+  -- The shift vector with single coordinate `m`.
+  set vm : Lat 1 := fun _ => (m : ℤ) with hvm_def
+  have hbox_mem : ∀ {k : ℕ} (v : Lat 1), v ∈ box 1 k ↔ 0 ≤ v 0 ∧ v 0 < (k : ℤ) := by
+    intro k v
+    simp only [box, Fintype.mem_piFinset, Finset.mem_Ico]
+    refine ⟨fun h => h 0, fun h i => ?_⟩
+    rw [Fin.eq_zero i]; exact h
+  have hshift_box : ∀ v ∈ box 1 n, v + vm ∈ box 1 (m + n) := by
+    intro v hv
+    rw [hbox_mem] at hv
+    rw [hbox_mem]
+    have hadd : (v + vm) 0 = v 0 + (m : ℤ) := by simp [vm]
+    rw [hadd]
+    obtain ⟨h1, h2⟩ := hv
+    have hm_nonneg : (0 : ℤ) ≤ (m : ℤ) := Int.natCast_nonneg m
+    push_cast
+    exact ⟨by linarith, by linarith⟩
+  have hN : N_X X (box 1 (m + n)) ≤ N_X X (box 1 m) * N_X X (box 1 n) := by
+    unfold N_X
+    rw [← Set.ncard_prod]
+    refine Set.ncard_le_ncard_of_injOn
+      (fun p : Pattern α (box 1 (m + n)) =>
+        ((fun v : box 1 m => p ⟨v.val, box_mono (Nat.le_add_right _ _) v.property⟩),
+         (fun v : box 1 n => p ⟨v.val + vm, hshift_box v.val v.property⟩)))
+      ?_ ?_ (Set.toFinite _)
+    · rintro p ⟨x, hxX, w, happ⟩
+      refine ⟨⟨x, hxX, w, fun v => ?_⟩, ⟨x, hxX, w + vm, fun v => ?_⟩⟩
+      · exact happ ⟨v.val, box_mono (Nat.le_add_right _ _) v.property⟩
+      · have h := happ ⟨v.val + vm, hshift_box v.val v.property⟩
+        change x (v.val + (w + vm)) = p ⟨v.val + vm, hshift_box v.val v.property⟩
+        have heq : v.val + (w + vm) = (v.val + vm) + w := by ring
+        rw [heq]; exact h
+    · intro p _ q _ hpq
+      ext ⟨v, hv_orig⟩
+      have hv : 0 ≤ v 0 ∧ v 0 < ((m + n : ℕ) : ℤ) := (hbox_mem v).mp hv_orig
+      by_cases hvm : v 0 < (m : ℤ)
+      · have hv_m : v ∈ box 1 m := (hbox_mem v).mpr ⟨hv.1, hvm⟩
+        exact congr_fun (congr_arg Prod.fst hpq) ⟨v, hv_m⟩
+      · push_neg at hvm
+        have hv_n : v - vm ∈ box 1 n := by
+          rw [hbox_mem]
+          have hsub : (v - vm) 0 = v 0 - (m : ℤ) := by simp [vm]
+          rw [hsub]
+          obtain ⟨_, h2⟩ := hv
+          push_cast at h2
+          exact ⟨by linarith, by linarith⟩
+        have heq : (v - vm) + vm = v := by ext i; simp [vm]
+        have key : (⟨v, hv_orig⟩ : { x : Lat 1 // x ∈ box 1 (m + n) }) =
+                   ⟨(v - vm) + vm, hshift_box (v - vm) hv_n⟩ :=
+          Subtype.ext heq.symm
+        rw [key]
+        exact congr_fun (congr_arg Prod.snd hpq) ⟨v - vm, hv_n⟩
+  unfold logN
+  by_cases hb : N_X X (box 1 m) = 0
+  · have ha : N_X X (box 1 (m + n)) = 0 := Nat.le_zero.mp (by simpa [hb] using hN)
+    rw [ha, hb]
+    push_cast
+    rw [Real.log_zero]
+    have : (0 : ℝ) ≤ Real.log (N_X X (box 1 n)) := Real.log_natCast_nonneg _
+    linarith
+  by_cases hc : N_X X (box 1 n) = 0
+  · have ha : N_X X (box 1 (m + n)) = 0 := Nat.le_zero.mp (by simpa [hc] using hN)
+    rw [ha, hc]
+    push_cast
+    rw [Real.log_zero]
+    have : (0 : ℝ) ≤ Real.log (N_X X (box 1 m)) := Real.log_natCast_nonneg _
+    linarith
+  have hb' : (0 : ℝ) < (N_X X (box 1 m) : ℝ) := by exact_mod_cast Nat.pos_of_ne_zero hb
+  have hc' : (0 : ℝ) < (N_X X (box 1 n) : ℝ) := by exact_mod_cast Nat.pos_of_ne_zero hc
+  by_cases ha : N_X X (box 1 (m + n)) = 0
+  · rw [ha]
+    push_cast
+    rw [Real.log_zero]
+    have hpos1 : (0 : ℝ) ≤ Real.log (N_X X (box 1 m)) := Real.log_natCast_nonneg _
+    have hpos2 : (0 : ℝ) ≤ Real.log (N_X X (box 1 n)) := Real.log_natCast_nonneg _
+    linarith
+  have ha' : (0 : ℝ) < (N_X X (box 1 (m + n)) : ℝ) := by exact_mod_cast Nat.pos_of_ne_zero ha
+  have hN' : (N_X X (box 1 (m + n)) : ℝ) ≤
+      (N_X X (box 1 m) : ℝ) * (N_X X (box 1 n) : ℝ) := by exact_mod_cast hN
+  rw [← Real.log_mul (ne_of_gt hb') (ne_of_gt hc')]
+  exact Real.log_le_log ha' hN'
+
+/-! ## D4  Fekete_1d — Fekete's lemma in 1D (wrapper for Mathlib) -/
+
+/-- Fekete's lemma in one dimension: a subadditive sequence bounded below has `u n / n`
+    converging to `Subadditive.lim`. Wraps `Subadditive.tendsto_lim`. -/
+theorem Fekete_1d {u : ℕ → ℝ} (h : Subadditive u)
+    (hbdd : BddBelow (Set.range fun n => u n / n)) :
+    Filter.Tendsto (fun n => u n / n) Filter.atTop (nhds h.lim) :=
+  h.tendsto_lim hbdd
