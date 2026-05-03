@@ -713,3 +713,10 @@ def IsRightRE (h : ℝ) : Prop :=
 def IsLeftRE (h : ℝ) : Prop :=
   ∃ r : ℕ → ℚ, Computable r ∧ (∀ n, (r n : ℝ) ≤ h) ∧
     Filter.Tendsto (fun n => (r n : ℝ)) Filter.atTop (nhds h)
+
+/-! ## F3  IsComputableReal — computable real -/
+
+/-- `h : ℝ` is computable if there is a computable sequence of rationals
+    approximating it with effective rate `1/(n+1)`. -/
+def IsComputableReal (h : ℝ) : Prop :=
+  ∃ q : ℕ → ℚ, Computable q ∧ ∀ n, |((q n : ℝ)) - h| ≤ 1 / (n + 1)
