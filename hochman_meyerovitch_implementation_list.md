@@ -81,8 +81,8 @@ Tick the checkbox when the item compiles without errors.
 - [x] D1  `theorem N_X_submultiplicative`
 - [x] D2  `def logN (X : Subshift α d) (n : ℕ) : ℝ`
 - [x] D3  `theorem logN_subadditive`
-- [ ] D4  `theorem Fekete_1d`  [sorry — check Mathlib first]
-- [ ] D5  `theorem logN_div_pow_tendsto`  [sorry]
+- [x] D4  `theorem Fekete_1d`  (wrapper for Mathlib's `Subadditive.tendsto_lim`)
+- [x] D5  `theorem logN_div_pow_tendsto`  (1D, via Fekete + D3)
 
 ### E — Topological entropy
 - [ ] E1  `def topEntropy [Fintype α] (X : Subshift α d) : ℝ`

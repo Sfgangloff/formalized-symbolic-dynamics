@@ -567,3 +567,21 @@ theorem Fekete_1d {u : ℕ → ℝ} (h : Subadditive u)
     (hbdd : BddBelow (Set.range fun n => u n / n)) :
     Filter.Tendsto (fun n => u n / n) Filter.atTop (nhds h.lim) :=
   h.tendsto_lim hbdd
+
+/-! ## D5  logN_div_pow_tendsto — `logN X n / n` converges in 1D -/
+
+/-- For a 1D subshift `X` over a finite alphabet, `logN X n / n` converges to
+    `(logN_subadditive X).lim`. -/
+theorem logN_div_pow_tendsto {α : Type*} [Fintype α] [TopologicalSpace α]
+    (X : Subshift α 1) :
+    Filter.Tendsto (fun n => logN X n / n) Filter.atTop
+      (nhds (logN_subadditive X).lim) := by
+  apply Fekete_1d (logN_subadditive X)
+  refine ⟨0, ?_⟩
+  rintro x ⟨n, rfl⟩
+  by_cases hn : n = 0
+  · subst hn; simp
+  · have hn' : (0 : ℝ) < n := by exact_mod_cast Nat.pos_of_ne_zero hn
+    apply div_nonneg
+    · exact Real.log_natCast_nonneg _
+    · exact hn'.le
