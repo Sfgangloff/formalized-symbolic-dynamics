@@ -401,3 +401,14 @@ end Pattern
 noncomputable def N_X {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
     (X : Subshift α d) (F : Finset (Lat d)) : ℕ :=
   Set.ncard {p : Pattern α F | Pattern.GloballyAdmissible X p}
+
+/-! ## B5  N_X_pos_of_nonempty — N_X is positive when X has a point -/
+
+theorem N_X_pos_of_nonempty {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
+    (X : Subshift α d) (F : Finset (Lat d)) (hX : X.carrier.Nonempty) :
+    0 < N_X X F := by
+  obtain ⟨x, hx⟩ := hX
+  rw [N_X, Set.ncard_pos]
+  refine ⟨Pattern.ofColoring F x, x, hx, 0, ?_⟩
+  intro v
+  simp [Pattern.ofColoring]
