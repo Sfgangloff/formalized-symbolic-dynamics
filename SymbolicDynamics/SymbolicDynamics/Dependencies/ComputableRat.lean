@@ -1,6 +1,6 @@
 import Mathlib.Computability.Partrec
 import Mathlib.Data.Rat.Denumerable
-import Mathlib.Data.Rat.Defs
+import Mathlib.Data.Rat.Lemmas
 
 /-! # Computability infrastructure for `ℚ`
 
@@ -8,46 +8,52 @@ This file builds up the `Computable` / `Primrec` infrastructure for
 operations on the rationals that the Hochman–Meyerovitch formalization
 needs in its computability section (F-section of the implementation list).
 
-`ℚ` is `Denumerable` (hence `Primcodable`) via `ofEncodableOfInfinite`;
-the `Encodable` instance goes through the sigma-type
-`Σ n : ℤ, {d : ℕ // 0 < d ∧ n.natAbs.Coprime d}` (see `Mathlib.Data.Rat.Encodable`),
-so for a rational `q : ℚ` we have
+## Two encodings of `ℚ`
 
-  `encode q = Nat.pair (encode (q.num : ℤ)) (encode (q.den : ℕ))`
-            = `Nat.pair (encode (q.num : ℤ)) q.den`
+There are TWO `Encodable ℚ` instances in Mathlib:
 
-(the second equality uses that `Nat`'s encoding is the identity).
+1.  `Rat.instEncodable` (`Mathlib.Data.Rat.Encodable`): the *structured* encoding
+    via `Σ n : ℤ, {d : ℕ // 0 < d ∧ n.natAbs.Coprime d}`. With this instance,
 
-## Downstream goal (F-section of HochmanMeyerovitch.lean)
+      `@Encodable.encode ℚ Rat.instEncodable q = Nat.pair (encode q.num) q.den`
 
-The target is `theorem computable_imp_rightRE` (F4): given a `Computable q : ℕ → ℚ`
-with `|q n - h| ≤ 1/(n+1)`, the function `r n := q n + 1/(n+1)` is `Computable`
-and witnesses `IsRightRE h`.
+    (where `encode q.num` is the standard `Equiv.intEquivNat` encoding of `ℤ`),
+    and this identity is `rfl`. In particular, for `q = 1/(↑n+1)`:
 
-This requires:
+      `encode (1/(↑n+1) : ℚ) = Nat.pair 2 (n+1)`.
 
-  (i)   `Computable (fun n : ℕ => (1 : ℚ) / (↑n + 1))` — the rate function.
-  (ii)  `Computable₂ ((· + ·) : ℚ → ℚ → ℚ)` — rational addition.
-  (iii) Compose `q` and (i) under (ii).
+2.  `(Primcodable.ofDenumerable ℚ).toEncodable`, which `Primrec` and
+    `Computable` use. This goes through `Denumerable.ofEncodableOfInfinite`,
+    which RE-INDEXES the encoding to be a bijection `ℕ ↔ ℚ` — different from
+    `Rat.instEncodable.encode`, and the two are NOT definitionally equal.
 
-For (i), the encoding identity above gives
-`encode (1 / (↑n + 1) : ℚ) = Nat.pair (encode (1 : ℤ)) (n + 1) = Nat.pair 2 (n+1)`,
-which is `Nat.Primrec`. Bridging the abstract `encode` and this explicit form
-requires unfolding `Encodable.ofEquiv`, sigma encoding, subtype encoding, and
-the specific `Equiv.intEquivNat 1 = 2` computation; this is the next item to add.
+The fact `Primrec (fun n : ℕ => (1 : ℚ) / (↑n + 1))` requires the *Primcodable*
+encoding to be primitive recursive, which in turn requires computing the
+re-indexed encoding — significantly harder than the structured `Rat.instEncodable`
+case.
 
-For (ii), rational addition is `(a + b).num = a.num * b.den + b.num * a.den`
-and `(a + b).den = a.den * b.den / gcd ...`; on the encoding side this is a
-`Primrec₂` function of `(encode a, encode b)`. The `gcd` reduction makes this
-the hardest of the three.
+## Path forward (TODO)
 
-## Status
+Concrete options for unblocking F4 (`computable_imp_rightRE`):
 
-- ✓ Identity and constants (`Computable.id`, `Computable.const`)
-- ☐ `Computable (Nat.cast : ℕ → ℚ)`
-- ☐ `Computable (fun n : ℕ => (1 : ℚ) / (↑n + 1))`
-- ☐ `Computable₂ ((· + ·) : ℚ → ℚ → ℚ)`
-- ☐ `Computable.rat_shift_above q : Computable q → Computable (fun n => q n + 1/(↑n+1))`
+  (a) Prove that the structured `Rat.instEncodable` encoding *is* primitive
+      recursive (i.e., that `fun n : ℕ => encode (decode n : Option ℚ)` is
+      `Nat.Primrec` for that encoding), then provide a higher-priority
+      `Primcodable ℚ` instance that uses it. This makes
+      `encode (1/(↑n+1)) = Nat.pair 2 (n+1)` available to `Primrec`.
+
+  (b) Work with the existing re-indexed Primcodable encoding directly,
+      computing it concretely via the `equivRangeEncode` bijection. Tedious.
+
+  (c) Build computable rational arithmetic via a custom intermediate type
+      (e.g., `(num, den) : ℤ × ℕ⁺` with no coprimality requirement), prove
+      operations there, then bridge.
+
+(a) seems most promising — the Primcodable check `Nat.Primrec (fun n => encode (decode n))`
+for the structured encoding boils down to: gcd is Primrec (yes, in Mathlib).
+
+The explicit encoding identities below are stated and proven for
+`Rat.instEncodable`; they will be the "true content" once option (a) is in place.
 -/
 
 namespace ComputableRat
@@ -60,10 +66,38 @@ theorem computable_id : Computable (id : ℚ → ℚ) := Computable.id
 /-- A constant rational sequence is computable. -/
 theorem computable_const (q : ℚ) : Computable (fun _ : ℕ => q) := Computable.const q
 
-/-- A `Computable q : ℕ → ℚ` composed with a `Primrec g : ℕ → ℕ` is `Computable`.
-    A handy reusable form of `Computable.comp`. -/
+/-- A `Computable q : ℕ → ℚ` composed with a `Primrec g : ℕ → ℕ` is `Computable`. -/
 theorem computable_comp_nat {q : ℕ → ℚ} (hq : Computable q) {g : ℕ → ℕ} (hg : Primrec g) :
     Computable (fun n => q (g n)) :=
   hq.comp hg.to_comp
+
+/-! ## Encoding identities for `Rat.instEncodable`
+
+These give the explicit form of `Encodable.encode` (under the structured
+sigma encoding) in terms of `Rat.num` and `Rat.den`. They are `rfl`,
+so they will compose cleanly once we have a `Primcodable ℚ` instance
+matching this encoding. -/
+
+/-- `Rat.instEncodable.encode` factors as `Nat.pair (encode num) den`. -/
+theorem rat_encode_eq (q : ℚ) :
+    @Encodable.encode ℚ Rat.instEncodable q
+      = Nat.pair (@Encodable.encode ℤ _ q.num) q.den := rfl
+
+/-- Numerator of `1/(↑n + 1)` is `1`. -/
+theorem one_div_succ_num (n : ℕ) : ((1 : ℚ) / ((n : ℚ) + 1)).num = 1 := by
+  rw [one_div, ← Nat.cast_succ]
+  exact Rat.inv_natCast_num_of_pos (Nat.succ_pos _)
+
+/-- Denominator of `1/(↑n + 1)` is `n + 1`. -/
+theorem one_div_succ_den (n : ℕ) : ((1 : ℚ) / ((n : ℚ) + 1)).den = n + 1 := by
+  rw [one_div, ← Nat.cast_succ]
+  exact Rat.inv_natCast_den_of_pos (Nat.succ_pos _)
+
+/-- `Rat.instEncodable.encode (1/(↑n+1)) = Nat.pair 2 (n+1)`. -/
+theorem encode_one_div_succ (n : ℕ) :
+    @Encodable.encode ℚ Rat.instEncodable ((1 : ℚ) / ((n : ℚ) + 1))
+      = Nat.pair 2 (n + 1) := by
+  rw [rat_encode_eq, one_div_succ_num, one_div_succ_den]
+  rfl
 
 end ComputableRat
