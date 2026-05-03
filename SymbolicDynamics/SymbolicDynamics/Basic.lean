@@ -3,6 +3,7 @@ import Mathlib.Data.Fin.Basic
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.Finset.Lattice.Fold
 import Mathlib.Algebra.Group.Pi.Basic
+import Mathlib.Algebra.Group.Action.Defs
 
 /-! ## 0.1  Lat d — the group ℤ^d -/
 
@@ -65,5 +66,18 @@ theorem shiftMap_zero {α : Type*} {d : ℕ} (x : FullShift α d) : shiftMap 0 x
 theorem shiftMap_add {α : Type*} {d : ℕ} (u v : Lat d) (x : FullShift α d) :
     shiftMap (u + v) x = shiftMap u (shiftMap v x) := by
   ext w; simp only [shiftMap]; exact congr_arg x (add_assoc w u v).symm
+
+/-! ## 0.9  instAddAction — ℤ^d acts on FullShift α d by shifts -/
+
+instance instAddAction {α : Type*} {d : ℕ} : AddAction (Lat d) (FullShift α d) where
+  vadd u x := shiftMap u x
+  zero_vadd x := shiftMap_zero x
+  add_vadd u v x := shiftMap_add u v x
+
+/-! ## 0.10  vadd_eq_shiftMap -/
+
+@[simp]
+theorem vadd_eq_shiftMap {α : Type*} {d : ℕ} (u : Lat d) (x : FullShift α d) :
+    u +ᵥ x = shiftMap u x := rfl
 
 end FullShift
