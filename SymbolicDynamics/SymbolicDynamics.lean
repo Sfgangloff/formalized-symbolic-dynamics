@@ -1,1 +1,1 @@
-import SymbolicDynamics.Basic
+import SymbolicDynamics.HochmanMeyerovitch
