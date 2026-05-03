@@ -705,3 +705,11 @@ theorem topEntropy_antitone {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpac
 def IsRightRE (h : ℝ) : Prop :=
   ∃ r : ℕ → ℚ, Computable r ∧ (∀ n, h ≤ (r n : ℝ)) ∧
     Filter.Tendsto (fun n => (r n : ℝ)) Filter.atTop (nhds h)
+
+/-! ## F2  IsLeftRE — left recursively enumerable real -/
+
+/-- `h : ℝ` is left recursively enumerable if it is the limit of a computable sequence
+    of rationals approaching from below. -/
+def IsLeftRE (h : ℝ) : Prop :=
+  ∃ r : ℕ → ℚ, Computable r ∧ (∀ n, (r n : ℝ) ≤ h) ∧
+    Filter.Tendsto (fun n => (r n : ℝ)) Filter.atTop (nhds h)

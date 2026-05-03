@@ -92,7 +92,7 @@ Tick the checkbox when the item compiles without errors.
 
 ### F — Computability definitions
 - [x] F1  `def IsRightRE (h : ℝ) : Prop`
-- [ ] F2  `def IsLeftRE (h : ℝ) : Prop`
+- [x] F2  `def IsLeftRE (h : ℝ) : Prop`
 - [ ] F3  `def IsComputableReal (h : ℝ) : Prop`
 - [ ] F4  `theorem computable_imp_rightRE`
 - [ ] F5  `theorem computable_iff_leftRE_and_rightRE`
