@@ -465,4 +465,77 @@ theorem computable_add_one_div_succ {q : ℕ → ℚ} (hq : Computable q) :
   (Computable₂.comp (f := fun (q' : ℚ) (n' : ℕ) => q' + (1 : ℚ) / ((n' : ℚ) + 1))
     primrec_add_one_div_succ.to_comp hq Computable.id : _)
 
+/-! ## Computable / Primrec for `Neg.neg : ℚ → ℚ` -/
+
+/-- Sign-flip on the structured encoding: maps `2k` to `2k - 1` (with `0 ↦ 0`)
+and `2k + 1` to `2k + 2`, then re-pairs with the unchanged denominator. -/
+def negEnc (encQ : ℕ) : ℕ :=
+  let encNum := encQ.unpair.fst
+  let den := encQ.unpair.snd
+  let newNumEnc := if encNum % 2 = 0 then encNum - 1 else encNum + 1
+  Nat.pair newNumEnc den
+
+theorem primrec_negEnc : Primrec negEnc := by
+  have hencNum : Primrec (fun e : ℕ => e.unpair.fst) :=
+    Primrec.fst.comp Primrec.unpair
+  have hden : Primrec (fun e : ℕ => e.unpair.snd) :=
+    Primrec.snd.comp Primrec.unpair
+  have hpar : PrimrecPred (fun e : ℕ => e.unpair.fst % 2 = 0) :=
+    Primrec.eq.comp (Primrec.nat_mod.comp hencNum (Primrec.const 2)) (Primrec.const 0)
+  have hnewNum : Primrec (fun e : ℕ =>
+      if e.unpair.fst % 2 = 0 then e.unpair.fst - 1 else e.unpair.fst + 1) :=
+    Primrec.ite hpar
+      (Primrec.nat_sub.comp hencNum (Primrec.const 1))
+      (Primrec.succ.comp hencNum)
+  exact Primrec₂.natPair.comp hnewNum hden
+
+theorem encode_neg (q : ℚ) : Encodable.encode (-q) = negEnc (Encodable.encode q) := by
+  rw [rat_encode_eq, rat_encode_eq]
+  unfold negEnc
+  simp only [Nat.unpair_pair]
+  congr 1
+  · -- encode (-q.num) = if encode q.num % 2 = 0 then encode q.num - 1 else encode q.num + 1
+    cases hnum : q.num with
+    | ofNat k =>
+      rw [show (-q).num = -q.num from rfl, hnum]
+      cases k with
+      | zero =>
+        show (Encodable.encode (0 : ℤ) : ℕ) =
+          if (Encodable.encode (Int.ofNat 0) : ℕ) % 2 = 0
+          then (Encodable.encode (Int.ofNat 0) : ℕ) - 1
+          else (Encodable.encode (Int.ofNat 0) : ℕ) + 1
+        rfl
+      | succ m =>
+        rw [show (-(Int.ofNat (m + 1)) : ℤ) = Int.negSucc m from rfl]
+        rw [show (Encodable.encode (Int.negSucc m) : ℕ) = 2 * m + 1 from rfl,
+            show (Encodable.encode (Int.ofNat (m + 1)) : ℕ) = 2 * (m + 1) from rfl]
+        rw [if_pos (by omega : (2 * (m + 1)) % 2 = 0)]
+        omega
+    | negSucc k =>
+      rw [show (-q).num = -q.num from rfl, hnum]
+      rw [show (-Int.negSucc k : ℤ) = Int.ofNat (k + 1) from rfl]
+      rw [show (Encodable.encode (Int.ofNat (k + 1)) : ℕ) = 2 * (k + 1) from rfl,
+          show (Encodable.encode (Int.negSucc k) : ℕ) = 2 * k + 1 from rfl]
+      rw [if_neg (by omega : (2 * k + 1) % 2 ≠ 0)]
+      omega
+
+theorem primrec_rat_neg : Primrec (fun q : ℚ => -q) := by
+  refine Primrec.encode_iff.mp ?_
+  refine Primrec.of_eq ?_ (fun q => (encode_neg q).symm)
+  exact primrec_negEnc.comp Primrec.encode
+
+theorem computable_rat_neg : Computable (fun q : ℚ => -q) := primrec_rat_neg.to_comp
+
+theorem computable_neg_comp {q : ℕ → ℚ} (hq : Computable q) : Computable (fun n => -(q n)) :=
+  computable_rat_neg.comp hq
+
+theorem computable_sub_one_div_succ {q : ℕ → ℚ} (hq : Computable q) :
+    Computable (fun n : ℕ => q n - (1 : ℚ) / ((n : ℚ) + 1)) := by
+  have h1 : Computable (fun n : ℕ => -(q n) + (1 : ℚ) / ((n : ℚ) + 1)) :=
+    computable_add_one_div_succ (computable_neg_comp hq)
+  have h2 : Computable (fun n : ℕ => -(-(q n) + (1 : ℚ) / ((n : ℚ) + 1))) :=
+    computable_rat_neg.comp h1
+  refine h2.of_eq (fun n => ?_)
+  ring
+
 end ComputableRat

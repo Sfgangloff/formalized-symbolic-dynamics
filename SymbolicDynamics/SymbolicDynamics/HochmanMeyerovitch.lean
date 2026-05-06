@@ -740,6 +740,46 @@ noncomputable def N_bar {α : Type*} {d : ℕ} [Fintype α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n : ℕ) : ℕ :=
   (locallyAdmissiblePatterns F L (box d n)).card
 
+/-! ## F4a  computable_imp_leftRE — every computable real is left r.e. -/
+
+theorem computable_imp_leftRE {h : ℝ} (hcomp : IsComputableReal h) : IsLeftRE h := by
+  obtain ⟨q, hq_comp, hq_close⟩ := hcomp
+  refine ⟨fun n => q n - (1 : ℚ) / ((n : ℚ) + 1),
+    ComputableRat.computable_sub_one_div_succ hq_comp, ?_, ?_⟩
+  · intro n
+    have habs := hq_close n
+    have h1 := (abs_le.mp habs).2
+    have hpos : (0 : ℝ) < (n : ℝ) + 1 := by positivity
+    push_cast
+    linarith
+  · have h_bias : Filter.Tendsto (fun n : ℕ => (1 : ℝ) / ((n : ℝ) + 1)) Filter.atTop (nhds 0) := by
+      have hbase := (tendsto_one_div_atTop_nhds_zero_nat (𝕜 := ℝ)).comp
+        (Filter.tendsto_add_atTop_nat 1)
+      refine hbase.congr (fun n => ?_)
+      simp [Function.comp]
+    have h_q : Filter.Tendsto (fun n : ℕ => (q n : ℝ)) Filter.atTop (nhds h) := by
+      rw [Metric.tendsto_atTop]
+      intro ε hε
+      obtain ⟨N, hN⟩ := (Metric.tendsto_atTop.mp h_bias) ε hε
+      refine ⟨N, fun n hn => ?_⟩
+      have hb := hN n hn
+      have hclose := hq_close n
+      rw [Real.dist_eq] at hb ⊢
+      have h_bias_eq : (1 : ℝ) / ((n : ℝ) + 1) - 0 = 1 / ((n : ℝ) + 1) := by ring
+      rw [h_bias_eq] at hb
+      have h_bias_nn : 0 ≤ (1 : ℝ) / ((n : ℝ) + 1) := by positivity
+      have h_bias_abs : |(1 : ℝ) / ((n : ℝ) + 1)| = 1 / ((n : ℝ) + 1) := abs_of_nonneg h_bias_nn
+      rw [h_bias_abs] at hb
+      calc |((q n : ℝ)) - h| ≤ 1 / ((n : ℝ) + 1) := hclose
+        _ < ε := hb
+    have hsum : Filter.Tendsto (fun n : ℕ => (q n : ℝ) - 1 / ((n : ℝ) + 1))
+        Filter.atTop (nhds (h - 0)) := h_q.sub h_bias
+    rw [sub_zero] at hsum
+    convert hsum using 1
+    ext n
+    push_cast
+    ring
+
 /-! ## F4  computable_imp_rightRE — every computable real is right r.e. -/
 
 theorem computable_imp_rightRE {h : ℝ} (hcomp : IsComputableReal h) : IsRightRE h := by
