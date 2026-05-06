@@ -163,4 +163,33 @@ theorem primrec_one_div_succ : Primrec (fun n : ℕ => (1 : ℚ) / ((n : ℚ) + 
 theorem computable_one_div_succ : Computable (fun n : ℕ => (1 : ℚ) / ((n : ℚ) + 1)) :=
   primrec_one_div_succ.to_comp
 
+/-! ## Encoded helper for `q + 1/(n+1)`
+
+We need `Computable (fun n => q n + 1/(↑n + 1))` for any computable
+`q : ℕ → ℚ`. Mathlib does not ship `Primrec` rational addition (it would
+require `Primrec` Int operations that are also missing), so we construct a
+single-purpose encoded helper `addOneOverSuccEnc` that mimics the operation
+at the level of structured `Primcodable ℚ` encodings, prove it is `Primrec`,
+and bridge to the actual rational sum via the encoding identity.
+-/
+
+/-- Encoded form of `q + 1/(n+1)` computed directly from the structured
+encoding `encQ` of `q` and the natural number `n`. -/
+def addOneOverSuccEnc (encQ n : ℕ) : ℕ :=
+  let encNum := encQ.unpair.fst
+  let den := encQ.unpair.snd
+  let np1 := n + 1
+  let mulEnc := if encNum % 2 = 0 then encNum * np1 else (encNum + 1) * np1 - 1
+  let rawNumEnc :=
+    if mulEnc % 2 = 0 then mulEnc + 2 * den
+    else if 2 * den > mulEnc then 2 * den - mulEnc - 1
+    else mulEnc - 2 * den
+  let rawNumAbs := (rawNumEnc + 1) / 2
+  let rawDen := den * np1
+  let g := Nat.gcd rawDen rawNumAbs
+  let newNumEnc :=
+    if rawNumEnc % 2 = 0 then 2 * (rawNumAbs / g)
+    else 2 * (rawNumAbs / g - 1) + 1
+  Nat.pair newNumEnc (rawDen / g)
+
 end ComputableRat
