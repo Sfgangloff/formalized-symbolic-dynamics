@@ -451,4 +451,18 @@ theorem encode_addOneOverSucc (q : ℚ) (n : ℕ) :
             else 2 * (A.natAbs / g - 1) + 1) = Encodable.encode (A / (g : ℤ)) from
     (encode_int_div_exact A g hg_pos hg_dvd).symm]
 
+/-! ## Primrec / Computable for `(q, n) ↦ q + 1/(n+1)` -/
+
+theorem primrec_add_one_div_succ :
+    Primrec₂ (fun (q : ℚ) (n : ℕ) => q + (1 : ℚ) / ((n : ℚ) + 1)) := by
+  refine Primrec.encode_iff.mp ?_
+  refine Primrec.of_eq ?_ (fun p => (encode_addOneOverSucc p.1 p.2).symm)
+  exact Primrec₂.comp primrec_addOneOverSuccEnc
+    (Primrec.encode.comp Primrec.fst) Primrec.snd
+
+theorem computable_add_one_div_succ {q : ℕ → ℚ} (hq : Computable q) :
+    Computable (fun n : ℕ => q n + (1 : ℚ) / ((n : ℚ) + 1)) :=
+  (Computable₂.comp (f := fun (q' : ℚ) (n' : ℕ) => q' + (1 : ℚ) / ((n' : ℚ) + 1))
+    primrec_add_one_div_succ.to_comp hq Computable.id : _)
+
 end ComputableRat

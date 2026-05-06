@@ -94,7 +94,7 @@ Tick the checkbox when the item compiles without errors.
 - [x] F1  `def IsRightRE (h : ℝ) : Prop`
 - [x] F2  `def IsLeftRE (h : ℝ) : Prop`
 - [x] F3  `def IsComputableReal (h : ℝ) : Prop`
-- [ ] F4  `theorem computable_imp_rightRE`
+- [x] F4  `theorem computable_imp_rightRE`
 - [ ] F5  `theorem computable_iff_leftRE_and_rightRE`
 
 ### G — Local count and computability
