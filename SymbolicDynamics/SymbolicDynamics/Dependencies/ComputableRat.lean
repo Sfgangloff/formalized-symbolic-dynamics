@@ -2,6 +2,7 @@ import Mathlib.Computability.Partrec
 import Mathlib.Data.Rat.Defs
 import Mathlib.Data.Rat.Encodable
 import Mathlib.Data.Rat.Lemmas
+import Mathlib.Tactic.Ring
 
 /-! # Computability infrastructure for `ℚ`
 
@@ -300,5 +301,83 @@ theorem primrec_addOneOverSuccEnc : Primrec₂ addOneOverSuccEnc := by
          (rawNumEnc + 1) / 2)) :=
     Primrec.nat_div.comp hrawDen hg
   exact Primrec₂.natPair.comp hnewNumEnc hdenDivG
+
+/-! ## Encoding identities for `z * (n+1)` and `x + (D : ℤ)` -/
+
+/-- Encoding of `z * (↑(n+1)) : ℤ` in the structured form. -/
+private theorem encode_int_mul_succ (z : ℤ) (n : ℕ) :
+    Encodable.encode (z * ((n + 1 : ℕ) : ℤ)) =
+      if Encodable.encode z % 2 = 0 then Encodable.encode z * (n + 1)
+      else (Encodable.encode z + 1) * (n + 1) - 1 := by
+  cases z with
+  | ofNat k =>
+    rw [show (Encodable.encode (Int.ofNat k) : ℕ) = 2 * k from rfl,
+        if_pos (Nat.mul_mod_right 2 k)]
+    have h1 : (Int.ofNat k : ℤ) * ((n + 1 : ℕ) : ℤ) = Int.ofNat (k * (n + 1)) := by simp
+    rw [h1]
+    change 2 * (k * (n + 1)) = 2 * k * (n + 1)
+    ring
+  | negSucc k =>
+    rw [show (Encodable.encode (Int.negSucc k) : ℕ) = 2 * k + 1 from rfl,
+        if_neg (by omega : (2 * k + 1) % 2 ≠ 0)]
+    have hpos : 0 < (k + 1) * (n + 1) := Nat.mul_pos (Nat.succ_pos k) (Nat.succ_pos n)
+    have h1 : (Int.negSucc k : ℤ) * ((n + 1 : ℕ) : ℤ) = Int.negSucc ((k + 1) * (n + 1) - 1) := by
+      rw [Int.negSucc_eq, Int.negSucc_eq, Nat.cast_sub hpos]
+      push_cast; ring
+    rw [h1]
+    change 2 * ((k + 1) * (n + 1) - 1) + 1 = (2 * k + 1 + 1) * (n + 1) - 1
+    have h_expand : (2 * k + 1 + 1) * (n + 1) = 2 * ((k + 1) * (n + 1)) := by ring
+    rw [h_expand]
+    omega
+
+/-- Encoding of `x + (D : ℤ)` in the structured form (case-split on parity of `encode x`). -/
+private theorem encode_int_add_nat (x : ℤ) (D : ℕ) :
+    Encodable.encode (x + (D : ℤ)) =
+      (if Encodable.encode x % 2 = 0 then Encodable.encode x + 2 * D
+       else if 2 * D > Encodable.encode x then 2 * D - Encodable.encode x - 1
+       else Encodable.encode x - 2 * D) := by
+  cases x with
+  | ofNat a =>
+    rw [show (Encodable.encode (Int.ofNat a) : ℕ) = 2 * a from rfl,
+        if_pos (Nat.mul_mod_right 2 a)]
+    have h1 : (Int.ofNat a : ℤ) + (D : ℤ) = Int.ofNat (a + D) := by simp
+    rw [h1]
+    change 2 * (a + D) = 2 * a + 2 * D
+    ring
+  | negSucc a =>
+    rw [show (Encodable.encode (Int.negSucc a) : ℕ) = 2 * a + 1 from rfl,
+        if_neg (by omega : (2 * a + 1) % 2 ≠ 0)]
+    by_cases hcase : 2 * D > 2 * a + 1
+    · rw [if_pos hcase]
+      have hge : a + 1 ≤ D := by omega
+      have h1 : (Int.negSucc a : ℤ) + (D : ℤ) = ((D - (a + 1) : ℕ) : ℤ) := by
+        rw [Int.negSucc_eq, Nat.cast_sub hge]
+        push_cast; ring
+      rw [h1]
+      change 2 * (D - (a + 1)) = 2 * D - (2 * a + 1) - 1
+      omega
+    · rw [if_neg hcase]
+      push_neg at hcase
+      have hle : D ≤ a := by omega
+      have h1 : (Int.negSucc a : ℤ) + (D : ℤ) = (Int.negSucc (a - D) : ℤ) := by
+        rw [Int.negSucc_eq, Int.negSucc_eq, Nat.cast_sub hle]
+        ring
+      rw [h1]
+      change 2 * (a - D) + 1 = 2 * a + 1 - 2 * D
+      omega
+
+/-! ## The "raw numerator" stage matches `q.num * (n+1) + q.den` -/
+
+private theorem rawNumEnc_eq (q : ℚ) (n : ℕ) :
+    (let encNum := (Encodable.encode q).unpair.fst
+     let den := (Encodable.encode q).unpair.snd
+     let np1 := n + 1
+     let mulEnc := if encNum % 2 = 0 then encNum * np1 else (encNum + 1) * np1 - 1
+     if mulEnc % 2 = 0 then mulEnc + 2 * den
+     else if 2 * den > mulEnc then 2 * den - mulEnc - 1
+     else mulEnc - 2 * den) =
+    Encodable.encode (q.num * ((n + 1 : ℕ) : ℤ) + (q.den : ℤ)) := by
+  rw [encode_int_add_nat, encode_int_mul_succ, rat_encode_eq]
+  simp only [Nat.unpair_pair]
 
 end ComputableRat
