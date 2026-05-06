@@ -369,15 +369,86 @@ private theorem encode_int_add_nat (x : ℤ) (D : ℕ) :
 /-! ## The "raw numerator" stage matches `q.num * (n+1) + q.den` -/
 
 private theorem rawNumEnc_eq (q : ℚ) (n : ℕ) :
-    (let encNum := (Encodable.encode q).unpair.fst
-     let den := (Encodable.encode q).unpair.snd
-     let np1 := n + 1
-     let mulEnc := if encNum % 2 = 0 then encNum * np1 else (encNum + 1) * np1 - 1
-     if mulEnc % 2 = 0 then mulEnc + 2 * den
-     else if 2 * den > mulEnc then 2 * den - mulEnc - 1
-     else mulEnc - 2 * den) =
+    (let mulEnc := if Encodable.encode q.num % 2 = 0
+                    then Encodable.encode q.num * (n + 1)
+                    else (Encodable.encode q.num + 1) * (n + 1) - 1
+     if mulEnc % 2 = 0 then mulEnc + 2 * q.den
+     else if 2 * q.den > mulEnc then 2 * q.den - mulEnc - 1
+     else mulEnc - 2 * q.den) =
     Encodable.encode (q.num * ((n + 1 : ℕ) : ℤ) + (q.den : ℤ)) := by
-  rw [encode_int_add_nat, encode_int_mul_succ, rat_encode_eq]
+  rw [encode_int_add_nat, encode_int_mul_succ]
+
+/-! ## Encoding identity for `z / (g : ℤ)` when `g ∣ z.natAbs` and `g > 0` -/
+
+private theorem encode_int_div_exact (z : ℤ) (g : ℕ) (hg_pos : 0 < g)
+    (hg_dvd : g ∣ z.natAbs) :
+    Encodable.encode (z / (g : ℤ)) =
+      if Encodable.encode z % 2 = 0 then 2 * (z.natAbs / g)
+      else 2 * (z.natAbs / g - 1) + 1 := by
+  cases z with
+  | ofNat k =>
+    rw [show (Encodable.encode (Int.ofNat k) : ℕ) = 2 * k from rfl,
+        if_pos (Nat.mul_mod_right 2 k)]
+    rfl
+  | negSucc k =>
+    rw [show (Encodable.encode (Int.negSucc k) : ℕ) = 2 * k + 1 from rfl,
+        if_neg (by omega : (2 * k + 1) % 2 ≠ 0)]
+    have hnat : Int.natAbs (Int.negSucc k) = k + 1 := rfl
+    rw [hnat] at hg_dvd
+    have hge : g ≤ k + 1 := Nat.le_of_dvd (Nat.succ_pos k) hg_dvd
+    have hquot_pos : 0 < (k + 1) / g := Nat.div_pos hge hg_pos
+    have h_div : (Int.negSucc k : ℤ) / (g : ℤ) = Int.negSucc ((k + 1) / g - 1) := by
+      have h1 : (Int.negSucc k : ℤ) = -((↑k + 1 : ℤ)) := by rw [Int.negSucc_eq]
+      rw [h1, Int.neg_ediv]
+      have hdvd_int : ((g : ℤ)) ∣ (↑k + 1 : ℤ) := by exact_mod_cast hg_dvd
+      rw [if_pos hdvd_int]
+      simp only [sub_zero]
+      rw [show ((↑k + 1 : ℤ) / (g : ℤ)) = (((k + 1) / g : ℕ) : ℤ) from rfl]
+      rw [Int.negSucc_eq, Nat.cast_sub hquot_pos]
+      push_cast; ring
+    rw [h_div]
+    rfl
+
+/-! ## Full semantic equation: `addOneOverSuccEnc` matches `encode (q + 1/(n+1))` -/
+
+theorem encode_addOneOverSucc (q : ℚ) (n : ℕ) :
+    Encodable.encode (q + (1 : ℚ) / ((n : ℚ) + 1)) =
+    addOneOverSuccEnc (Encodable.encode q) n := by
+  have hsum : q + (1 : ℚ) / ((n : ℚ) + 1) =
+      mkRat (q.num * ((n + 1 : ℕ) : ℤ) + (q.den : ℤ)) (q.den * (n + 1)) := by
+    rw [Rat.add_def', one_div_succ_num, one_div_succ_den, one_mul]
+  rw [hsum]
+  set A : ℤ := q.num * ((n + 1 : ℕ) : ℤ) + (q.den : ℤ) with hA_def
+  set B : ℕ := q.den * (n + 1) with hB_def
+  have hB_ne : B ≠ 0 := Nat.mul_ne_zero q.pos.ne' (Nat.succ_ne_zero _)
+  have hB_pos : 0 < B := Nat.pos_of_ne_zero hB_ne
+  set g : ℕ := Nat.gcd B A.natAbs with hg_def
+  have hg_dvd : g ∣ A.natAbs := Nat.gcd_dvd_right B A.natAbs
+  have hg_pos : 0 < g := Nat.gcd_pos_of_pos_left _ hB_pos
+  -- LHS reduction
+  rw [rat_encode_eq, Rat.num_mkRat, Rat.den_mkRat]
+  simp only [hB_ne, if_false, ← hg_def]
+  -- RHS unfolding
+  unfold addOneOverSuccEnc
+  -- Replace (encode q).unpair.fst and .snd with their values.
+  rw [rat_encode_eq]
   simp only [Nat.unpair_pair]
+  -- Replace the inner mulEnc/rawNumEnc block with `encode A`.
+  rw [show (let mulEnc := if Encodable.encode q.num % 2 = 0
+                          then Encodable.encode q.num * (n + 1)
+                          else (Encodable.encode q.num + 1) * (n + 1) - 1
+            if mulEnc % 2 = 0 then mulEnc + 2 * q.den
+            else if 2 * q.den > mulEnc then 2 * q.den - mulEnc - 1
+            else mulEnc - 2 * q.den) = Encodable.encode A from
+    rawNumEnc_eq q n]
+  -- After rewrite: rawNumAbs = (encode A + 1) / 2 = A.natAbs.
+  rw [show ((Encodable.encode A) + 1) / 2 = A.natAbs from (natAbs_eq_encode_div A).symm]
+  -- Now g (in helper) = Nat.gcd (q.den * (n+1)) A.natAbs = Nat.gcd B A.natAbs.
+  -- And outer if-block reduces to encode (A / g) by encode_int_div_exact.
+  rw [show q.den * (n + 1) = B from rfl]
+  rw [← hg_def]
+  rw [show (if Encodable.encode A % 2 = 0 then 2 * (A.natAbs / g)
+            else 2 * (A.natAbs / g - 1) + 1) = Encodable.encode (A / (g : ℤ)) from
+    (encode_int_div_exact A g hg_pos hg_dvd).symm]
 
 end ComputableRat
