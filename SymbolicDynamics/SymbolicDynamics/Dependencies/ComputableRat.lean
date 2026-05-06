@@ -192,4 +192,113 @@ def addOneOverSuccEnc (encQ n : ℕ) : ℕ :=
     else 2 * (rawNumAbs / g - 1) + 1
   Nat.pair newNumEnc (rawDen / g)
 
+theorem primrec_addOneOverSuccEnc : Primrec₂ addOneOverSuccEnc := by
+  have hencNum : Primrec (fun p : ℕ × ℕ => p.1.unpair.fst) :=
+    Primrec.fst.comp (Primrec.unpair.comp Primrec.fst)
+  have hden : Primrec (fun p : ℕ × ℕ => p.1.unpair.snd) :=
+    Primrec.snd.comp (Primrec.unpair.comp Primrec.fst)
+  have hnp1 : Primrec (fun p : ℕ × ℕ => p.2 + 1) :=
+    Primrec.succ.comp Primrec.snd
+  have hencNum_even : PrimrecPred (fun p : ℕ × ℕ => p.1.unpair.fst % 2 = 0) :=
+    Primrec.eq.comp (Primrec.nat_mod.comp hencNum (Primrec.const 2)) (Primrec.const 0)
+  have hmulEnc : Primrec (fun p : ℕ × ℕ =>
+      if p.1.unpair.fst % 2 = 0 then p.1.unpair.fst * (p.2 + 1)
+      else (p.1.unpair.fst + 1) * (p.2 + 1) - 1) :=
+    Primrec.ite hencNum_even
+      (Primrec.nat_mul.comp hencNum hnp1)
+      (Primrec.nat_sub.comp
+        (Primrec.nat_mul.comp (Primrec.succ.comp hencNum) hnp1)
+        (Primrec.const 1))
+  have hmulEnc_even : PrimrecPred (fun p : ℕ × ℕ =>
+      (if p.1.unpair.fst % 2 = 0 then p.1.unpair.fst * (p.2 + 1)
+       else (p.1.unpair.fst + 1) * (p.2 + 1) - 1) % 2 = 0) :=
+    Primrec.eq.comp (Primrec.nat_mod.comp hmulEnc (Primrec.const 2)) (Primrec.const 0)
+  have h2den : Primrec (fun p : ℕ × ℕ => 2 * p.1.unpair.snd) :=
+    Primrec.nat_mul.comp (Primrec.const 2) hden
+  have h2den_gt : PrimrecPred (fun p : ℕ × ℕ =>
+      2 * p.1.unpair.snd >
+        if p.1.unpair.fst % 2 = 0 then p.1.unpair.fst * (p.2 + 1)
+        else (p.1.unpair.fst + 1) * (p.2 + 1) - 1) :=
+    Primrec.nat_lt.comp hmulEnc h2den
+  have hrawNumEnc : Primrec (fun p : ℕ × ℕ =>
+      let mulEnc := if p.1.unpair.fst % 2 = 0 then p.1.unpair.fst * (p.2 + 1)
+                    else (p.1.unpair.fst + 1) * (p.2 + 1) - 1
+      if mulEnc % 2 = 0 then mulEnc + 2 * p.1.unpair.snd
+      else if 2 * p.1.unpair.snd > mulEnc then 2 * p.1.unpair.snd - mulEnc - 1
+      else mulEnc - 2 * p.1.unpair.snd) :=
+    Primrec.ite hmulEnc_even
+      (Primrec.nat_add.comp hmulEnc h2den)
+      (Primrec.ite h2den_gt
+        (Primrec.nat_sub.comp (Primrec.nat_sub.comp h2den hmulEnc) (Primrec.const 1))
+        (Primrec.nat_sub.comp hmulEnc h2den))
+  have hrawNumAbs : Primrec (fun p : ℕ × ℕ =>
+      let mulEnc := if p.1.unpair.fst % 2 = 0 then p.1.unpair.fst * (p.2 + 1)
+                    else (p.1.unpair.fst + 1) * (p.2 + 1) - 1
+      let rawNumEnc := if mulEnc % 2 = 0 then mulEnc + 2 * p.1.unpair.snd
+                       else if 2 * p.1.unpair.snd > mulEnc then 2 * p.1.unpair.snd - mulEnc - 1
+                       else mulEnc - 2 * p.1.unpair.snd
+      (rawNumEnc + 1) / 2) :=
+    Primrec.nat_div.comp (Primrec.succ.comp hrawNumEnc) (Primrec.const 2)
+  have hrawDen : Primrec (fun p : ℕ × ℕ => p.1.unpair.snd * (p.2 + 1)) :=
+    Primrec.nat_mul.comp hden hnp1
+  have hg : Primrec (fun p : ℕ × ℕ =>
+      Nat.gcd (p.1.unpair.snd * (p.2 + 1))
+        (let mulEnc := if p.1.unpair.fst % 2 = 0 then p.1.unpair.fst * (p.2 + 1)
+                       else (p.1.unpair.fst + 1) * (p.2 + 1) - 1
+         let rawNumEnc := if mulEnc % 2 = 0 then mulEnc + 2 * p.1.unpair.snd
+                          else if 2 * p.1.unpair.snd > mulEnc then 2 * p.1.unpair.snd - mulEnc - 1
+                          else mulEnc - 2 * p.1.unpair.snd
+         (rawNumEnc + 1) / 2)) :=
+    primrec_nat_gcd.comp hrawDen hrawNumAbs
+  have hrawNumEnc_even : PrimrecPred (fun p : ℕ × ℕ =>
+      (let mulEnc := if p.1.unpair.fst % 2 = 0 then p.1.unpair.fst * (p.2 + 1)
+                     else (p.1.unpair.fst + 1) * (p.2 + 1) - 1
+       if mulEnc % 2 = 0 then mulEnc + 2 * p.1.unpair.snd
+       else if 2 * p.1.unpair.snd > mulEnc then 2 * p.1.unpair.snd - mulEnc - 1
+       else mulEnc - 2 * p.1.unpair.snd) % 2 = 0) :=
+    Primrec.eq.comp (Primrec.nat_mod.comp hrawNumEnc (Primrec.const 2)) (Primrec.const 0)
+  have habsDivG : Primrec (fun p : ℕ × ℕ =>
+      (let mulEnc := if p.1.unpair.fst % 2 = 0 then p.1.unpair.fst * (p.2 + 1)
+                     else (p.1.unpair.fst + 1) * (p.2 + 1) - 1
+       let rawNumEnc := if mulEnc % 2 = 0 then mulEnc + 2 * p.1.unpair.snd
+                        else if 2 * p.1.unpair.snd > mulEnc then 2 * p.1.unpair.snd - mulEnc - 1
+                        else mulEnc - 2 * p.1.unpair.snd
+       (rawNumEnc + 1) / 2) /
+      (Nat.gcd (p.1.unpair.snd * (p.2 + 1))
+        (let mulEnc := if p.1.unpair.fst % 2 = 0 then p.1.unpair.fst * (p.2 + 1)
+                       else (p.1.unpair.fst + 1) * (p.2 + 1) - 1
+         let rawNumEnc := if mulEnc % 2 = 0 then mulEnc + 2 * p.1.unpair.snd
+                          else if 2 * p.1.unpair.snd > mulEnc then 2 * p.1.unpair.snd - mulEnc - 1
+                          else mulEnc - 2 * p.1.unpair.snd
+         (rawNumEnc + 1) / 2))) :=
+    Primrec.nat_div.comp hrawNumAbs hg
+  have hnewNumEnc : Primrec (fun p : ℕ × ℕ =>
+      let mulEnc := if p.1.unpair.fst % 2 = 0 then p.1.unpair.fst * (p.2 + 1)
+                    else (p.1.unpair.fst + 1) * (p.2 + 1) - 1
+      let rawNumEnc := if mulEnc % 2 = 0 then mulEnc + 2 * p.1.unpair.snd
+                       else if 2 * p.1.unpair.snd > mulEnc then 2 * p.1.unpair.snd - mulEnc - 1
+                       else mulEnc - 2 * p.1.unpair.snd
+      let rawNumAbs := (rawNumEnc + 1) / 2
+      let rawDen := p.1.unpair.snd * (p.2 + 1)
+      let g := Nat.gcd rawDen rawNumAbs
+      if rawNumEnc % 2 = 0 then 2 * (rawNumAbs / g)
+      else 2 * (rawNumAbs / g - 1) + 1) :=
+    Primrec.ite hrawNumEnc_even
+      (Primrec.nat_mul.comp (Primrec.const 2) habsDivG)
+      (Primrec.nat_add.comp
+        (Primrec.nat_mul.comp (Primrec.const 2)
+          (Primrec.nat_sub.comp habsDivG (Primrec.const 1)))
+        (Primrec.const 1))
+  have hdenDivG : Primrec (fun p : ℕ × ℕ =>
+      (p.1.unpair.snd * (p.2 + 1)) /
+      Nat.gcd (p.1.unpair.snd * (p.2 + 1))
+        (let mulEnc := if p.1.unpair.fst % 2 = 0 then p.1.unpair.fst * (p.2 + 1)
+                       else (p.1.unpair.fst + 1) * (p.2 + 1) - 1
+         let rawNumEnc := if mulEnc % 2 = 0 then mulEnc + 2 * p.1.unpair.snd
+                          else if 2 * p.1.unpair.snd > mulEnc then 2 * p.1.unpair.snd - mulEnc - 1
+                          else mulEnc - 2 * p.1.unpair.snd
+         (rawNumEnc + 1) / 2)) :=
+    Primrec.nat_div.comp hrawDen hg
+  exact Primrec₂.natPair.comp hnewNumEnc hdenDivG
+
 end ComputableRat
