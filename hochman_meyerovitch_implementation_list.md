@@ -98,9 +98,9 @@ Tick the checkbox when the item compiles without errors.
 - [ ] F5  `theorem computable_iff_leftRE_and_rightRE`
 
 ### G — Local count and computability
-- [ ] G1  `def locallyAdmissiblePatterns [DecidableEq α] (L : ...) (E : ...) : Finset (Pattern α E)`
-- [ ] G2  `def N_bar [DecidableEq α] (L : ...) (n : ℕ) : ℕ`
-- [ ] G3  `theorem N_X_le_N_bar`
+- [x] G1  `def locallyAdmissiblePatterns [DecidableEq α] (L : ...) (E : ...) : Finset (Pattern α E)`
+- [x] G2  `def N_bar [DecidableEq α] (L : ...) (n : ℕ) : ℕ`
+- [x] G3  `theorem N_X_le_N_bar`
 - [ ] G4  `theorem N_bar_computable`
 
 ### H — Key axioms for Theorem 3.1

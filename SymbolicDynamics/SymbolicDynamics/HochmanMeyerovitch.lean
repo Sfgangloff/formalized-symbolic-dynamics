@@ -720,3 +720,35 @@ def IsLeftRE (h : ℝ) : Prop :=
     approximating it with effective rate `1/(n+1)`. -/
 def IsComputableReal (h : ℝ) : Prop :=
   ∃ q : ℕ → ℚ, Computable q ∧ ∀ n, |((q n : ℝ)) - h| ≤ 1 / (n + 1)
+
+/-! ## G1  locallyAdmissiblePatterns — finset of locally admissible E-patterns -/
+
+/-- The finset of patterns over `E` that are locally admissible for syntax `(F, L)`. -/
+noncomputable def locallyAdmissiblePatterns {α : Type*} [Fintype α] {d : ℕ}
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) (E : Finset (Lat d)) :
+    Finset (Pattern α E) :=
+  letI : DecidablePred (fun a : Pattern α E => locallyAdmissible F L a) :=
+    fun _ => Classical.dec _
+  (Finset.univ : Finset (Pattern α E)).filter (locallyAdmissible F L)
+
+/-! ## G2  N_bar — number of locally admissible n-box patterns -/
+
+/-- `N_bar F L n` is the number of locally admissible `box d n`-patterns for syntax `(F, L)`. -/
+noncomputable def N_bar {α : Type*} {d : ℕ} [Fintype α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n : ℕ) : ℕ :=
+  (locallyAdmissiblePatterns F L (box d n)).card
+
+/-! ## G3  N_X_le_N_bar — globally admissible count is bounded by local count -/
+
+/-- For the SFT `mkSFT F L`, every globally admissible box-pattern is locally admissible,
+    so `N_X (mkSFT F L) (box d n) ≤ N_bar F L n`. -/
+theorem N_X_le_N_bar {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n : ℕ) :
+    N_X (mkSFT F L) (box d n) ≤ N_bar F L n := by
+  unfold N_X N_bar
+  rw [← Set.ncard_coe_finset (locallyAdmissiblePatterns F L (box d n))]
+  refine Set.ncard_le_ncard ?_ (Set.toFinite _)
+  intro p hp
+  simp only [locallyAdmissiblePatterns, Finset.coe_filter, Finset.mem_univ, true_and,
+    Set.mem_setOf_eq]
+  exact Pattern.globally_imp_locally F L p hp
