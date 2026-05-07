@@ -988,6 +988,15 @@ theorem topEntropy_antitone {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpac
   calc sInf _ ≤ logN X n / (n : ℝ) ^ d := csInf_le hbdd hX_in
     _ ≤ logN Y n / (n : ℝ) ^ d := by gcongr
 
+/-! ## E5  topEntropy_le_log_card — universal upper bound -/
+
+/-- Every subshift's topological entropy is bounded by `log |α|`. -/
+theorem topEntropy_le_log_card {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
+    (X : Subshift α d) :
+    topEntropy X ≤ Real.log (Fintype.card α) := by
+  rw [← topEntropy_fullShift (α := α) (d := d)]
+  exact topEntropy_antitone (Set.subset_univ _)
+
 /-! ## F1  IsRightRE — right recursively enumerable real -/
 
 /-- `h : ℝ` is right recursively enumerable if it is the limit of a computable sequence
