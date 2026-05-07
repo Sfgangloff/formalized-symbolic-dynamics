@@ -108,6 +108,10 @@ Tick the checkbox when the item compiles without errors.
 - [x] G4.4a `theorem N_bar_le_card_pow`  (trivial bound `≤ |α|^(n^d)`)
 - [x] G4.4b `theorem N_bar_mono`  (monotone in `L`)
 - [x] G4.4c `noncomputable def Pattern.toList`  (List α encoding bridge, noncomputable)
+- [x] G4.4d `theorem N_bar_eq_fintype_card_subtype`  (alternative formulation via Fintype.card)
+- [x] G4.4e `def boxIndex` + `boxIndex_mem`  (computable enumeration via base-n digits)
+- [ ] G4.4f `boxIndex_injective` and `boxIndex_surjective` (bijection on appropriate range)
+- [ ] G4.4g `Pattern α (box d n) ≃ Fin (n^d) → α`  (uniform-shape bridge)
 - [ ] G4.4 `theorem N_bar_computable` — Lean-level `Computable (fun n => N_bar F L n)`
 
 ### H — Key axioms for Theorem 3.1
