@@ -687,6 +687,13 @@ theorem boxIndex_mem {d n i : ℕ} (hi : i < n ^ d) : boxIndex d n i ∈ box d n
 def boxIndexInv (d n : ℕ) (w : Lat d) : ℕ :=
   Finset.univ.sum (fun j : Fin d => (w j).toNat * n ^ j.val)
 
+/-- `boxIxEquiv` agrees with `boxIndexInv` on box elements. -/
+theorem boxIxEquiv_val (d n : ℕ) (v : ↥(box d n)) :
+    (boxIxEquiv d n v).val = boxIndexInv d n v.val := by
+  unfold boxIxEquiv boxIndexInv boxFnEquiv
+  rw [Equiv.trans_apply, finFunctionFinEquiv_apply]
+  rfl
+
 /-! ## C5  symBox  Q_n = {-n,...,n}^d -/
 
 /-- The symmetric cube `Q_n = {-n,...,n}^d ⊆ ℤ^d`. -/
