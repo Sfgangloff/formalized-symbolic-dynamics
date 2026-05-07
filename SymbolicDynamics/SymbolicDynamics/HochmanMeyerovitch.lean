@@ -522,6 +522,29 @@ theorem N_X_pos_of_nonempty {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpac
   intro v
   simp [Pattern.ofColoring]
 
+/-! ## B6  N_X_mono_support — N_X monotone in support -/
+
+/-- If `F ⊆ G`, then there are at most as many globally admissible `F`-patterns as
+globally admissible `G`-patterns: every `F`-pattern arises as a restriction. -/
+theorem N_X_mono_support {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
+    (X : Subshift α d) {F G : Finset (Lat d)} (hFG : F ⊆ G) :
+    N_X X F ≤ N_X X G := by
+  unfold N_X
+  refine le_trans ?_ (Set.ncard_image_le (Set.toFinite _)
+    (f := fun q : Pattern α G => Pattern.restrict F hFG q))
+  refine Set.ncard_le_ncard ?_ (Set.toFinite _)
+  rintro p ⟨x, hxX, u, happ⟩
+  refine ⟨Pattern.ofColoring G (FullShift.shiftMap u x), ?_, ?_⟩
+  · refine ⟨FullShift.shiftMap u x, X.isInvariant u x hxX, 0, ?_⟩
+    intro v
+    show (FullShift.shiftMap u x) (v.val + 0) = (FullShift.shiftMap u x) v.val
+    simp
+  · funext v
+    show (FullShift.shiftMap u x) v.val = p v
+    have : (FullShift.shiftMap u x) v.val = x (v.val + u) := by simp [FullShift.shiftMap]
+    rw [this]
+    exact happ v
+
 /-! ## C1  box — the cube {0,...,n-1}^d in ℤ^d -/
 
 /-- The discrete cube `{0,...,n-1}^d ⊆ ℤ^d`. -/
