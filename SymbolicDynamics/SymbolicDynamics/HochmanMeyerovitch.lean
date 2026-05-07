@@ -681,6 +681,12 @@ theorem boxIndex_mem {d n i : ℕ} (hi : i < n ^ d) : boxIndex d n i ∈ box d n
   refine ⟨Int.natCast_nonneg _, ?_⟩
   exact_mod_cast Nat.mod_lt _ hn_pos
 
+/-! ## C4b  boxIndexInv — inverse of `boxIndex` for elements of `box d n` -/
+
+/-- The inverse-direction index map: `w ∈ box d n` maps to its base-n index in `Fin (n^d)`. -/
+def boxIndexInv (d n : ℕ) (w : Lat d) : ℕ :=
+  Finset.univ.sum (fun j : Fin d => (w j).toNat * n ^ j.val)
+
 /-! ## C5  symBox  Q_n = {-n,...,n}^d -/
 
 /-- The symmetric cube `Q_n = {-n,...,n}^d ⊆ ℤ^d`. -/
