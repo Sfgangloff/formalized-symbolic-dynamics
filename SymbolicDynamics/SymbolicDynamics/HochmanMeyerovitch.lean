@@ -1048,6 +1048,18 @@ theorem topEntropy_bot {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
   rw [himg]
   exact csInf_singleton _
 
+/-! ## topEntropy_inter_le — entropy of intersection is at most min -/
+
+theorem topEntropy_inter_le_left {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
+    (X Y : Subshift α d) :
+    topEntropy (Subshift.inter X Y) ≤ topEntropy X :=
+  topEntropy_antitone Set.inter_subset_left
+
+theorem topEntropy_inter_le_right {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
+    (X Y : Subshift α d) :
+    topEntropy (Subshift.inter X Y) ≤ topEntropy Y :=
+  topEntropy_antitone Set.inter_subset_right
+
 /-! ## E5  topEntropy_le_log_card — universal upper bound -/
 
 /-- Every subshift's topological entropy is bounded by `log |α|`. -/
