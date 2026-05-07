@@ -102,7 +102,10 @@ Tick the checkbox when the item compiles without errors.
 - [x] G1  `def locallyAdmissiblePatterns [DecidableEq α] (L : ...) (E : ...) : Finset (Pattern α E)`
 - [x] G2  `def N_bar [DecidableEq α] (L : ...) (n : ℕ) : ℕ`
 - [x] G3  `theorem N_X_le_N_bar`
-- [ ] G4  `theorem N_bar_computable`
+- [x] G4.1 `def relevantOffsets : Finset (Lat d)`
+- [x] G4.2 `theorem locallyAdmissible_iff_relevantOffsets`
+- [x] G4.3 `instance decidable_locallyAdmissible`  (drops `noncomputable` from G1/G2)
+- [ ] G4.4 `theorem N_bar_computable` — Lean-level `Computable (fun n => N_bar F L n)`
 
 ### H — Key axioms for Theorem 3.1
 - [ ] H1  `axiom variationalPrinciple`
