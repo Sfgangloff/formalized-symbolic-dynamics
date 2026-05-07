@@ -1419,6 +1419,20 @@ theorem primrec_pow_const (d : ℕ) : Primrec (fun n : ℕ => n ^ d) :=
 theorem primrec_const_pow_pow (m d : ℕ) : Primrec (fun n : ℕ => m ^ (n ^ d)) :=
   primrec_nat_pow.comp (Primrec.const m) (primrec_pow_const d)
 
+/-! ## G4.4h-step1  digit — base-m digit extraction -/
+
+/-- The `i`-th digit of `k` in base `m`: `(k / m^i) % m`. -/
+def digit (m k i : ℕ) : ℕ := (k / m ^ i) % m
+
+/-- For fixed `m`, `(k, i) ↦ digit m k i` is Primrec₂. -/
+theorem primrec_digit (m : ℕ) : Primrec₂ (fun k i : ℕ => digit m k i) := by
+  unfold digit
+  have h_pow : Primrec (fun p : ℕ × ℕ => m ^ p.2) :=
+    primrec_nat_pow.comp (Primrec.const m) Primrec.snd
+  have h_div : Primrec (fun p : ℕ × ℕ => p.1 / m ^ p.2) :=
+    Primrec.nat_div.comp Primrec.fst h_pow
+  exact Primrec.nat_mod.comp h_div (Primrec.const m)
+
 /-! ## G4.4g  N_bar_eq_fin_arrow_card — transport count via patternFnEquiv -/
 
 /-- `N_bar F L n` equals the cardinality of admissible functions `Fin (n^d) → α`
