@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "symdyn-complexity-mcp"
+version = "0.1.0"
+description = "MCP server for pattern-complexity tooling: p_X(n), p_x(m,n), period search, Nivat-condition tests, Morse–Hedlund"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "fastmcp>=2.0",
+    # Phase B will add: numpy
+]
+
+[project.scripts]
+symdyn-complexity-mcp = "symdyn_complexity.server:main"
+
+[dependency-groups]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.23"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/symdyn_complexity"]
