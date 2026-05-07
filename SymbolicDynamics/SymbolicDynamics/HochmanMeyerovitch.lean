@@ -596,6 +596,14 @@ theorem Pattern.rCompatible.globallyAdmissible {α : Type*} {d : ℕ} [Topologic
   have hu := happ ⟨v.val, hv⟩
   rwa [Pattern.unionDisjoint_left a _ v.val v.property] at hu
 
+/-! ## C11  symBox_disjoint_sdiff — Q_k disjoint from Q_N \ Q_{k+r} -/
+
+theorem symBox_disjoint_sdiff {d k r N : ℕ} :
+    Disjoint (symBox d k) (symBox d N \ symBox d (k + r)) := by
+  apply Finset.disjoint_left.mpr
+  intro x hxk hxN
+  exact (Finset.mem_sdiff.mp hxN).2 (symBox_mono (Nat.le_add_right k r) hxk)
+
 /-! ## D1  N_X_submultiplicative — N_X is submultiplicative on disjoint unions -/
 
 theorem N_X_submultiplicative {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
