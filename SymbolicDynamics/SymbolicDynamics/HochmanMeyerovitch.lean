@@ -654,6 +654,12 @@ to a uniform-shape function type, useful for transferring computability argument
 def patternFnEquiv (α : Type*) (d n : ℕ) : Pattern α (box d n) ≃ (Fin (n^d) → α) :=
   Equiv.arrowCongr (boxIxEquiv d n) (Equiv.refl α)
 
+/-- Cardinality formula via the uniform-shape bridge: `|Pattern α (box d n)| = |α|^(n^d)`. -/
+theorem fintype_card_pattern_eq {α : Type*} [Fintype α] (d n : ℕ) :
+    Fintype.card (Pattern α (box d n)) = (Fintype.card α) ^ (n ^ d) := by
+  rw [Fintype.card_congr (patternFnEquiv α d n)]
+  simp [Fintype.card_pi_const]
+
 /-! ## C4a  boxIndex — computable enumeration of `box d n` via base-n digits -/
 
 /-- The `i`-th element of `box d n` under the canonical base-`n` digit enumeration. -/
