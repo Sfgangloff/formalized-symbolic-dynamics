@@ -509,6 +509,43 @@ theorem box_zero {d : ℕ} (hd : 0 < d) : box d 0 = ∅ := by
   haveI : Nonempty (Fin d) := ⟨⟨0, hd⟩⟩
   simp [box]
 
+/-! ## C5  symBox  Q_n = {-n,...,n}^d -/
+
+/-- The symmetric cube `Q_n = {-n,...,n}^d ⊆ ℤ^d`. -/
+def symBox (d n : ℕ) : Finset (Lat d) :=
+  Fintype.piFinset (fun _ : Fin d => Finset.Icc (-(n : ℤ)) (n : ℤ))
+
+/-! ## C6  symBox_card  -/
+
+@[simp]
+theorem symBox_card (d n : ℕ) : (symBox d n).card = (2 * n + 1) ^ d := by
+  simp only [symBox, Fintype.card_piFinset, Int.card_Icc]
+  have h_each : ((n : ℤ) + 1 + (n : ℤ)).toNat = 2 * n + 1 := by
+    have heq : ((n : ℤ) + 1 + (n : ℤ)) = ((2 * n + 1 : ℕ) : ℤ) := by push_cast; ring
+    rw [heq, Int.toNat_natCast]
+  rw [Finset.prod_const]
+  simp [h_each]
+
+/-! ## C7  symBox_mono  -/
+
+theorem symBox_mono {d m n : ℕ} (hmn : m ≤ n) : symBox d m ⊆ symBox d n :=
+  Fintype.piFinset_subset _ _ (fun _ => Finset.Icc_subset_Icc
+    (by exact_mod_cast neg_le_neg (by exact_mod_cast hmn))
+    (by exact_mod_cast hmn))
+
+/-! ## C8  box_subset_symBox  box d (n+1) ⊆ symBox d n -/
+
+theorem box_subset_symBox {d n : ℕ} : box d (n + 1) ⊆ symBox d n := by
+  intro u hu
+  simp only [box, symBox, Fintype.mem_piFinset, Finset.mem_Ico, Finset.mem_Icc] at hu ⊢
+  intro i
+  obtain ⟨h1, h2⟩ := hu i
+  refine ⟨?_, ?_⟩
+  · have : -(n : ℤ) ≤ 0 := by linarith [Int.ofNat_nonneg n]
+    linarith
+  · push_cast at h2
+    linarith
+
 /-! ## D1  N_X_submultiplicative — N_X is submultiplicative on disjoint unions -/
 
 theorem N_X_submultiplicative {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
