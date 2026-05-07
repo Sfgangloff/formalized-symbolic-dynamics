@@ -125,6 +125,9 @@ Tick the checkbox when the item compiles without errors.
 - [x] J4  `theorem box_subset_symBox`
 - [x] J5  `def Pattern.unionDisjoint`  (combine patterns on disjoint supports)
 - [x] J6  `def Pattern.rCompatible`  (r-compatibility on symmetric cubes)
+- [x] J6a `theorem Pattern.rCompatible.globallyAdmissible`  (inner pattern is gloAdm)
+- [x] J6b `theorem symBox_disjoint_sdiff`  (Q_k disjoint from Q_N \ Q_{k+r})
+- [x] J6c `theorem Lat.supNorm_sub_ge_of_inner_outer`  (geometric separation ≥ r+1)
 - [ ] J7  Lemma 3.4 (compactness dichotomy)
 - [ ] J8  Corollary 3.5 (decidability of global admissibility)
 - [ ] J9  Theorem 1.3 (entropy of irreducible SFT is computable)
