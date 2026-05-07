@@ -128,6 +128,9 @@ Tick the checkbox when the item compiles without errors.
 - [x] J6a `theorem Pattern.rCompatible.globallyAdmissible`  (inner pattern is gloAdm)
 - [x] J6b `theorem symBox_disjoint_sdiff`  (Q_k disjoint from Q_N \ Q_{k+r})
 - [x] J6c `theorem Lat.supNorm_sub_ge_of_inner_outer`  (geometric separation ≥ r+1)
+- [x] J6d `theorem Lat.supNorm_neg`, `Lat.supNorm_sub_comm`
+- [x] J6e `theorem Pattern.globallyAdmissible_iff_appearsAt_zero`  (offset 0 normalization)
+- [x] J6f `theorem Pattern.rCompatible_of_irreducible`  (irreducibility → r-compatibility)
 - [ ] J7  Lemma 3.4 (compactness dichotomy)
 - [ ] J8  Corollary 3.5 (decidability of global admissibility)
 - [ ] J9  Theorem 1.3 (entropy of irreducible SFT is computable)
