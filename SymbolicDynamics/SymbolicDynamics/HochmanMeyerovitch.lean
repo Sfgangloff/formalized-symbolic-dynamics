@@ -1433,6 +1433,10 @@ theorem primrec_digit (m : ℕ) : Primrec₂ (fun k i : ℕ => digit m k i) := b
     Primrec.nat_div.comp Primrec.fst h_pow
   exact Primrec.nat_mod.comp h_div (Primrec.const m)
 
+/-- Each digit is less than the base. -/
+theorem digit_lt {m : ℕ} (hm : 0 < m) (k i : ℕ) : digit m k i < m :=
+  Nat.mod_lt _ hm
+
 /-! ## G4.4g  N_bar_eq_fin_arrow_card — transport count via patternFnEquiv -/
 
 /-- `N_bar F L n` equals the cardinality of admissible functions `Fin (n^d) → α`
