@@ -360,6 +360,40 @@ def relevantOffsets {d : ℕ} (F E : Finset (Lat d)) : Finset (Lat d) :=
     ((F ×ˢ E).image (fun p : Lat d × Lat d => p.2 - p.1)).filter
       (fun u => ∀ w ∈ F, w + u ∈ E)
 
+/-! ## G4.2  locallyAdmissible_iff_relevantOffsets — finite reformulation -/
+
+theorem locallyAdmissible_iff_relevantOffsets {α : Type*} {d : ℕ}
+    {E : Finset (Lat d)} (F : Finset (Lat d)) (L : Finset (Pattern α F)) (a : Pattern α E) :
+    locallyAdmissible F L a ↔
+    ∀ u ∈ relevantOffsets F E, ∀ (h : ∀ v : F, v.val + u ∈ E),
+      (fun v : F => a ⟨v.val + u, h v⟩) ∈ L := by
+  constructor
+  · intro hloc u _ h
+    exact hloc u h
+  · intro hloc u h
+    by_cases hF : F = ∅
+    · subst hF
+      have h0_rel : (0 : Lat d) ∈ relevantOffsets (∅ : Finset (Lat d)) E := by
+        unfold relevantOffsets
+        rw [if_pos rfl]
+        exact Finset.mem_singleton.mpr rfl
+      have h0_triv : ∀ v : ((∅ : Finset (Lat d)) : Finset (Lat d)), v.val + 0 ∈ E :=
+        fun v => absurd v.property (Finset.notMem_empty v.val)
+      have h0_apply := hloc 0 h0_rel h0_triv
+      have heq : (fun v : ((∅ : Finset (Lat d)) : Finset (Lat d)) => a ⟨v.val + u, h v⟩) =
+          (fun v : ((∅ : Finset (Lat d)) : Finset (Lat d)) => a ⟨v.val + 0, h0_triv v⟩) := by
+        funext v
+        exact absurd v.property (Finset.notMem_empty v.val)
+      rw [heq]; exact h0_apply
+    · have hu_in : u ∈ relevantOffsets F E := by
+        unfold relevantOffsets
+        rw [if_neg hF, Finset.mem_filter]
+        refine ⟨?_, fun w hw => h ⟨w, hw⟩⟩
+        obtain ⟨v, hv⟩ := Finset.nonempty_iff_ne_empty.mpr hF
+        simp only [Finset.mem_image, Finset.mem_product]
+        refine ⟨(v, v + u), ⟨hv, h ⟨v, hv⟩⟩, by simp⟩
+      exact hloc u hu_in h
+
 /-! ## 0.36  ShiftIrreducible — X is r-irreducible -/
 
 /-- Subshift `X` is `r`-irreducible if every two globally admissible patterns on
