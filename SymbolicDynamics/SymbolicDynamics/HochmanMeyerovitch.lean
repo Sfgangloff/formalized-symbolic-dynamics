@@ -604,6 +604,22 @@ theorem symBox_disjoint_sdiff {d k r N : ℕ} :
   intro x hxk hxN
   exact (Finset.mem_sdiff.mp hxN).2 (symBox_mono (Nat.le_add_right k r) hxk)
 
+/-! ## globallyAdmissible_iff_appearsAt_zero — normalize to offset 0 via shift -/
+
+theorem Pattern.globallyAdmissible_iff_appearsAt_zero {α : Type*} {d : ℕ}
+    [TopologicalSpace α] {X : Subshift α d} {F : Finset (Lat d)} (p : Pattern α F) :
+    Pattern.GloballyAdmissible X p ↔ ∃ x ∈ X, Pattern.AppearsAt p x 0 := by
+  constructor
+  · rintro ⟨x, hx, u, happ⟩
+    refine ⟨FullShift.shiftMap u x, X.isInvariant u x hx, ?_⟩
+    intro v
+    have : (FullShift.shiftMap u x) (v.val + 0) = x (v.val + u) := by
+      simp [FullShift.shiftMap]
+    rw [this]
+    exact happ v
+  · rintro ⟨x, hx, happ⟩
+    exact ⟨x, hx, 0, happ⟩
+
 /-! ## C12  supNorm separation between Q_k and Q_N \ Q_{k+r} -/
 
 /-- For `u ∈ Q_k` and `v ∈ Q_N \ Q_{k+r}`, the supremum-norm distance is at least `r + 1`. -/
