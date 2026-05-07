@@ -220,6 +220,18 @@ theorem cylinder_isClosed {α : Type*} {d : ℕ} {F : Finset (Lat d)} [Topologic
   change IsClosed ((fun x : FullShift α d => x (v.val + u)) ⁻¹' {p v})
   exact IsClosed.preimage (continuous_apply (v.val + u)) isClosed_singleton
 
+/-! ## Pattern ↔ List bridge — uniform List α encoding via `Finset.toList` -/
+
+/-- Encode a pattern as a list of its values along the canonical `F.toList` order.
+Marked noncomputable because `Finset.toList` is noncomputable; used only for
+equational reasoning, not as a runtime algorithm. -/
+noncomputable def toList {α : Type*} {d : ℕ} {F : Finset (Lat d)} (p : Pattern α F) : List α :=
+  F.toList.attach.map (fun b => p ⟨b.val, Finset.mem_toList.mp b.property⟩)
+
+theorem toList_length {α : Type*} {d : ℕ} {F : Finset (Lat d)} (p : Pattern α F) :
+    p.toList.length = F.card := by
+  simp [Pattern.toList, Finset.length_toList]
+
 end Pattern
 
 /-! ## 0.25  Subshift — closed shift-invariant subset of FullShift α d -/
