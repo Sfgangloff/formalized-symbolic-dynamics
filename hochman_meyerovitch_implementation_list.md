@@ -117,8 +117,13 @@ Tick the checkbox when the item compiles without errors.
 - [x] G4.4g' `theorem fintype_card_pattern_eq` (`|Pattern α (box d n)| = |α|^(n^d)` via the bridge)
 - [x] G4.4h-pre `theorem primrec_nat_pow`, `primrec_pow_const`, `primrec_const_pow_pow`
             (Primrec helpers for the iteration bound `(card α)^(n^d)`)
-- [ ] G4.4h Define a Primrec₂ predicate `(n, k) ↦ Bool` decoding k as a function
-            Fin (n^d) → α and checking admissibility
+- [x] G4.4h-step1 `def digit`, `theorem primrec_digit`, `digit_lt`
+            (base-m digit extraction, Primrec₂)
+- [x] G4.4h-step2 `def decodeList`, `theorem primrec_decodeList`,
+            `decodeList_length`, `decodeList_get`
+            (list-of-digits encoding as uniform-shape representation)
+- [ ] G4.4h-step3 Bridge `decodeList` to admissibility check (Primrec₂ predicate)
+            (likely needs `[FinEnum α]` or direct `Encodable.decode` use)
 - [ ] G4.4i Compose with `Nat.count` or `List.range`+filter to get Primrec N_bar
 - [ ] G4.4 `theorem N_bar_computable` — Lean-level `Computable (fun n => N_bar F L n)`
 
