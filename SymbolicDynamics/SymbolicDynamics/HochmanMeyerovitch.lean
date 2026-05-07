@@ -394,6 +394,13 @@ theorem locallyAdmissible_iff_relevantOffsets {α : Type*} {d : ℕ}
         refine ⟨(v, v + u), ⟨hv, h ⟨v, hv⟩⟩, by simp⟩
       exact hloc u hu_in h
 
+/-! ## G4.3  decidable_locallyAdmissible — decidable instance -/
+
+instance decidable_locallyAdmissible {α : Type*} {d : ℕ} [DecidableEq α]
+    {E : Finset (Lat d)} (F : Finset (Lat d)) (L : Finset (Pattern α F)) (a : Pattern α E) :
+    Decidable (locallyAdmissible F L a) :=
+  decidable_of_iff _ (locallyAdmissible_iff_relevantOffsets F L a).symm
+
 /-! ## 0.36  ShiftIrreducible — X is r-irreducible -/
 
 /-- Subshift `X` is `r`-irreducible if every two globally admissible patterns on
