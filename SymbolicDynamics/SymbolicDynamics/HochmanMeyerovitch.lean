@@ -567,6 +567,20 @@ theorem box_subset_symBox {d n : ℕ} : box d (n + 1) ⊆ symBox d n := by
   · push_cast at h2
     linarith
 
+/-! ## C9  Pattern.rCompatible — r-compatibility of two symmetric-cube patterns -/
+
+/-- Patterns `a : Pattern α (Q_k)` and `b : Pattern α (Q_N)` are `r`-compatible (with
+respect to subshift `X`) if `k + r + 1 ≤ N` and the joined pattern with `a` on the
+inner cube `Q_k` and `b` on the outer ring `Q_N \ Q_{k+r}` is globally admissible
+in `X`. The "gap" `Q_{k+r} \ Q_k` is left unconstrained. -/
+def Pattern.rCompatible {α : Type*} {d : ℕ} [TopologicalSpace α]
+    (X : Subshift α d) (r : ℕ) {k N : ℕ}
+    (a : Pattern α (symBox d k)) (b : Pattern α (symBox d N)) : Prop :=
+  k + r + 1 ≤ N ∧
+  Pattern.GloballyAdmissible X
+    (Pattern.unionDisjoint a
+      (Pattern.restrict (symBox d N \ symBox d (k + r)) Finset.sdiff_subset b))
+
 /-! ## D1  N_X_submultiplicative — N_X is submultiplicative on disjoint unions -/
 
 theorem N_X_submultiplicative {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
