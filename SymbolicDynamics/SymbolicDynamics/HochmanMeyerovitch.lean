@@ -988,6 +988,31 @@ theorem topEntropy_antitone {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpac
   calc sInf _ ≤ logN X n / (n : ℝ) ^ d := csInf_le hbdd hX_in
     _ ≤ logN Y n / (n : ℝ) ^ d := by gcongr
 
+/-! ## topEntropy_bot — empty subshift has zero entropy -/
+
+theorem topEntropy_bot {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α] :
+    topEntropy (Subshift.bot α d) = 0 := by
+  unfold topEntropy
+  have h_zero : ∀ n : ℕ, 1 ≤ n →
+      logN (Subshift.bot α d) n / (n : ℝ) ^ d = 0 := by
+    intro n _
+    unfold logN N_X
+    have hempty : {p : Pattern α (box d n) |
+        Pattern.GloballyAdmissible (Subshift.bot α d) p} = ∅ := by
+      ext p
+      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+      rintro ⟨x, hx, _⟩
+      exact absurd hx (Set.notMem_empty _)
+    rw [hempty, Set.ncard_empty, Nat.cast_zero, Real.log_zero, zero_div]
+  have himg : (fun n : ℕ => logN (Subshift.bot α d) n / (n : ℝ) ^ d) '' Set.Ici 1 = {0} := by
+    ext y
+    simp only [Set.mem_image, Set.mem_Ici, Set.mem_singleton_iff]
+    refine ⟨?_, ?_⟩
+    · rintro ⟨n, hn, rfl⟩; exact h_zero n hn
+    · intro hy; exact ⟨1, le_rfl, by rw [h_zero 1 le_rfl]; exact hy.symm⟩
+  rw [himg]
+  exact csInf_singleton _
+
 /-! ## E5  topEntropy_le_log_card — universal upper bound -/
 
 /-- Every subshift's topological entropy is bounded by `log |α|`. -/
