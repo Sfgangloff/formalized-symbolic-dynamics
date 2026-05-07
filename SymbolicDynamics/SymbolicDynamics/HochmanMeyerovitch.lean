@@ -1396,3 +1396,18 @@ theorem N_bar_mono {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
   refine ⟨hp.1, ?_⟩
   intro u hu
   exact hL (hp.2 u hu)
+
+/-! ## G4.4g  N_bar_eq_fin_arrow_card — transport count via patternFnEquiv -/
+
+/-- `N_bar F L n` equals the cardinality of admissible functions `Fin (n^d) → α`
+(under the transferred predicate via `patternFnEquiv`). This puts the count over
+a uniform-shape function type, key step toward Computable N_bar. -/
+theorem N_bar_eq_fin_arrow_card {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n : ℕ) :
+    N_bar F L n =
+      Fintype.card { f : Fin (n^d) → α //
+        locallyAdmissible F L ((patternFnEquiv α d n).symm f) } := by
+  rw [N_bar_eq_fintype_card_subtype]
+  refine Fintype.card_congr (Equiv.subtypeEquiv (patternFnEquiv α d n) ?_)
+  intro p
+  rw [Equiv.symm_apply_apply]
