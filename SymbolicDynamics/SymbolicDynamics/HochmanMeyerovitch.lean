@@ -1451,6 +1451,11 @@ theorem decodeList_get {m k len i : ℕ} (h : i < len) :
     (decodeList m k len).get ⟨i, by simp [h]⟩ = digit m k i := by
   simp [decodeList]
 
+theorem decodeList_lt {m : ℕ} (hm : 0 < m) (k len i : ℕ) (h : i < len) :
+    (decodeList m k len).get ⟨i, by simp [h]⟩ < m := by
+  rw [decodeList_get h]
+  exact digit_lt hm _ _
+
 /-- For fixed `m`, `(k, len) ↦ decodeList m k len` is Primrec₂. -/
 theorem primrec_decodeList (m : ℕ) : Primrec₂ (fun k len : ℕ => decodeList m k len) := by
   unfold decodeList
