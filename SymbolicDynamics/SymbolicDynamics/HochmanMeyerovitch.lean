@@ -522,6 +522,17 @@ theorem N_X_pos_of_nonempty {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpac
   intro v
   simp [Pattern.ofColoring]
 
+/-! ## globallyAdmissible_restrict — restriction preserves global admissibility -/
+
+theorem Pattern.globallyAdmissible_restrict {α : Type*} {d : ℕ} [TopologicalSpace α]
+    {X : Subshift α d} {F : Finset (Lat d)} (G : Finset (Lat d)) (hGF : G ⊆ F)
+    {p : Pattern α F} (hp : Pattern.GloballyAdmissible X p) :
+    Pattern.GloballyAdmissible X (Pattern.restrict G hGF p) := by
+  obtain ⟨x, hxX, u, happ⟩ := hp
+  refine ⟨x, hxX, u, ?_⟩
+  intro v
+  exact happ ⟨v.val, hGF v.property⟩
+
 /-! ## B6  N_X_mono_support — N_X monotone in support -/
 
 /-- If `F ⊆ G`, then there are at most as many globally admissible `F`-patterns as
