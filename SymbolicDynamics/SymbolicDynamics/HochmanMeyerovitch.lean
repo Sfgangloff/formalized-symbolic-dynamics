@@ -349,6 +349,17 @@ def locallyAdmissible {α : Type*} {d : ℕ} {E : Finset (Lat d)}
   ∀ u : Lat d, ∀ (h : ∀ v : F, v.val + u ∈ E),
     (fun v : F => a ⟨v.val + u, h v⟩) ∈ L
 
+/-! ## G4.1  relevantOffsets — finite set of offsets where F + u ⊆ E -/
+
+/-- Finite set of offsets `u : Lat d` such that translating `F` by `u` keeps it within `E`.
+For empty `F` this returns `{0}` as a placeholder (the locally-admissible condition is
+then independent of `u`). -/
+def relevantOffsets {d : ℕ} (F E : Finset (Lat d)) : Finset (Lat d) :=
+  if F = ∅ then {(0 : Lat d)}
+  else
+    ((F ×ˢ E).image (fun p : Lat d × Lat d => p.2 - p.1)).filter
+      (fun u => ∀ w ∈ F, w + u ∈ E)
+
 /-! ## 0.36  ShiftIrreducible — X is r-irreducible -/
 
 /-- Subshift `X` is `r`-irreducible if every two globally admissible patterns on
