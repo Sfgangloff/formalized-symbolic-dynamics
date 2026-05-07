@@ -115,8 +115,11 @@ Tick the checkbox when the item compiles without errors.
             `def patternFnEquiv : Pattern α (box d n) ≃ (Fin (n^d) → α)`
 - [x] G4.4g `theorem N_bar_eq_fin_arrow_card` (transports count to `Fin (n^d) → α`)
 - [x] G4.4g' `theorem fintype_card_pattern_eq` (`|Pattern α (box d n)| = |α|^(n^d)` via the bridge)
-- [ ] G4.4h Express via list enumeration / Primcodable.finArrow uniform encoding
-            (likely needs `[FinEnum α]` or `[Primcodable α]` hypothesis)
+- [x] G4.4h-pre `theorem primrec_nat_pow`, `primrec_pow_const`, `primrec_const_pow_pow`
+            (Primrec helpers for the iteration bound `(card α)^(n^d)`)
+- [ ] G4.4h Define a Primrec₂ predicate `(n, k) ↦ Bool` decoding k as a function
+            Fin (n^d) → α and checking admissibility
+- [ ] G4.4i Compose with `Nat.count` or `List.range`+filter to get Primrec N_bar
 - [ ] G4.4 `theorem N_bar_computable` — Lean-level `Computable (fun n => N_bar F L n)`
 
 ### H — Key axioms for Theorem 3.1
