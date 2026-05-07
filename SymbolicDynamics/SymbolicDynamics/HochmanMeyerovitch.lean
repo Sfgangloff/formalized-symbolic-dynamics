@@ -232,6 +232,27 @@ theorem toList_length {α : Type*} {d : ℕ} {F : Finset (Lat d)} (p : Pattern �
     p.toList.length = F.card := by
   simp [Pattern.toList, Finset.length_toList]
 
+/-! ## unionDisjoint — combine two patterns on disjoint supports -/
+
+/-- Combine two patterns on disjoint Finsets into a pattern on their union. -/
+def unionDisjoint {α : Type*} {d : ℕ} {A B : Finset (Lat d)}
+    (p : Pattern α A) (q : Pattern α B) : Pattern α (A ∪ B) :=
+  fun v =>
+    if h : v.val ∈ A then p ⟨v.val, h⟩
+    else q ⟨v.val, (Finset.mem_union.mp v.property).resolve_left h⟩
+
+@[simp]
+theorem unionDisjoint_left {α : Type*} {d : ℕ} {A B : Finset (Lat d)}
+    (p : Pattern α A) (q : Pattern α B) (v : Lat d) (hv : v ∈ A) :
+    unionDisjoint p q ⟨v, Finset.mem_union_left _ hv⟩ = p ⟨v, hv⟩ := by
+  simp [unionDisjoint, hv]
+
+theorem unionDisjoint_right {α : Type*} {d : ℕ} {A B : Finset (Lat d)}
+    (hAB : Disjoint A B) (p : Pattern α A) (q : Pattern α B) (v : Lat d) (hv : v ∈ B) :
+    unionDisjoint p q ⟨v, Finset.mem_union_right _ hv⟩ = q ⟨v, hv⟩ := by
+  have hnA : v ∉ A := fun hA => (Finset.disjoint_left.mp hAB) hA hv
+  simp [unionDisjoint, hnA]
+
 end Pattern
 
 /-! ## 0.25  Subshift — closed shift-invariant subset of FullShift α d -/
