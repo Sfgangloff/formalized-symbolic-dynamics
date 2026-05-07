@@ -628,7 +628,7 @@ theorem boxIndex_mem {d n i : ℕ} (hi : i < n ^ d) : boxIndex d n i ∈ box d n
       exact absurd hi (Nat.not_lt_zero _)
     · exact hn
   show 0 ≤ ((i / n ^ j.val) % n : ℤ) ∧ ((i / n ^ j.val) % n : ℤ) < (n : ℤ)
-  refine ⟨Int.ofNat_nonneg _, ?_⟩
+  refine ⟨Int.natCast_nonneg _, ?_⟩
   exact_mod_cast Nat.mod_lt _ hn_pos
 
 /-! ## C5  symBox  Q_n = {-n,...,n}^d -/
@@ -663,7 +663,7 @@ theorem box_subset_symBox {d n : ℕ} : box d (n + 1) ⊆ symBox d n := by
   intro i
   obtain ⟨h1, h2⟩ := hu i
   refine ⟨?_, ?_⟩
-  · have : -(n : ℤ) ≤ 0 := by linarith [Int.ofNat_nonneg n]
+  · have : -(n : ℤ) ≤ 0 := by linarith [Int.natCast_nonneg n]
     linarith
   · push_cast at h2
     linarith
