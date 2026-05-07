@@ -1403,6 +1403,14 @@ theorem N_bar_mono {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
   intro u hu
   exact hL (hp.2 u hu)
 
+/-! ## G4.4h-pre  Primrec helper for `(Fintype.card α)^(n^d)` -/
+
+/-- `Primrec₂ HPow.hPow : Primrec₂ (· ^ · : ℕ → ℕ → ℕ)`, derived from
+`Nat.Primrec.pow` via `Primrec.nat_iff`. Useful for the iteration bound
+`(Fintype.card α)^(n^d)` in the eventual Computable N_bar algorithm. -/
+theorem primrec_nat_pow : Primrec₂ (fun a b : ℕ => a ^ b) :=
+  Primrec.nat_iff.mpr Nat.Primrec.pow
+
 /-! ## G4.4g  N_bar_eq_fin_arrow_card — transport count via patternFnEquiv -/
 
 /-- `N_bar F L n` equals the cardinality of admissible functions `Fin (n^d) → α`
