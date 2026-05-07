@@ -610,6 +610,39 @@ theorem box_zero {d : ℕ} (hd : 0 < d) : box d 0 = ∅ := by
   haveI : Nonempty (Fin d) := ⟨⟨0, hd⟩⟩
   simp [box]
 
+/-! ## C4a-pre  boxFnEquiv — bijection `↥(box d n) ≃ (Fin d → Fin n)` -/
+
+/-- The subtype of elements in `box d n` is in computable bijection with `Fin d → Fin n`. -/
+def boxFnEquiv (d n : ℕ) : ↥(box d n) ≃ (Fin d → Fin n) where
+  toFun v := fun j =>
+    ⟨(v.val j).toNat, by
+      have hv := v.property
+      simp only [box, Fintype.mem_piFinset, Finset.mem_Ico] at hv
+      obtain ⟨h1, h2⟩ := hv j
+      have : (v.val j).toNat < n := by
+        have h2' : v.val j < (n : ℤ) := h2
+        have hnn : (0 : ℤ) ≤ v.val j := h1
+        rw [Int.toNat_lt hnn]
+        exact_mod_cast h2
+      exact this⟩
+  invFun f :=
+    ⟨fun j => ((f j).val : ℤ), by
+      simp only [box, Fintype.mem_piFinset, Finset.mem_Ico]
+      intro j
+      refine ⟨Int.natCast_nonneg _, ?_⟩
+      exact_mod_cast (f j).is_lt⟩
+  left_inv v := by
+    ext j
+    have hv := v.property
+    simp only [box, Fintype.mem_piFinset, Finset.mem_Ico] at hv
+    obtain ⟨h1, _⟩ := hv j
+    show ((v.val j).toNat : ℤ) = v.val j
+    exact Int.toNat_of_nonneg h1
+  right_inv f := by
+    ext j
+    show (((f j).val : ℤ)).toNat = (f j).val
+    simp
+
 /-! ## C4a  boxIndex — computable enumeration of `box d n` via base-n digits -/
 
 /-- The `i`-th element of `box d n` under the canonical base-`n` digit enumeration. -/
