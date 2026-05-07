@@ -1505,6 +1505,19 @@ theorem primrec_decodeList (m : ℕ) : Primrec₂ (fun k len : ℕ => decodeList
     (primrec_digit m).comp (Primrec.fst.comp Primrec.fst) Primrec.snd
   exact Primrec.list_map h_range h_digit
 
+/-! ## G4.4h-step3  admissibleEncoded — Bool admissibility on encoded form -/
+
+/-- Admissibility check at the encoded level: given `(n, k)` with `m = Fintype.card α`,
+the natural number `k` corresponds (via base-`m` digits + `Encodable.decode`) to a
+function `Fin (n^d) → α`, hence to a pattern on `box d n`.
+This predicate says "for every relevant offset `u`, the F-pattern at `u` lies in `L`",
+expressed at the digit level. -/
+def admissibleEncoded {α : Type*} [Fintype α] [DecidableEq α] [Encodable α] {d : ℕ}
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n k : ℕ) : Prop :=
+  ∀ u ∈ relevantOffsets F (box d n),
+    ∃ ℓ ∈ L, ∀ v : F,
+      digit (Fintype.card α) k (boxIndexInv d n (v.val + u)) = Encodable.encode (ℓ v)
+
 /-! ## G4.4g  N_bar_eq_fin_arrow_card — transport count via patternFnEquiv -/
 
 /-- `N_bar F L n` equals the cardinality of admissible functions `Fin (n^d) → α`
