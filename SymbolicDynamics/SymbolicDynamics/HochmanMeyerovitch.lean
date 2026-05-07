@@ -268,6 +268,18 @@ theorem unionDisjoint_right {α : Type*} {d : ℕ} {A B : Finset (Lat d)}
   have hnA : v ∉ A := fun hA => (Finset.disjoint_left.mp hAB) hA hv
   simp [unionDisjoint, hnA]
 
+theorem restrict_unionDisjoint_left {α : Type*} {d : ℕ} {A B : Finset (Lat d)}
+    (p : Pattern α A) (q : Pattern α B) :
+    Pattern.restrict A Finset.subset_union_left (Pattern.unionDisjoint p q) = p := by
+  funext v
+  exact Pattern.unionDisjoint_left p q v.val v.property
+
+theorem restrict_unionDisjoint_right {α : Type*} {d : ℕ} {A B : Finset (Lat d)}
+    (hAB : Disjoint A B) (p : Pattern α A) (q : Pattern α B) :
+    Pattern.restrict B Finset.subset_union_right (Pattern.unionDisjoint p q) = q := by
+  funext v
+  exact Pattern.unionDisjoint_right hAB p q v.val v.property
+
 end Pattern
 
 /-! ## 0.25  Subshift — closed shift-invariant subset of FullShift α d -/
