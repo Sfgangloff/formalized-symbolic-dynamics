@@ -1292,6 +1292,18 @@ theorem N_X_le_N_bar {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
     Set.mem_setOf_eq]
   exact Pattern.globally_imp_locally F L p hp
 
+/-! ## G4.4d  N_bar_eq_fintype_card_subtype — alternative formulation -/
+
+/-- `N_bar F L n` equals the cardinality of the subtype of locally admissible
+n-box patterns. Useful for transferring to alternative formulations. -/
+theorem N_bar_eq_fintype_card_subtype {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n : ℕ) :
+    N_bar F L n =
+      Fintype.card { p : Pattern α (box d n) // locallyAdmissible F L p } := by
+  unfold N_bar locallyAdmissiblePatterns
+  exact (Fintype.subtype_card (Finset.univ.filter (locallyAdmissible F L))
+    (by intro p; simp)).symm
+
 /-! ## G4.4a  N_bar_le_card_pow — trivial bound -/
 
 /-- The number of locally admissible n-box patterns is at most `|α|^(n^d)`. -/
