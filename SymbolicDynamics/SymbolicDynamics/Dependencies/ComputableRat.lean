@@ -3,6 +3,9 @@ import Mathlib.Data.Rat.Defs
 import Mathlib.Data.Rat.Encodable
 import Mathlib.Data.Rat.Lemmas
 import Mathlib.Tactic.Ring
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Positivity
+import Mathlib.Algebra.Order.Ring.Int
 
 /-! # Computability infrastructure for `ℚ`
 
@@ -537,5 +540,146 @@ theorem computable_sub_one_div_succ {q : ℕ → ℚ} (hq : Computable q) :
     computable_rat_neg.comp h1
   refine h2.of_eq (fun n => ?_)
   ring
+
+/-! ## Primrec / PrimrecRel for `(· ≤ ·) : ℚ → ℚ → Prop`
+
+Bypasses the lack of Primrec ℤ multiplication by deciding the comparison
+directly on the structured `Nat.pair (encode num) den` encoding via
+case-analysis on the parities of the encoded numerators (sign bits). -/
+
+/-- Decide `a ≤ b` for rationals `a`, `b` directly on their structured encodings
+`encA`, `encB`. Implemented via case-split on numerator signs. -/
+def ratLeEnc (encA encB : ℕ) : Bool :=
+  let A_e := encA.unpair.fst
+  let A_d := encA.unpair.snd
+  let B_e := encB.unpair.fst
+  let B_d := encB.unpair.snd
+  let a_abs := (A_e + 1) / 2
+  let b_abs := (B_e + 1) / 2
+  if A_e % 2 = 0 then
+    if B_e % 2 = 0 then decide (a_abs * B_d ≤ b_abs * A_d)
+    else false
+  else
+    if B_e % 2 = 0 then true
+    else decide (b_abs * A_d ≤ a_abs * B_d)
+
+theorem primrec_ratLeEnc : Primrec₂ ratLeEnc := by
+  have hAE : Primrec (fun p : ℕ × ℕ => p.1.unpair.fst) :=
+    Primrec.fst.comp (Primrec.unpair.comp Primrec.fst)
+  have hAD : Primrec (fun p : ℕ × ℕ => p.1.unpair.snd) :=
+    Primrec.snd.comp (Primrec.unpair.comp Primrec.fst)
+  have hBE : Primrec (fun p : ℕ × ℕ => p.2.unpair.fst) :=
+    Primrec.fst.comp (Primrec.unpair.comp Primrec.snd)
+  have hBD : Primrec (fun p : ℕ × ℕ => p.2.unpair.snd) :=
+    Primrec.snd.comp (Primrec.unpair.comp Primrec.snd)
+  have h_aabs : Primrec (fun p : ℕ × ℕ => (p.1.unpair.fst + 1) / 2) :=
+    Primrec.nat_div.comp (Primrec.succ.comp hAE) (Primrec.const 2)
+  have h_babs : Primrec (fun p : ℕ × ℕ => (p.2.unpair.fst + 1) / 2) :=
+    Primrec.nat_div.comp (Primrec.succ.comp hBE) (Primrec.const 2)
+  have h_aE_even : PrimrecPred (fun p : ℕ × ℕ => p.1.unpair.fst % 2 = 0) :=
+    Primrec.eq.comp (Primrec.nat_mod.comp hAE (Primrec.const 2)) (Primrec.const 0)
+  have h_bE_even : PrimrecPred (fun p : ℕ × ℕ => p.2.unpair.fst % 2 = 0) :=
+    Primrec.eq.comp (Primrec.nat_mod.comp hBE (Primrec.const 2)) (Primrec.const 0)
+  have h_aabs_BD : Primrec (fun p : ℕ × ℕ =>
+      (p.1.unpair.fst + 1) / 2 * p.2.unpair.snd) :=
+    Primrec.nat_mul.comp h_aabs hBD
+  have h_babs_AD : Primrec (fun p : ℕ × ℕ =>
+      (p.2.unpair.fst + 1) / 2 * p.1.unpair.snd) :=
+    Primrec.nat_mul.comp h_babs hAD
+  have h_pos_pos : PrimrecPred (fun p : ℕ × ℕ =>
+      (p.1.unpair.fst + 1) / 2 * p.2.unpair.snd ≤
+      (p.2.unpair.fst + 1) / 2 * p.1.unpair.snd) :=
+    Primrec.nat_le.comp h_aabs_BD h_babs_AD
+  have h_neg_neg : PrimrecPred (fun p : ℕ × ℕ =>
+      (p.2.unpair.fst + 1) / 2 * p.1.unpair.snd ≤
+      (p.1.unpair.fst + 1) / 2 * p.2.unpair.snd) :=
+    Primrec.nat_le.comp h_babs_AD h_aabs_BD
+  have h_inner_a : Primrec (fun p : ℕ × ℕ =>
+      (if p.2.unpair.fst % 2 = 0 then
+        decide ((p.1.unpair.fst + 1) / 2 * p.2.unpair.snd ≤
+                (p.2.unpair.fst + 1) / 2 * p.1.unpair.snd)
+       else false : Bool)) :=
+    Primrec.ite h_bE_even h_pos_pos.decide (Primrec.const false)
+  have h_inner_b : Primrec (fun p : ℕ × ℕ =>
+      (if p.2.unpair.fst % 2 = 0 then true
+       else decide ((p.2.unpair.fst + 1) / 2 * p.1.unpair.snd ≤
+                    (p.1.unpair.fst + 1) / 2 * p.2.unpair.snd) : Bool)) :=
+    Primrec.ite h_bE_even (Primrec.const true) h_neg_neg.decide
+  exact Primrec₂.mk (Primrec.ite h_aE_even h_inner_a h_inner_b)
+
+theorem ratLeEnc_iff (a b : ℚ) :
+    ratLeEnc (Encodable.encode a) (Encodable.encode b) = decide (a ≤ b) := by
+  rw [Bool.decide_congr (Rat.le_iff a b)]
+  rw [rat_encode_eq, rat_encode_eq]
+  unfold ratLeEnc
+  simp only [Nat.unpair_pair]
+  rw [show ((Encodable.encode a.num) + 1) / 2 = a.num.natAbs from
+        (natAbs_eq_encode_div a.num).symm,
+      show ((Encodable.encode b.num) + 1) / 2 = b.num.natAbs from
+        (natAbs_eq_encode_div b.num).symm]
+  have ha_pos : (0 : ℤ) < (a.den : ℤ) := by exact_mod_cast a.pos
+  have hb_pos : (0 : ℤ) < (b.den : ℤ) := by exact_mod_cast b.pos
+  cases ha : a.num with
+  | ofNat ka =>
+    rw [show (Encodable.encode (Int.ofNat ka) : ℕ) = 2 * ka from rfl,
+        if_pos (Nat.mul_mod_right 2 ka)]
+    rw [show (Int.ofNat ka).natAbs = ka from rfl]
+    have hAcast : (Int.ofNat ka : ℤ) = (ka : ℤ) := rfl
+    cases hb : b.num with
+    | ofNat kb =>
+      rw [show (Encodable.encode (Int.ofNat kb) : ℕ) = 2 * kb from rfl,
+          if_pos (Nat.mul_mod_right 2 kb)]
+      rw [show (Int.ofNat kb).natAbs = kb from rfl]
+      apply Bool.decide_congr
+      rw [hAcast, show (Int.ofNat kb : ℤ) = (kb : ℤ) from rfl]
+      exact_mod_cast Iff.rfl
+    | negSucc kb =>
+      rw [show (Encodable.encode (Int.negSucc kb) : ℕ) = 2 * kb + 1 from rfl,
+          if_neg (by omega : (2 * kb + 1) % 2 ≠ 0)]
+      symm
+      apply decide_eq_false
+      rw [hAcast, show (Int.negSucc kb : ℤ) = -((kb + 1 : ℕ) : ℤ) from rfl]
+      intro h
+      have hL : (0 : ℤ) ≤ (ka : ℤ) * b.den := mul_nonneg (Int.natCast_nonneg _) hb_pos.le
+      have hRpos : (0 : ℤ) < ((kb + 1 : ℕ) : ℤ) * a.den :=
+        mul_pos (by exact_mod_cast Nat.succ_pos _) ha_pos
+      linarith
+  | negSucc ka =>
+    rw [show (Encodable.encode (Int.negSucc ka) : ℕ) = 2 * ka + 1 from rfl,
+        if_neg (by omega : (2 * ka + 1) % 2 ≠ 0)]
+    rw [show (Int.negSucc ka).natAbs = ka + 1 from rfl]
+    have hAcast : (Int.negSucc ka : ℤ) = -((ka + 1 : ℕ) : ℤ) := rfl
+    cases hb : b.num with
+    | ofNat kb =>
+      rw [show (Encodable.encode (Int.ofNat kb) : ℕ) = 2 * kb from rfl,
+          if_pos (Nat.mul_mod_right 2 kb)]
+      symm
+      apply decide_eq_true
+      rw [hAcast, show (Int.ofNat kb : ℤ) = (kb : ℤ) from rfl]
+      have hL : (0 : ℤ) ≤ (kb : ℤ) * a.den := mul_nonneg (Int.natCast_nonneg _) ha_pos.le
+      have hRpos : (0 : ℤ) < ((ka + 1 : ℕ) : ℤ) * b.den :=
+        mul_pos (by exact_mod_cast Nat.succ_pos _) hb_pos
+      linarith
+    | negSucc kb =>
+      rw [show (Encodable.encode (Int.negSucc kb) : ℕ) = 2 * kb + 1 from rfl,
+          if_neg (by omega : (2 * kb + 1) % 2 ≠ 0)]
+      rw [show (Int.negSucc kb).natAbs = kb + 1 from rfl]
+      apply Bool.decide_congr
+      rw [hAcast, show (Int.negSucc kb : ℤ) = -((kb + 1 : ℕ) : ℤ) from rfl]
+      constructor
+      · intro h
+        have h_int : ((kb + 1 : ℕ) : ℤ) * (a.den : ℤ) ≤ ((ka + 1 : ℕ) : ℤ) * (b.den : ℤ) := by
+          exact_mod_cast h
+        linarith
+      · intro h
+        have h_int : ((kb + 1 : ℕ) : ℤ) * (a.den : ℤ) ≤ ((ka + 1 : ℕ) : ℤ) * (b.den : ℤ) := by
+          linarith
+        exact_mod_cast h_int
+
+theorem primrec_rat_le : PrimrecRel ((· ≤ ·) : ℚ → ℚ → Prop) := by
+  refine Primrec₂.primrecRel ?_
+  refine Primrec.of_eq ?_ (fun p => ratLeEnc_iff p.1 p.2)
+  exact Primrec₂.comp primrec_ratLeEnc
+    (Primrec.encode.comp Primrec.fst) (Primrec.encode.comp Primrec.snd)
 
 end ComputableRat
