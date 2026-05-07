@@ -534,6 +534,18 @@ theorem N_X_pos_of_nonempty {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpac
   intro v
   simp [Pattern.ofColoring]
 
+/-! ## N_X_pos_iff_nonempty — N_X positive iff carrier is nonempty -/
+
+theorem N_X_pos_iff_nonempty {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
+    (X : Subshift α d) (F : Finset (Lat d)) :
+    0 < N_X X F ↔ X.carrier.Nonempty := by
+  constructor
+  · intro hpos
+    rw [N_X, Set.ncard_pos] at hpos
+    obtain ⟨_, x, hx, _⟩ := hpos
+    exact ⟨x, hx⟩
+  · exact N_X_pos_of_nonempty X F
+
 /-! ## globallyAdmissible_restrict — restriction preserves global admissibility -/
 
 theorem Pattern.globallyAdmissible_restrict {α : Type*} {d : ℕ} [TopologicalSpace α]
