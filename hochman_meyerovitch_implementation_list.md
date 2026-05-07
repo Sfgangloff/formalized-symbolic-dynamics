@@ -110,8 +110,11 @@ Tick the checkbox when the item compiles without errors.
 - [x] G4.4c `noncomputable def Pattern.toList`  (List α encoding bridge, noncomputable)
 - [x] G4.4d `theorem N_bar_eq_fintype_card_subtype`  (alternative formulation via Fintype.card)
 - [x] G4.4e `def boxIndex` + `boxIndex_mem`  (computable enumeration via base-n digits)
-- [ ] G4.4f `boxIndex_injective` and `boxIndex_surjective` (bijection on appropriate range)
-- [ ] G4.4g `Pattern α (box d n) ≃ Fin (n^d) → α`  (uniform-shape bridge)
+- [x] G4.4f-pre `def boxFnEquiv : ↥(box d n) ≃ (Fin d → Fin n)`
+- [x] G4.4f `def boxIxEquiv : ↥(box d n) ≃ Fin (n^d)` and
+            `def patternFnEquiv : Pattern α (box d n) ≃ (Fin (n^d) → α)`
+- [ ] G4.4g Transport `N_bar` to count of `{f : Fin (n^d) → α // P f}` via patternFnEquiv
+- [ ] G4.4h Express via list enumeration / Primcodable.finArrow
 - [ ] G4.4 `theorem N_bar_computable` — Lean-level `Computable (fun n => N_bar F L n)`
 
 ### H — Key axioms for Theorem 3.1
