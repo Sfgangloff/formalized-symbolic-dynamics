@@ -1437,6 +1437,29 @@ theorem primrec_digit (m : ℕ) : Primrec₂ (fun k i : ℕ => digit m k i) := b
 theorem digit_lt {m : ℕ} (hm : 0 < m) (k i : ℕ) : digit m k i < m :=
   Nat.mod_lt _ hm
 
+/-! ## G4.4h-step2  decodeList — list-of-digits representation -/
+
+/-- Decode `k` as a list of `len` digits in base `m`. -/
+def decodeList (m k len : ℕ) : List ℕ :=
+  (List.range len).map (digit m k)
+
+@[simp]
+theorem decodeList_length (m k len : ℕ) : (decodeList m k len).length = len := by
+  simp [decodeList]
+
+theorem decodeList_get {m k len i : ℕ} (h : i < len) :
+    (decodeList m k len).get ⟨i, by simp [h]⟩ = digit m k i := by
+  simp [decodeList]
+
+/-- For fixed `m`, `(k, len) ↦ decodeList m k len` is Primrec₂. -/
+theorem primrec_decodeList (m : ℕ) : Primrec₂ (fun k len : ℕ => decodeList m k len) := by
+  unfold decodeList
+  have h_range : Primrec (fun p : ℕ × ℕ => List.range p.2) :=
+    Primrec.list_range.comp Primrec.snd
+  have h_digit : Primrec (fun pq : (ℕ × ℕ) × ℕ => digit m pq.1.1 pq.2) :=
+    (primrec_digit m).comp (Primrec.fst.comp Primrec.fst) Primrec.snd
+  exact Primrec.list_map h_range h_digit
+
 /-! ## G4.4g  N_bar_eq_fin_arrow_card — transport count via patternFnEquiv -/
 
 /-- `N_bar F L n` equals the cardinality of admissible functions `Fin (n^d) → α`
