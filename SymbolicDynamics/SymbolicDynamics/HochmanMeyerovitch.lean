@@ -46,6 +46,21 @@ theorem supNorm_nonneg {d : ℕ} (u : Lat d) : 0 ≤ supNorm u := by
   simp only [supNorm]
   exact_mod_cast Nat.zero_le _
 
+/-! ## supNorm_neg, supNorm_sub_comm -/
+
+@[simp]
+theorem supNorm_neg {d : ℕ} (u : Lat d) : Lat.supNorm (-u) = Lat.supNorm u := by
+  unfold Lat.supNorm
+  congr 1
+  apply Finset.sup_congr rfl
+  intros i _
+  show ((-u) i).natAbs = (u i).natAbs
+  rw [Pi.neg_apply]
+  exact Int.natAbs_neg _
+
+theorem supNorm_sub_comm {d : ℕ} (u v : Lat d) : Lat.supNorm (u - v) = Lat.supNorm (v - u) := by
+  rw [show u - v = -(v - u) from by ring, supNorm_neg]
+
 end Lat
 
 /-! ## 0.5  FullShift — α^{ℤ^d} -/
@@ -661,6 +676,39 @@ theorem Lat.supNorm_sub_ge_of_inner_outer {d k r N : ℕ}
     show ((v - u) i).natAbs ≤ _
     exact h
   exact_mod_cast Nat.le_trans h_natabs_ge h_sup_ge
+
+/-! ## C13  rCompatible_of_irreducible — irreducibility yields r-compatibility -/
+
+/-- If `X` is `r`-irreducible, `a : Pattern α (Q_k)` is globally admissible, and the
+restriction of `b : Pattern α (Q_N)` to the outer ring `Q_N \ Q_{k+r}` is globally
+admissible, and `k + r + 1 ≤ N`, then `a` and `b` are `r`-compatible. -/
+theorem Pattern.rCompatible_of_irreducible {α : Type*} {d : ℕ} [TopologicalSpace α]
+    {X : Subshift α d} {r k N : ℕ} (hkN : k + r + 1 ≤ N) (hirr : ShiftIrreducible X r)
+    (a : Pattern α (symBox d k)) (b : Pattern α (symBox d N))
+    (ha : Pattern.GloballyAdmissible X a)
+    (hb_outer : Pattern.GloballyAdmissible X
+      (Pattern.restrict (symBox d N \ symBox d (k + r)) Finset.sdiff_subset b)) :
+    Pattern.rCompatible X r a b := by
+  refine ⟨hkN, ?_⟩
+  rw [Pattern.globallyAdmissible_iff_appearsAt_zero] at ha hb_outer
+  have h_sep : ∀ u ∈ symBox d k, ∀ v ∈ symBox d N \ symBox d (k + r),
+      (r : ℤ) ≤ Lat.supNorm (u - v) := by
+    intro u hu v hv
+    have h := Lat.supNorm_sub_ge_of_inner_outer u v hu hv
+    rw [Lat.supNorm_sub_comm]
+    linarith
+  obtain ⟨x, hxX, ha_app, hb_app⟩ := hirr (symBox d k) (symBox d N \ symBox d (k + r))
+    h_sep a (Pattern.restrict _ Finset.sdiff_subset b) ha hb_outer
+  rw [Pattern.globallyAdmissible_iff_appearsAt_zero]
+  refine ⟨x, hxX, ?_⟩
+  intro v
+  by_cases hv : v.val ∈ symBox d k
+  · rw [Pattern.unionDisjoint_left a _ v.val hv]
+    exact ha_app ⟨v.val, hv⟩
+  · have hv_outer : v.val ∈ symBox d N \ symBox d (k + r) :=
+      (Finset.mem_union.mp v.property).resolve_left hv
+    rw [Pattern.unionDisjoint_right symBox_disjoint_sdiff a _ v.val hv_outer]
+    exact hb_app ⟨v.val, hv_outer⟩
 
 /-! ## D1  N_X_submultiplicative — N_X is submultiplicative on disjoint unions -/
 
