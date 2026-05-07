@@ -980,3 +980,18 @@ theorem N_bar_le_card_pow {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
     _ = Fintype.card (Pattern α (box d n)) := Finset.card_univ
     _ = Fintype.card α ^ Fintype.card ↥(box d n) := Fintype.card_fun
     _ = Fintype.card α ^ (n ^ d) := by rw [Fintype.card_coe, box_card]
+
+/-! ## G4.4b  N_bar_mono — monotone in the allowed patterns -/
+
+/-- `N_bar` is monotone in the allowed-patterns set `L`: more permitted patterns
+gives more locally admissible n-box patterns. -/
+theorem N_bar_mono {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
+    (F : Finset (Lat d)) {L₁ L₂ : Finset (Pattern α F)} (hL : L₁ ⊆ L₂) (n : ℕ) :
+    N_bar F L₁ n ≤ N_bar F L₂ n := by
+  unfold N_bar locallyAdmissiblePatterns
+  refine Finset.card_le_card ?_
+  intro p hp
+  rw [Finset.mem_filter] at hp ⊢
+  refine ⟨hp.1, ?_⟩
+  intro u hu
+  exact hL (hp.2 u hu)
