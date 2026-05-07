@@ -113,8 +113,9 @@ Tick the checkbox when the item compiles without errors.
 - [x] G4.4f-pre `def boxFnEquiv : ↥(box d n) ≃ (Fin d → Fin n)`
 - [x] G4.4f `def boxIxEquiv : ↥(box d n) ≃ Fin (n^d)` and
             `def patternFnEquiv : Pattern α (box d n) ≃ (Fin (n^d) → α)`
-- [ ] G4.4g Transport `N_bar` to count of `{f : Fin (n^d) → α // P f}` via patternFnEquiv
-- [ ] G4.4h Express via list enumeration / Primcodable.finArrow
+- [x] G4.4g `theorem N_bar_eq_fin_arrow_card` (transports count to `Fin (n^d) → α`)
+- [ ] G4.4h Express via list enumeration / Primcodable.finArrow uniform encoding
+            (likely needs `[FinEnum α]` or `[Primcodable α]` hypothesis)
 - [ ] G4.4 `theorem N_bar_computable` — Lean-level `Computable (fun n => N_bar F L n)`
 
 ### H — Key axioms for Theorem 3.1
