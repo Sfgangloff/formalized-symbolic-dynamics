@@ -128,9 +128,10 @@ Tick the checkbox when the item compiles without errors.
             `boxIndexInv_boxIndex` (full explicit-formula bijection
             between `box d n` and `[0, n^d)`)
 - [x] G4.4h-step3 `def admissibleEncoded` — Prop predicate on (n, k) at digit level
-- [ ] G4.4h-step4 `instance decidable_admissibleEncoded` — Decidable instance
+- [x] G4.4h-step4 `instance decidable_admissibleEncoded` — auto-derived Decidable
 - [ ] G4.4h-step5 Connect `admissibleEncoded` to `locallyAdmissible` via patternFnEquiv
-- [ ] G4.4i Express `N_bar F L` via `Nat.count admissibleEncoded` over `[0, m^(n^d))`
+            (round-trip via `Encodable.encode_decode`)
+- [ ] G4.4i Express `N_bar F L` via `Nat.count (decide ∘ admissibleEncoded) (m^(n^d))`
             and prove Primrec
 - [ ] G4.4 `theorem N_bar_computable` — Lean-level `Computable (fun n => N_bar F L n)`
 
