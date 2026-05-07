@@ -124,6 +124,9 @@ Tick the checkbox when the item compiles without errors.
             (list-of-digits encoding as uniform-shape representation)
 - [x] G4.4h-step2.5 `def boxIndexInv` + `boxIxEquiv_val`
             (explicit base-n formula `Σ_j v_j.toNat * n^j` for the `boxIxEquiv`)
+- [x] G4.4h-step2.6 `boxIxEquiv_symm_val`, `boxIndex_boxIndexInv`,
+            `boxIndexInv_boxIndex` (full explicit-formula bijection
+            between `box d n` and `[0, n^d)`)
 - [ ] G4.4h-step3 Bridge `decodeList` to admissibility check (Primrec₂ predicate)
             (likely needs `[FinEnum α]` or direct `Encodable.decode` use)
 - [ ] G4.4i Compose with `Nat.count` or `List.range`+filter to get Primrec N_bar
