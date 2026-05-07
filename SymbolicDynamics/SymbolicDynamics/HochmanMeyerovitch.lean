@@ -967,3 +967,16 @@ theorem N_X_le_N_bar {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
   simp only [locallyAdmissiblePatterns, Finset.coe_filter, Finset.mem_univ, true_and,
     Set.mem_setOf_eq]
   exact Pattern.globally_imp_locally F L p hp
+
+/-! ## G4.4a  N_bar_le_card_pow — trivial bound -/
+
+/-- The number of locally admissible n-box patterns is at most `|α|^(n^d)`. -/
+theorem N_bar_le_card_pow {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n : ℕ) :
+    N_bar F L n ≤ (Fintype.card α) ^ (n ^ d) := by
+  unfold N_bar locallyAdmissiblePatterns
+  calc (Finset.univ.filter (locallyAdmissible F L)).card
+      ≤ (Finset.univ : Finset (Pattern α (box d n))).card := Finset.card_filter_le _ _
+    _ = Fintype.card (Pattern α (box d n)) := Finset.card_univ
+    _ = Fintype.card α ^ Fintype.card ↥(box d n) := Fintype.card_fun
+    _ = Fintype.card α ^ (n ^ d) := by rw [Fintype.card_coe, box_card]
