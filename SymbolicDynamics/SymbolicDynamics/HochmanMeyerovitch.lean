@@ -581,6 +581,21 @@ def Pattern.rCompatible {α : Type*} {d : ℕ} [TopologicalSpace α]
     (Pattern.unionDisjoint a
       (Pattern.restrict (symBox d N \ symBox d (k + r)) Finset.sdiff_subset b))
 
+/-! ## C10  rCompatible_imp_globallyAdmissible — inner pattern is globally admissible -/
+
+/-- If `a` is `r`-compatible with some `b`, then `a` itself is globally admissible. -/
+theorem Pattern.rCompatible.globallyAdmissible {α : Type*} {d : ℕ} [TopologicalSpace α]
+    {X : Subshift α d} {r k N : ℕ} {a : Pattern α (symBox d k)} {b : Pattern α (symBox d N)}
+    (h : Pattern.rCompatible X r a b) :
+    Pattern.GloballyAdmissible X a := by
+  obtain ⟨x, hxX, u, happ⟩ := h.2
+  refine ⟨x, hxX, u, ?_⟩
+  intro v
+  have hv : v.val ∈ symBox d k ∪ (symBox d N \ symBox d (k + r)) :=
+    Finset.mem_union_left _ v.property
+  have hu := happ ⟨v.val, hv⟩
+  rwa [Pattern.unionDisjoint_left a _ v.val v.property] at hu
+
 /-! ## D1  N_X_submultiplicative — N_X is submultiplicative on disjoint unions -/
 
 theorem N_X_submultiplicative {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
