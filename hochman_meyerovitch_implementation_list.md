@@ -120,8 +120,10 @@ Tick the checkbox when the item compiles without errors.
 - [x] G4.4h-step1 `def digit`, `theorem primrec_digit`, `digit_lt`
             (base-m digit extraction, Primrec₂)
 - [x] G4.4h-step2 `def decodeList`, `theorem primrec_decodeList`,
-            `decodeList_length`, `decodeList_get`
+            `decodeList_length`, `decodeList_get`, `decodeList_lt`
             (list-of-digits encoding as uniform-shape representation)
+- [x] G4.4h-step2.5 `def boxIndexInv` + `boxIxEquiv_val`
+            (explicit base-n formula `Σ_j v_j.toNat * n^j` for the `boxIxEquiv`)
 - [ ] G4.4h-step3 Bridge `decodeList` to admissibility check (Primrec₂ predicate)
             (likely needs `[FinEnum α]` or direct `Encodable.decode` use)
 - [ ] G4.4i Compose with `Nat.count` or `List.range`+filter to get Primrec N_bar
