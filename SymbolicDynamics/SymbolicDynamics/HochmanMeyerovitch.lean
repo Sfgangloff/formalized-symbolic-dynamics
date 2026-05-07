@@ -1518,6 +1518,14 @@ def admissibleEncoded {α : Type*} [Fintype α] [DecidableEq α] [Encodable α] 
     ∃ ℓ ∈ L, ∀ v : F,
       digit (Fintype.card α) k (boxIndexInv d n (v.val + u)) = Encodable.encode (ℓ v)
 
+/-! ## G4.4h-step4  decidable_admissibleEncoded — Decidable instance -/
+
+instance decidable_admissibleEncoded {α : Type*} [Fintype α] [DecidableEq α] [Encodable α]
+    {d : ℕ} (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n k : ℕ) :
+    Decidable (admissibleEncoded F L n k) := by
+  unfold admissibleEncoded
+  exact inferInstance
+
 /-! ## G4.4g  N_bar_eq_fin_arrow_card — transport count via patternFnEquiv -/
 
 /-- `N_bar F L n` equals the cardinality of admissible functions `Fin (n^d) → α`
