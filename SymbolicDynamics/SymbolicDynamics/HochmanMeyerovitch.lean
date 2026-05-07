@@ -711,6 +711,16 @@ theorem boxIndex_boxIndexInv {d n : ℕ} {w : Lat d} (hw : w ∈ box d n) :
   rw [boxIxEquiv_symm_val, boxIxEquiv_val] at h1
   exact h1
 
+/-- Round-trip: `boxIndexInv (boxIndex i) = i` for `i : Fin (n^d)`. -/
+theorem boxIndexInv_boxIndex {d n : ℕ} (i : Fin (n^d)) :
+    boxIndexInv d n (boxIndex d n i.val) = i.val := by
+  have hroundtrip : (boxIxEquiv d n) ((boxIxEquiv d n).symm i) = i :=
+    Equiv.apply_symm_apply _ _
+  have h1 : ((boxIxEquiv d n) ((boxIxEquiv d n).symm i)).val = i.val := by
+    rw [hroundtrip]
+  rw [boxIxEquiv_val, boxIxEquiv_symm_val] at h1
+  exact h1
+
 /-! ## C5  symBox  Q_n = {-n,...,n}^d -/
 
 /-- The symmetric cube `Q_n = {-n,...,n}^d ⊆ ℤ^d`. -/
