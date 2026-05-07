@@ -118,6 +118,17 @@ Tick the checkbox when the item compiles without errors.
 ### I — Theorem 3.1
 - [ ] I1  `theorem topEntropy_rightRE`
 
+### J — Milestone 4: Symmetric cubes and r-compatibility (Theorem 1.3)
+- [x] J1  `def symBox (d n : ℕ) : Finset (Lat d)`  (Q_n)
+- [x] J2  `theorem symBox_card`  ((2n+1)^d)
+- [x] J3  `theorem symBox_mono`
+- [x] J4  `theorem box_subset_symBox`
+- [x] J5  `def Pattern.unionDisjoint`  (combine patterns on disjoint supports)
+- [x] J6  `def Pattern.rCompatible`  (r-compatibility on symmetric cubes)
+- [ ] J7  Lemma 3.4 (compactness dichotomy)
+- [ ] J8  Corollary 3.5 (decidability of global admissibility)
+- [ ] J9  Theorem 1.3 (entropy of irreducible SFT is computable)
+
 ---
 
 ## Dependencies (helper modules in `SymbolicDynamics/Dependencies/`)
