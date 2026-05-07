@@ -193,6 +193,13 @@ def AppearsAt {α : Type*} {d : ℕ} {F : Finset (Lat d)} (p : Pattern α F)
     (x : FullShift α d) (u : Lat d) : Prop :=
   ∀ v : F, x (v.val + u) = p v
 
+/-! ## decidable_appearsAt — AppearsAt is decidable for DecidableEq α -/
+
+instance decidable_appearsAt {α : Type*} {d : ℕ} [DecidableEq α] {F : Finset (Lat d)}
+    (p : Pattern α F) (x : FullShift α d) (u : Lat d) :
+    Decidable (Pattern.AppearsAt p x u) :=
+  Fintype.decidableForallFintype
+
 /-! ## 0.20  Appears — pattern p occurs somewhere in x -/
 
 def Appears {α : Type*} {d : ℕ} {F : Finset (Lat d)} (p : Pattern α F)
