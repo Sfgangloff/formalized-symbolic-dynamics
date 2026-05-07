@@ -643,6 +643,17 @@ def boxFnEquiv (d n : ℕ) : ↥(box d n) ≃ (Fin d → Fin n) where
     show (((f j).val : ℤ)).toNat = (f j).val
     simp
 
+/-! ## C4a-bridge  boxIxEquiv and patternFnEquiv — uniform encoding -/
+
+/-- `↥(box d n) ≃ Fin (n^d)` via base-n digit composition with `finFunctionFinEquiv`. -/
+def boxIxEquiv (d n : ℕ) : ↥(box d n) ≃ Fin (n^d) :=
+  (boxFnEquiv d n).trans finFunctionFinEquiv
+
+/-- `Pattern α (box d n) ≃ (Fin (n^d) → α)` — bridges the dependent-Pattern type
+to a uniform-shape function type, useful for transferring computability arguments. -/
+def patternFnEquiv (α : Type*) (d n : ℕ) : Pattern α (box d n) ≃ (Fin (n^d) → α) :=
+  Equiv.arrowCongr (boxIxEquiv d n) (Equiv.refl α)
+
 /-! ## C4a  boxIndex — computable enumeration of `box d n` via base-n digits -/
 
 /-- The `i`-th element of `box d n` under the canonical base-`n` digit enumeration. -/
