@@ -820,6 +820,88 @@ theorem computable_imp_rightRE {h : ℝ} (hcomp : IsComputableReal h) : IsRightR
     push_cast
     ring
 
+/-! ## F5  computable_iff_leftRE_and_rightRE -/
+
+theorem computable_iff_leftRE_and_rightRE {h : ℝ} :
+    IsComputableReal h ↔ IsLeftRE h ∧ IsRightRE h := by
+  refine ⟨fun hcomp => ⟨computable_imp_leftRE hcomp, computable_imp_rightRE hcomp⟩, ?_⟩
+  rintro ⟨⟨ℓ, hℓ_comp, hℓ_below, hℓ_lim⟩, ⟨r, hr_comp, hr_above, hr_lim⟩⟩
+  set P : ℕ → ℕ → Bool :=
+    fun n k => decide (r k ≤ ℓ k + (1 : ℚ) / ((n : ℚ) + 1)) with hP_def
+  have hP_comp : Computable₂ P := by
+    have h_le_pr : Primrec₂ (fun (a b : ℚ) => decide (a ≤ b)) :=
+      PrimrecRel.decide ComputableRat.primrec_rat_le
+    have h_le : Computable₂ (fun (a b : ℚ) => decide (a ≤ b)) := h_le_pr.to_comp
+    have h_add : Computable₂ (fun (q' : ℚ) (n : ℕ) => q' + (1 : ℚ) / ((n : ℚ) + 1)) :=
+      ComputableRat.primrec_add_one_div_succ.to_comp
+    have h_lk : Computable₂ (fun (_ k : ℕ) => ℓ k) :=
+      hℓ_comp.comp Computable.snd
+    have h_rk : Computable₂ (fun (_ k : ℕ) => r k) :=
+      hr_comp.comp Computable.snd
+    have h_n_proj : Computable₂ (fun (n _ : ℕ) => n) := Computable.fst
+    have h_lkadd : Computable₂ (fun (n k : ℕ) => ℓ k + (1 : ℚ) / ((n : ℚ) + 1)) :=
+      h_add.comp₂ h_lk h_n_proj
+    exact h_le.comp₂ h_rk h_lkadd
+  have hP_exists : ∀ n : ℕ, ∃ k : ℕ, P n k = true := by
+    intro n
+    have hr_sub_l : Filter.Tendsto (fun k : ℕ => (r k : ℝ) - (ℓ k : ℝ))
+        Filter.atTop (nhds 0) := by
+      have hsub := hr_lim.sub hℓ_lim
+      simpa using hsub
+    have hpos : (0 : ℝ) < 1 / ((n : ℝ) + 1) := by positivity
+    rw [Metric.tendsto_atTop] at hr_sub_l
+    obtain ⟨K, hK⟩ := hr_sub_l (1 / ((n : ℝ) + 1)) hpos
+    refine ⟨K, ?_⟩
+    rw [hP_def]
+    apply decide_eq_true
+    have hK_val := hK K (le_refl K)
+    rw [Real.dist_eq] at hK_val
+    have h_diff_nn : (0 : ℝ) ≤ (r K : ℝ) - (ℓ K : ℝ) := by
+      linarith [hr_above K, hℓ_below K]
+    have hK_val' : (r K : ℝ) - (ℓ K : ℝ) < 1 / ((n : ℝ) + 1) := by
+      have heq : (r K : ℝ) - (ℓ K : ℝ) - 0 = (r K : ℝ) - (ℓ K : ℝ) := by ring
+      rw [heq] at hK_val
+      rw [abs_of_nonneg h_diff_nn] at hK_val
+      exact hK_val
+    have h_cast : ((ℓ K + (1 : ℚ) / ((n : ℚ) + 1) : ℚ) : ℝ) =
+        (ℓ K : ℝ) + 1 / ((n : ℝ) + 1) := by push_cast; ring
+    have h_real : (r K : ℝ) ≤ ((ℓ K + (1 : ℚ) / ((n : ℚ) + 1) : ℚ) : ℝ) := by
+      rw [h_cast]; linarith
+    exact_mod_cast h_real
+  let f : ℕ → ℕ := fun n => Nat.find (hP_exists n)
+  have hf_comp : Computable f := by
+    have h_partrec : Partrec (fun n : ℕ => Nat.rfind (fun k : ℕ => (P n k : Part Bool))) :=
+      Partrec.rfind hP_comp.partrec₂
+    refine Partrec.of_eq_tot h_partrec ?_
+    intro n
+    rw [Nat.mem_rfind]
+    refine ⟨?_, ?_⟩
+    · have hspec : P n (Nat.find (hP_exists n)) = true := Nat.find_spec (hP_exists n)
+      exact Part.mem_some_iff.mpr hspec.symm
+    · intro m hm
+      have hnot : ¬ P n m = true := Nat.find_min (hP_exists n) hm
+      have hfalse : P n m = false := by
+        cases hcase : P n m
+        · rfl
+        · exact absurd hcase hnot
+      rw [hfalse]
+      exact Part.mem_some_iff.mpr rfl
+  refine ⟨fun n => ℓ (f n), hℓ_comp.comp hf_comp, fun n => ?_⟩
+  have hf_spec : P n (f n) = true := Nat.find_spec (hP_exists n)
+  rw [hP_def] at hf_spec
+  have hf_rat : r (f n) ≤ ℓ (f n) + (1 : ℚ) / ((n : ℚ) + 1) := of_decide_eq_true hf_spec
+  have h_cast : ((ℓ (f n) + (1 : ℚ) / ((n : ℚ) + 1) : ℚ) : ℝ) =
+      (ℓ (f n) : ℝ) + 1 / ((n : ℝ) + 1) := by push_cast; ring
+  have hf_real : (r (f n) : ℝ) ≤ (ℓ (f n) : ℝ) + 1 / ((n : ℝ) + 1) := by
+    have : ((r (f n) : ℚ) : ℝ) ≤ ((ℓ (f n) + (1 : ℚ) / ((n : ℚ) + 1) : ℚ) : ℝ) := by
+      exact_mod_cast hf_rat
+    rw [h_cast] at this; exact this
+  have hℓ_le : (ℓ (f n) : ℝ) ≤ h := hℓ_below (f n)
+  have hr_ge : h ≤ (r (f n) : ℝ) := hr_above (f n)
+  have hh_le : h ≤ (ℓ (f n) : ℝ) + 1 / ((n : ℝ) + 1) := hr_ge.trans hf_real
+  rw [abs_sub_comm, abs_of_nonneg (by linarith)]
+  linarith
+
 /-! ## G3  N_X_le_N_bar — globally admissible count is bounded by local count -/
 
 /-- For the SFT `mkSFT F L`, every globally admissible box-pattern is locally admissible,

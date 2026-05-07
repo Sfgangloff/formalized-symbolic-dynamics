@@ -95,7 +95,8 @@ Tick the checkbox when the item compiles without errors.
 - [x] F2  `def IsLeftRE (h : ℝ) : Prop`
 - [x] F3  `def IsComputableReal (h : ℝ) : Prop`
 - [x] F4  `theorem computable_imp_rightRE`
-- [ ] F5  `theorem computable_iff_leftRE_and_rightRE`
+- [x] F4a `theorem computable_imp_leftRE`
+- [x] F5  `theorem computable_iff_leftRE_and_rightRE`
 
 ### G — Local count and computability
 - [x] G1  `def locallyAdmissiblePatterns [DecidableEq α] (L : ...) (E : ...) : Finset (Pattern α E)`
