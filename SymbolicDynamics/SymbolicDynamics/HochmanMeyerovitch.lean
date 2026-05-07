@@ -610,6 +610,27 @@ theorem box_zero {d : ℕ} (hd : 0 < d) : box d 0 = ∅ := by
   haveI : Nonempty (Fin d) := ⟨⟨0, hd⟩⟩
   simp [box]
 
+/-! ## C4a  boxIndex — computable enumeration of `box d n` via base-n digits -/
+
+/-- The `i`-th element of `box d n` under the canonical base-`n` digit enumeration. -/
+def boxIndex (d n i : ℕ) : Lat d :=
+  fun j : Fin d => ((i / n ^ j.val) % n : ℤ)
+
+theorem boxIndex_mem {d n i : ℕ} (hi : i < n ^ d) : boxIndex d n i ∈ box d n := by
+  simp only [box, Fintype.mem_piFinset, Finset.mem_Ico]
+  intro j
+  -- If n = 0 then n^d = 0 (since d ≥ 1, witnessed by j) so i < 0, contradiction.
+  have hn_pos : 0 < n := by
+    rcases Nat.eq_zero_or_pos n with hn | hn
+    · subst hn
+      have hd_pos : 0 < d := j.pos
+      rw [zero_pow hd_pos.ne'] at hi
+      exact absurd hi (Nat.not_lt_zero _)
+    · exact hn
+  show 0 ≤ ((i / n ^ j.val) % n : ℤ) ∧ ((i / n ^ j.val) % n : ℤ) < (n : ℤ)
+  refine ⟨Int.ofNat_nonneg _, ?_⟩
+  exact_mod_cast Nat.mod_lt _ hn_pos
+
 /-! ## C5  symBox  Q_n = {-n,...,n}^d -/
 
 /-- The symmetric cube `Q_n = {-n,...,n}^d ⊆ ℤ^d`. -/
