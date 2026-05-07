@@ -604,6 +604,48 @@ theorem symBox_disjoint_sdiff {d k r N : ℕ} :
   intro x hxk hxN
   exact (Finset.mem_sdiff.mp hxN).2 (symBox_mono (Nat.le_add_right k r) hxk)
 
+/-! ## C12  supNorm separation between Q_k and Q_N \ Q_{k+r} -/
+
+/-- For `u ∈ Q_k` and `v ∈ Q_N \ Q_{k+r}`, the supremum-norm distance is at least `r + 1`. -/
+theorem Lat.supNorm_sub_ge_of_inner_outer {d k r N : ℕ}
+    (u v : Lat d) (hu : u ∈ symBox d k) (hv : v ∈ symBox d N \ symBox d (k + r)) :
+    (r + 1 : ℤ) ≤ Lat.supNorm (v - u) := by
+  obtain ⟨_, hvNotKr⟩ := Finset.mem_sdiff.mp hv
+  have h_exists : ∃ i, (k + r : ℤ) < |v i| := by
+    by_contra h_all
+    push_neg at h_all
+    apply hvNotKr
+    simp only [symBox, Fintype.mem_piFinset, Finset.mem_Icc]
+    intro i
+    have hi := h_all i
+    rw [abs_le] at hi
+    push_cast
+    exact hi
+  obtain ⟨i, hi⟩ := h_exists
+  simp only [symBox, Fintype.mem_piFinset, Finset.mem_Icc] at hu
+  obtain ⟨hu_l, hu_h⟩ := hu i
+  have hu_abs : |u i| ≤ (k : ℤ) := abs_le.mpr ⟨hu_l, hu_h⟩
+  have h_diff : (r + 1 : ℤ) ≤ |v i - u i| := by
+    have h1 : |v i| - |u i| ≤ |v i - u i| := abs_sub_abs_le_abs_sub _ _
+    linarith
+  -- Bridge to natAbs and supNorm
+  have h_natabs_eq : (v i - u i).natAbs = |v i - u i|.toNat := by
+    rw [Int.abs_eq_natAbs, Int.toNat_natCast]
+  have h_natabs_ge : (r + 1 : ℕ) ≤ (v i - u i).natAbs := by
+    have hnn : 0 ≤ |v i - u i| := abs_nonneg _
+    have h_cast : ((v i - u i).natAbs : ℤ) = |v i - u i| := by
+      rw [Int.abs_eq_natAbs]
+    have : ((r + 1 : ℕ) : ℤ) ≤ ((v i - u i).natAbs : ℤ) := by rw [h_cast]; exact_mod_cast h_diff
+    exact_mod_cast this
+  -- (v - u) i = v i - u i in Lat d
+  unfold Lat.supNorm
+  have h_sup_ge : (v i - u i).natAbs ≤ Finset.univ.sup (fun j => ((v - u) j).natAbs) := by
+    have h := Finset.le_sup (s := Finset.univ) (f := fun j => ((v - u) j).natAbs)
+      (Finset.mem_univ i)
+    show ((v - u) i).natAbs ≤ _
+    exact h
+  exact_mod_cast Nat.le_trans h_natabs_ge h_sup_ge
+
 /-! ## D1  N_X_submultiplicative — N_X is submultiplicative on disjoint unions -/
 
 theorem N_X_submultiplicative {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
