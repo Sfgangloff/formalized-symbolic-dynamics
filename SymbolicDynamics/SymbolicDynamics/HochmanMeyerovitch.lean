@@ -694,6 +694,13 @@ theorem boxIxEquiv_val (d n : ℕ) (v : ↥(box d n)) :
   rw [Equiv.trans_apply, finFunctionFinEquiv_apply]
   rfl
 
+/-- `boxIxEquiv.symm` agrees with `boxIndex` on `Fin (n^d)` indices. -/
+theorem boxIxEquiv_symm_val (d n : ℕ) (i : Fin (n^d)) :
+    ((boxIxEquiv d n).symm i).val = boxIndex d n i.val := by
+  unfold boxIxEquiv boxIndex boxFnEquiv
+  funext j
+  rfl
+
 /-! ## C5  symBox  Q_n = {-n,...,n}^d -/
 
 /-- The symmetric cube `Q_n = {-n,...,n}^d ⊆ ℤ^d`. -/
