@@ -196,9 +196,16 @@ with `/-! # MAIN THEOREM ... -/` comment-block headers.
              then `Primrec.to_comp`.
 
 ### H — Key axioms for Theorem 3.1
-- [x] H0  `axiom InvMeasure`, `measureEntropy`, `measureEntropy_nonneg`,
-          + Inhabited and TopologicalSpace instances (opaque types/values
-          for the measure-theoretic infrastructure)
+- [x] H0a `def InvMeasure` — **discharged** as a real Mathlib subtype
+          `{ μ : ProbabilityMeasure (FullShift α d) // shift-invariant ∧ supported on X }`,
+          requiring `[MeasurableSpace α]` (restricted to `α : Type` for universe).
+- [x] H0b `axiom InvMeasure.instInhabited` (Krylov–Bogolyubov), still axiomatized.
+- [x] H0c `axiom InvMeasure.instTopologicalSpace` — could be derived from
+          `ProbabilityMeasure`'s topology + an `[OpensMeasurableSpace]` instance,
+          axiomatized for now.
+- [x] H0d `axiom measureEntropy`, `measureEntropy_nonneg` — Kolmogorov–Sinai
+          entropy still opaque; defining it via partitions is a separate
+          Mathlib gap.
 - [x] H1  `axiom variationalPrinciple` — `topEntropy X = ⨆ μ, measureEntropy μ`
 - [x] H2  `axiom measureEntropy_uppersemicontinuous`
 - [x] H3  `axiom InvMeasure.compactSpace`
