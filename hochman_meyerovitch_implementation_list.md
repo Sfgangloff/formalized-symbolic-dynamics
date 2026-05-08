@@ -133,6 +133,8 @@ Tick the checkbox when the item compiles without errors.
 - [x] G4.4h-step5-pre+ `theorem digit_succ`, `digit_zero` (recursion identities)
 - [x] G4.4h-step5-pre++ `theorem sum_digits_pow_eq` (`Σ digit m k i * m^i = k`)
             — closes the algebraic loop: digits recover k under base-m encoding
+- [x] G4.4h-step5-pre+++ `theorem sum_pow_lt` (`Σ f i * m^i < m^len` for digit-valued f)
+            — the inverse-direction bound completing the [0, m^len) ↔ digits dictionary
 - [ ] G4.4h-step5 Connect `admissibleEncoded` to `locallyAdmissible` via patternFnEquiv
             (using the digit toolkit + `Encodable.encode_decode`)
 - [ ] G4.4i Express `N_bar F L` via `Nat.count (decide ∘ admissibleEncoded) (m^(n^d))`
