@@ -1951,3 +1951,105 @@ axiom topEntropy_rightRE {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F))
     (hX : (mkSFT F L).carrier.Nonempty) :
     IsRightRE (topEntropy (mkSFT F L))
+
+/-! ## J7  Lemma 3.4 — compactness dichotomy for irreducible SFTs
+
+For a nonempty `r`-irreducible SFT `X = mkSFT F L` and a pattern `a` on the
+symmetric cube `Q_k`, exactly one of:
+
+(1) `a` is *not* globally admissible: there exists `N₀` such that for every
+    `N ≥ N₀` and every locally admissible `b ∈ Pattern α (Q_N)`, the
+    `Q_k`-restriction of `b` is *not* equal to `a`.
+
+(2) `a` *is* globally admissible: there exists `N₀` such that for every
+    `N ≥ N₀` and every locally admissible `b ∈ Pattern α (Q_N)`, the patterns
+    `a` and `b` are `Nat.sqrt N`-compatible (in the sense of `Pattern.rCompatible`).
+
+The two cases cleanly correspond to whether `a` is globally admissible:
+the dichotomy is an effective decision procedure once we have a `Q_N`-window
+of sufficient size.
+
+**Proof sketch** (currently axiomatized):
+- (1 ⇒ ¬gloAdm): if `a` were globally admissible, witnessed by `x ∈ X` with
+  `a` appearing at offset `u`, then `Pattern.ofColoring (Q_N + u) x` is
+  locally admissible for any `N`, with `Q_k`-restriction equal to `a`.
+  This contradicts (1).
+- (¬gloAdm ⇒ 1): compactness of the (closed in the full shift) set of
+  `x ∈ X` having `a` at offset `0`, combined with the local-admissibility
+  hierarchy of `Q_N`-extensions converging to a global realization. If
+  every `N` had a locally admissible extension, we would obtain by König's
+  lemma / compactness a globally admissible `a` — contradiction.
+- (gloAdm ⇒ 2): use `Pattern.rCompatible_of_irreducible` (J6f). For large `N`,
+  `Q_N \ Q_{k + Nat.sqrt N}` is "thick" (the buffer `Nat.sqrt N` ≥ r), and
+  irreducibility joins `a` with any locally admissible `b`.
+- (2 ⇒ gloAdm): `rCompatible.globallyAdmissible` (J6a) — `r`-compatibility
+  implies the inner pattern is globally admissible.
+-/
+axiom Lemma_3_4 {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
+    [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F))
+    (hX : (mkSFT F L).carrier.Nonempty)
+    (h_irr : IsIrreducibleShift (mkSFT F L))
+    {k : ℕ} (a : Pattern α (symBox d k)) :
+    -- Case 1: a not globally admissible — eventually no locally admissible
+    -- Q_N pattern restricts to a.
+    (¬ Pattern.GloballyAdmissible (mkSFT F L) a ∧
+      ∃ N₀, ∀ N ≥ N₀, ∀ b : Pattern α (symBox d N),
+        locallyAdmissible F L b →
+        ∀ h : symBox d k ⊆ symBox d N,
+          (Pattern.restrict (symBox d k) h b) ≠ a)
+    ∨
+    -- Case 2: a globally admissible — every locally admissible Q_N pattern
+    -- is √N-compatible with a.
+    (Pattern.GloballyAdmissible (mkSFT F L) a ∧
+      ∃ N₀, ∀ N ≥ N₀, ∀ b : Pattern α (symBox d N),
+        locallyAdmissible F L b → Pattern.rCompatible (mkSFT F L) (Nat.sqrt N) a b)
+
+/-! ## J8  Corollary 3.5 — decidability of global admissibility for
+irreducible SFTs
+
+For a nonempty `r`-irreducible SFT, the predicate `GloballyAdmissible X a` on
+patterns `a ∈ Pattern α (symBox d k)` is decidable: the dichotomy of Lemma 3.4
+gives an effective procedure (search over locally admissible `Q_N`-patterns
+for increasing `N` until either case (1) or case (2) is detected).
+
+This is the corollary used to show that `N_X X (symBox d k)` (the count of
+globally admissible `Q_k`-patterns in `X`) is computable as a function of `k`. -/
+axiom decidable_globallyAdmissible_irreducible {α : Type*} {d : ℕ}
+    [Fintype α] [DecidableEq α] [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F))
+    (hX : (mkSFT F L).carrier.Nonempty)
+    (h_irr : IsIrreducibleShift (mkSFT F L))
+    {k : ℕ} (a : Pattern α (symBox d k)) :
+    Decidable (Pattern.GloballyAdmissible (mkSFT F L) a)
+
+/-- For a nonempty irreducible SFT, `N_X (mkSFT F L) (symBox d k)` is Computable
+as a function of k — follows from `decidable_globallyAdmissible_irreducible`. -/
+axiom N_X_symBox_computable {α : Type*} {d : ℕ}
+    [Fintype α] [DecidableEq α] [Encodable α] [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F))
+    (hX : (mkSFT F L).carrier.Nonempty)
+    (h_irr : IsIrreducibleShift (mkSFT F L)) :
+    Computable (fun k : ℕ => N_X (mkSFT F L) (symBox d k))
+
+/-! ## J9  Theorem 1.3 — entropy of an irreducible SFT is computable
+
+Combining I1 (right r.e. — upper approximations from N_bar) with the lower
+approximations from N_X(Q_k) (computable by J8 / `N_X_symBox_computable`),
+the topological entropy of an irreducible SFT is both right r.e. and left
+r.e., hence computable (by F5).
+
+**Proof sketch** (currently axiomatized):
+1. By I1: `topEntropy (mkSFT F L)` is right r.e.
+2. By J8 + a Fekete-style argument on `N_X(Q_k)`:
+   `s(k) := (1/|Q_k|) log N_X(Q_k) → topEntropy (mkSFT F L)` from below.
+3. Construct a Computable rational lower-approximation sequence to package
+   into `IsLeftRE`.
+4. By F5 (`computable_iff_leftRE_and_rightRE`):
+   `IsRightRE ∧ IsLeftRE ⇒ IsComputableReal`. -/
+axiom topEntropy_irreducible_computable {α : Type*} {d : ℕ}
+    [Fintype α] [DecidableEq α] [Encodable α] [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F))
+    (hX : (mkSFT F L).carrier.Nonempty)
+    (h_irr : IsIrreducibleShift (mkSFT F L)) :
+    IsComputableReal (topEntropy (mkSFT F L))
