@@ -1602,6 +1602,17 @@ theorem patternFinEquiv_symm_apply {α : Type*} [Fintype α] [DecidableEq α] [E
       ((finFunctionFinEquiv.symm k) ((boxIxEquiv d n) w)) := by
   rfl
 
+/-- The Fin-encoding of the value at `w` matches the corresponding base-`m` digit of `k`. -/
+theorem patternFinEquiv_symm_val_eq_digit {α : Type*} [Fintype α] [DecidableEq α] [Encodable α]
+    {d n : ℕ} (k : Fin ((Fintype.card α)^(n^d))) (w : ↥(box d n)) :
+    (Encodable.fintypeEquivFin ((patternFinEquiv α d n).symm k w)).val =
+    digit (Fintype.card α) k.val (boxIndexInv d n w.val) := by
+  rw [patternFinEquiv_symm_apply]
+  rw [Encodable.fintypeEquivFin.apply_symm_apply]
+  rw [finFunctionFinEquiv_symm_apply_val]
+  rw [boxIxEquiv_val]
+  rfl
+
 /-- `N_bar` as a count over `Fin (m^(n^d))` — the most direct uniform-encoding form. -/
 theorem N_bar_eq_fintype_card_fin {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α] [Encodable α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n : ℕ) :
