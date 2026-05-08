@@ -6,6 +6,28 @@ Tick the checkbox when the item compiles without errors.
 
 ---
 
+## 🎯 Main theorems (Hochman–Meyerovitch)
+
+The paper has three main theorems. Their formalization status:
+
+- 🎯 **Theorem 1.1** — *SFT entropies = non-negative right r.e. reals*
+  - **Necessity** (every SFT entropy is right r.e.):
+    `I1` → `axiom topEntropy_rightRE`  *(axiomatized; structured proof TODO)*
+  - **Sufficiency** (every right r.e. h ≥ 0 is an SFT entropy):
+    `I2` → `rightRE_imp_SFT_entropy`  ❌ **NOT STARTED** (Sections 4-8 of paper)
+  - **Combined statement**:
+    `I3` → `SFT_entropy_iff_rightRE`  ❌ pending I2
+- 🎯 **Theorem 1.2** — *Sofic shift entropies = SFT entropies*
+  ❌ **NOT STARTED** (would be a separate milestone, Section 4 of paper)
+- 🎯 **Theorem 1.3** — *Irreducible SFT entropy is computable*
+  `J9` → `theorem topEntropy_irreducible_computable`  ✓ proven from
+  `topEntropy_rightRE` (I1) + `topEntropy_leftRE_irreducible` (axiomatized) + F5
+
+Search for `🎯` to locate main theorems; in the Lean source they're flagged
+with `/-! ## MAIN THEOREM ... -/` comment-block headers.
+
+---
+
 ## Checklist
 
 ### Lat — the lattice ℤ^d

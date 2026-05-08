@@ -22,20 +22,54 @@ practical.
 
 ---
 
-## Artifact 1: the formalization plan (`hochman_meyerovitch_formalization_plan.txt`)
+## Artifact 1: the formalization plan (`<paper>_formalization_plan.txt`)
 
 Written **before any Lean code is touched**. A long-form document that:
 
-- Names the milestones (e.g. *Module 3.1: necessity direction of Theorem 1.1*)
-- Sketches the proof structure for each milestone (in math, not Lean)
+- **Identifies the main theorems of the paper up front.** Use a dedicated
+  section at the top of the plan (e.g. `## Main theorems`) listing each one
+  with its paper number, statement, and the implementation-list identifier
+  it will receive (e.g. `Theorem 1.3 → J9 → topEntropy_irreducible_computable`).
+  Main theorems should be recognisable at a glance to a future agent picking
+  up the project.
+- Names the milestones (e.g. *Module 3.1: necessity direction of Theorem 1.1*).
+- Sketches the proof structure for each milestone (in math, not Lean).
 - Identifies external dependencies (Mathlib gaps, axioms that will be needed
   for theorems whose full proof is out of scope, e.g. the variational
-  principle)
+  principle).
 - Maps mathematical concepts to Lean encodings (e.g. `Pattern α F` as
-  `F → α`, `Subshift` as a `structure` carrying closed shift-invariance)
+  `F → α`, `Subshift` as a `structure` carrying closed shift-invariance).
 
 This is the **strategic** layer: it tells you *what to prove and why*. It
 rarely changes during a session.
+
+### Marking main theorems
+
+For each paper formalized in this project, the main theorems should be:
+
+1. **Listed in a `## Main theorems` section at the top of the plan**, with
+   their paper number and the matching implementation-list identifier:
+
+   ```
+   ## Main theorems (Hochman–Meyerovitch)
+   - Theorem 1.1 (SFT entropies = right r.e. ≥ 0)
+       - Necessity: I1 → `topEntropy_rightRE`
+       - Sufficiency: I2 → `rightRE_imp_SFT_entropy`  (NOT YET DONE)
+       - Combined: I3 → `SFT_entropy_iff_rightRE`
+   - Theorem 1.2 (Sofic shift entropies = SFT entropies)  (NOT YET STARTED)
+   - Theorem 1.3 (irreducible SFT entropy is computable): J9 →
+     `topEntropy_irreducible_computable`
+   ```
+
+2. **Mirrored at the top of the implementation list** in a "Main theorems
+   summary" block, using `🎯` (or any chosen marker) so they're searchable.
+
+3. **Marked in the Lean source** with a comment-block header
+   (`/-! ## MAIN THEOREM 1.3 — entropy of an irreducible SFT is computable -/`)
+   immediately above the declaration.
+
+These three locations (plan / list / source) keep the main results
+discoverable from any entry point.
 
 ## Artifact 2: the implementation list (`hochman_meyerovitch_implementation_list.md`)
 

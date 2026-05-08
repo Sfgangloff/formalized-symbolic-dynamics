@@ -1931,6 +1931,14 @@ Banach–Alaoglu / Prokhorov. -/
 axiom InvMeasure.compactSpace {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
     (X : Subshift α d) (hX : X.carrier.Nonempty) : CompactSpace (InvMeasure X)
 
+/-! ## 🎯 MAIN THEOREM 1.1 (Necessity) — `topEntropy_rightRE` (= I1, Theorem 3.1)
+
+The first half of Theorem 1.1: every SFT entropy is right r.e.
+
+The companion sufficiency direction (every non-negative right r.e. real is an
+SFT entropy) is *not* yet formalized — it is the harder construction
+(Sections 4-8 of the paper). -/
+
 /-! ## I1  topEntropy_rightRE — Theorem 3.1 (necessity direction)
 
 **Theorem 3.1 of Hochman–Meyerovitch**: the topological entropy of an SFT is
@@ -2060,6 +2068,8 @@ axiom topEntropy_leftRE_irreducible {α : Type*} {d : ℕ}
     (hX : (mkSFT F L).carrier.Nonempty)
     (h_irr : IsIrreducibleShift (mkSFT F L)) :
     IsLeftRE (topEntropy (mkSFT F L))
+
+/-! ## 🎯 MAIN THEOREM 1.3 — entropy of an irreducible SFT is computable -/
 
 /-- **Theorem 1.3.** The topological entropy of a nonempty irreducible SFT is
 computable, derived from the right-r.e. (I1) and left-r.e.
