@@ -213,17 +213,30 @@ with `/-! # MAIN THEOREM ... -/` comment-block headers.
           Mathlib gap.
 - [x] H1  `axiom variationalPrinciple` — `topEntropy X = ⨆ μ, measureEntropy μ`
 - [x] H2  `axiom measureEntropy_uppersemicontinuous`
-- [x] H3  `axiom InvMeasure.compactSpace` — could now be derived from Mathlib's
-          `instCompactSpaceProbabilityMeasure` (which gives compactness of the
-          ambient `ProbabilityMeasure (FullShift α d)`) plus a closedness axiom
-          for `InvMeasure X`. Deferred until we have closedness lemmas for
-          shift-invariance and X-supported measures.
+- [x] H3  `theorem InvMeasure.compactSpace` — **partially discharged** as a
+          theorem, derived from two narrower sub-axioms:
+          - `axiom InvMeasure.isClosed_setOf` — closedness of the
+            shift-invariant + X-supported predicate in
+            `ProbabilityMeasure (FullShift α d)` (portmanteau-style).
+          - `axiom ProbabilityMeasure.compactSpace_aux` — compactness of
+            `ProbabilityMeasure (FullShift α d)` for finite α; this is
+            Mathlib's `instCompactSpaceProbabilityMeasure` from
+            `Measure.Prokhorov`, not yet present in pinned Mathlib v4.26.0-rc1
+            but available on bump.
+          Hypotheses now also require `[T2Space α] [CompactSpace α]` (free for
+          finite discrete α).
 
 **TODO (post-I1, axiom discharge):** Once I1 is proven using H0–H3 as axioms,
 return to develop real Mathlib measure-theory infrastructure to discharge them:
 - Define `measureEntropy` via partitions / Kolmogorov–Sinai construction.
 - Discharge H1 (Misiurewicz's variational principle for ℤ^d-actions) — major effort, may require new Mathlib contributions.
-- Discharge H2/H3 via Prokhorov + standard arguments (the BorelSpace setup is now in place).
+- Discharge H2 via Prokhorov + standard arguments (the BorelSpace setup is now in place).
+- Discharge H3's two sub-axioms:
+  - `ProbabilityMeasure.compactSpace_aux`: free on Mathlib bump (already
+    `instCompactSpaceProbabilityMeasure` on master).
+  - `InvMeasure.isClosed_setOf`: portmanteau argument
+    (`MeasureTheory.Measure.Portmanteau`) + continuity of pushforward by
+    `FullShift.shiftMap`.
 
 ### I — Theorem 3.1
 - [x] I1  `axiom topEntropy_rightRE` — Theorem 3.1, axiomatized with proof outline

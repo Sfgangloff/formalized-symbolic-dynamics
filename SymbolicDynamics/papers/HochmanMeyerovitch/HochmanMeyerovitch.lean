@@ -1947,15 +1947,70 @@ axiom measureEntropy_uppersemicontinuous {α : Type} [MeasurableSpace α] {d : �
     (X : Subshift α d) :
     UpperSemicontinuous (fun μ : InvMeasure X => measureEntropy μ)
 
-/-! ## H3  M_compact — `InvMeasure X` is weak-* compact -/
+/-! ## H3  M_compact — `InvMeasure X` is weak-* compact
 
-/-- **Compactness of M(X).** When `α` is a finite alphabet (hence the full shift
-is compact metrizable), `InvMeasure X` is compact in the weak-* topology, by
-Banach–Alaoglu / Prokhorov. -/
-axiom InvMeasure.compactSpace {α : Type} [MeasurableSpace α] {d : ℕ} [Fintype α]
+H3 is now **partially discharged**: the original opaque axiom
+`InvMeasure.compactSpace` has been split into two narrower sub-axioms
+(`InvMeasure.isClosed_setOf` + `ProbabilityMeasure.compactSpace_aux`)
+plus a `theorem` deriving compactness from them.
+
+Both sub-axioms are individually closer to existing Mathlib infrastructure:
+
+- `InvMeasure.isClosed_setOf` is a portmanteau-style fact (closedness of
+  shift-invariance + closed-support conditions in the weak-* topology).
+- `ProbabilityMeasure.compactSpace_aux` is the compactness of the ambient
+  probability-measure space for a finite alphabet; in current Mathlib master
+  this is `instCompactSpaceProbabilityMeasure` (in
+  `MeasureTheory.Measure.Prokhorov`), but that module is not yet present in
+  v4.26.0-rc1 of Mathlib used here. -/
+
+/-- **Closedness sub-axiom for H3.** The set of shift-invariant probability
+measures concentrated on `X.carrier`, viewed as a subset of
+`ProbabilityMeasure (FullShift α d)`, is closed in the weak-* topology.
+
+Standard consequence of:
+- `μ ↦ μ.toMeasure.map (FullShift.shiftMap u)` is continuous in weak-*
+  (continuous pushforward, since `FullShift.shiftMap u` is continuous),
+- `μ ↦ μ.toMeasure C` is upper-semicontinuous on closed sets `C`
+  (portmanteau), so `μ X.carrier = 1` is a closed condition (probability
+  mass is bounded by 1, and `X.carrier` is closed by `Subshift.isClosed`).
+
+Axiomatized pending the precise Mathlib portmanteau / pushforward-continuity
+lemmas in the appropriate weak-* formulation. -/
+axiom InvMeasure.isClosed_setOf {α : Type} [MeasurableSpace α] {d : ℕ}
     [TopologicalSpace α] [SecondCountableTopology α] [BorelSpace α]
-    (X : Subshift α d) (hX : X.carrier.Nonempty) :
-    CompactSpace (InvMeasure X)
+    (X : Subshift α d) :
+    IsClosed { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) |
+      (∀ u : Lat d, μ.toMeasure.map (FullShift.shiftMap u) = μ.toMeasure)
+      ∧ μ.toMeasure X.carrier = 1 }
+
+/-- **Ambient-compactness sub-axiom for H3.** For a finite, T2, compact
+alphabet `α`, the space of probability measures on `FullShift α d` is itself
+compact in the weak-* topology. This is `instCompactSpaceProbabilityMeasure`
+in `Mathlib.MeasureTheory.Measure.Prokhorov` (current Mathlib master); this
+project pins Mathlib `v4.26.0-rc1`, which predates that module, hence we
+axiomatize the instance here.
+
+This will be discharged for free once we bump to a Mathlib version
+containing `Prokhorov.lean`. -/
+axiom ProbabilityMeasure.compactSpace_aux {α : Type} [MeasurableSpace α] {d : ℕ}
+    [Fintype α] [TopologicalSpace α] [SecondCountableTopology α] [BorelSpace α]
+    [T2Space α] [CompactSpace α] :
+    CompactSpace (MeasureTheory.ProbabilityMeasure (FullShift α d))
+
+/-- **Compactness of M(X).** When `α` is a finite, T2, compact alphabet
+(so the full shift is compact metrizable), `InvMeasure X` is compact in
+the weak-* topology. Discharged as a theorem from the two sub-axioms
+`InvMeasure.isClosed_setOf` and `ProbabilityMeasure.compactSpace_aux` via
+`IsClosed.isCompact` and `isCompact_iff_compactSpace`. -/
+theorem InvMeasure.compactSpace {α : Type} [MeasurableSpace α] {d : ℕ} [Fintype α]
+    [TopologicalSpace α] [SecondCountableTopology α] [BorelSpace α]
+    [T2Space α] [CompactSpace α]
+    (X : Subshift α d) (_hX : X.carrier.Nonempty) :
+    CompactSpace (InvMeasure X) :=
+  haveI : CompactSpace (MeasureTheory.ProbabilityMeasure (FullShift α d)) :=
+    ProbabilityMeasure.compactSpace_aux
+  isCompact_iff_compactSpace.mp ((InvMeasure.isClosed_setOf X).isCompact)
 
 /-! # MAIN THEOREM 1.1 (Necessity) — `topEntropy_rightRE` (= I1, Theorem 3.1)
 
