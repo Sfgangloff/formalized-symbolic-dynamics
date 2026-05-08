@@ -105,49 +105,55 @@ Tick the checkbox when the item compiles without errors.
 - [x] G4.1 `def relevantOffsets : Finset (Lat d)`
 - [x] G4.2 `theorem locallyAdmissible_iff_relevantOffsets`
 - [x] G4.3 `instance decidable_locallyAdmissible`  (drops `noncomputable` from G1/G2)
+
+#### G4.4 — Computable N_bar (target: `Computable (fun n => N_bar F L n)`)
+
+##### Phase A: bounds and basic forms
 - [x] G4.4a `theorem N_bar_le_card_pow`  (trivial bound `≤ |α|^(n^d)`)
 - [x] G4.4b `theorem N_bar_mono`  (monotone in `L`)
 - [x] G4.4c `noncomputable def Pattern.toList`  (List α encoding bridge, noncomputable)
-- [x] G4.4d `theorem N_bar_eq_fintype_card_subtype`  (alternative formulation via Fintype.card)
-- [x] G4.4e `def boxIndex` + `boxIndex_mem`  (computable enumeration via base-n digits)
-- [x] G4.4f-pre `def boxFnEquiv : ↥(box d n) ≃ (Fin d → Fin n)`
-- [x] G4.4f `def boxIxEquiv : ↥(box d n) ≃ Fin (n^d)` and
-            `def patternFnEquiv : Pattern α (box d n) ≃ (Fin (n^d) → α)`
-- [x] G4.4g `theorem N_bar_eq_fin_arrow_card` (transports count to `Fin (n^d) → α`)
-- [x] G4.4g' `theorem fintype_card_pattern_eq` (`|Pattern α (box d n)| = |α|^(n^d)` via the bridge)
-- [x] G4.4h-pre `theorem primrec_nat_pow`, `primrec_pow_const`, `primrec_const_pow_pow`
-            (Primrec helpers for the iteration bound `(card α)^(n^d)`)
-- [x] G4.4h-step1 `def digit`, `theorem primrec_digit`, `digit_lt`
-            (base-m digit extraction, Primrec₂)
-- [x] G4.4h-step2 `def decodeList`, `theorem primrec_decodeList`,
-            `decodeList_length`, `decodeList_get`, `decodeList_lt`
-            (list-of-digits encoding as uniform-shape representation)
-- [x] G4.4h-step2.5 `def boxIndexInv` + `boxIxEquiv_val`
-            (explicit base-n formula `Σ_j v_j.toNat * n^j` for the `boxIxEquiv`)
-- [x] G4.4h-step2.6 `boxIxEquiv_symm_val`, `boxIndex_boxIndexInv`,
-            `boxIndexInv_boxIndex` (full explicit-formula bijection
-            between `box d n` and `[0, n^d)`)
-- [x] G4.4h-step3 `def admissibleEncoded` — Prop predicate on (n, k) at digit level
-- [x] G4.4h-step4 `instance decidable_admissibleEncoded` — auto-derived Decidable
-- [x] G4.4h-step5-pre `theorem digit_extract` (digit recovery from `a * m^i + r`)
-- [x] G4.4h-step5-pre+ `theorem digit_succ`, `digit_zero` (recursion identities)
-- [x] G4.4h-step5-pre++ `theorem sum_digits_pow_eq` (`Σ digit m k i * m^i = k`)
-            — closes the algebraic loop: digits recover k under base-m encoding
-- [x] G4.4h-step5-pre+++ `theorem sum_pow_lt` (`Σ f i * m^i < m^len` for digit-valued f)
-            — the inverse-direction bound completing the [0, m^len) ↔ digits dictionary
-- [x] G4.4h-step5 `def fnFinEquiv`, `def patternFinEquiv`, `theorem N_bar_eq_fintype_card_fin`
-            — full chain `Pattern α (box d n) ≃ Fin ((card α)^(n^d))`
-            and N_bar expressed as a Fintype.card over Fin (m^(n^d))
-- [x] G4.4i-pre `def admPredNat`, `instance decidable_admPredNat`, `admPredNat_lt`
-            — admissibility predicate on ℕ with bound corollary
-- [x] G4.4i `theorem N_bar_eq_count` — `N_bar = Nat.count admPredNat (m^(n^d))`
-            (the most primrec-friendly form)
-- [ ] G4.4j Prove `Primrec₂ admPredNat` (or Computable₂) — the substantial remaining piece
-- [ ] G4.4 `theorem N_bar_computable` via `Primrec.nat_count` (or via Nat.count built up
-            from primitive recursion)
-- [ ] G4.4i Express `N_bar F L` via `Nat.count (decide ∘ admissibleEncoded) (m^(n^d))`
-            and prove Primrec
-- [ ] G4.4 `theorem N_bar_computable` — Lean-level `Computable (fun n => N_bar F L n)`
+- [x] G4.4d `theorem N_bar_eq_fintype_card_subtype`  (Fintype.card form)
+
+##### Phase B: explicit base-n bijection between `box d n` and `[0, n^d)`
+- [x] G4.4e  `def boxIndex` + `boxIndex_mem`  (i ↦ i-th element of box d n via digits)
+- [x] G4.4e.b `def boxIndexInv`
+            (`w ∈ box d n` ↦ `Σ_j (w_j).toNat * n^j` ∈ [0, n^d))
+- [x] G4.4e.c `boxIndex_boxIndexInv`, `boxIndexInv_boxIndex` (round-trips)
+
+##### Phase C: pattern bijections (uniform-shape encoding)
+- [x] G4.4f  `def boxFnEquiv : ↥(box d n) ≃ (Fin d → Fin n)`
+- [x] G4.4f' `def boxIxEquiv : ↥(box d n) ≃ Fin (n^d)`,
+            `boxIxEquiv_val` and `boxIxEquiv_symm_val` (connection to boxIndex/boxIndexInv)
+- [x] G4.4f'' `def patternFnEquiv : Pattern α (box d n) ≃ (Fin (n^d) → α)`
+- [x] G4.4f''' `def fnFinEquiv : (Fin (n^d) → α) ≃ Fin ((card α)^(n^d))`
+            (via Encodable.fintypeEquivFin + finFunctionFinEquiv)
+- [x] G4.4f'''' `def patternFinEquiv : Pattern α (box d n) ≃ Fin ((card α)^(n^d))`
+- [x] G4.4f''''' `theorem fintype_card_pattern_eq` (`|Pattern α (box d n)| = |α|^(n^d)`)
+- [x] G4.4g  `theorem N_bar_eq_fin_arrow_card` (count via Fin (n^d) → α)
+- [x] G4.4g' `theorem N_bar_eq_fintype_card_fin` (count via Fin ((card α)^(n^d)))
+
+##### Phase D: Primrec digit machinery (base-m positional system)
+- [x] G4.4h.1 `theorem primrec_nat_pow`, `primrec_pow_const`, `primrec_const_pow_pow`
+            (Primrec for the iteration bound `(card α)^(n^d)`)
+- [x] G4.4h.2 `def digit`, `primrec_digit`, `digit_lt`, `digit_succ`, `digit_zero`,
+            `digit_extract` (base-m digit extraction with full algebraic identities)
+- [x] G4.4h.3 `def decodeList`, `primrec_decodeList`, `decodeList_length/get/lt`
+            (list-of-digits representation, Primrec₂)
+- [x] G4.4h.4 `theorem sum_digits_pow_eq` (`Σ digit m k i * m^i = k` for k < m^len)
+- [x] G4.4h.5 `theorem sum_pow_lt` (`Σ f i * m^i < m^len` for digit-valued f)
+
+##### Phase E: bridge to Nat.count
+- [x] G4.4i.1 `def admissibleEncoded` (digit-level Prop) + Decidable
+            — early form, superseded by admPredNat
+- [x] G4.4i.2 `def admPredNat` (cleaner ℕ-form) + `decidable_admPredNat`, `admPredNat_lt`
+- [x] G4.4i.3 `theorem N_bar_eq_count` — **`N_bar = Nat.count admPredNat (m^(n^d))`** ✓
+            the canonical Primrec-friendly form
+
+##### Phase F: remaining — primrec composition and final theorem
+- [ ] G4.4j  Prove `Primrec₂ admPredNat` (or PrimrecPred₂)
+            — needs Primrec₂ on the inner `locallyAdmissible F L ((patternFinEquiv).symm ⟨k, h⟩)`
+- [ ] G4.4   **`theorem N_bar_computable`** — `Computable (fun n => N_bar F L n)`
+            via `Primrec.nat_count` (or built from `Primrec.nat_rec`) applied to G4.4j
 
 ### H — Key axioms for Theorem 3.1
 - [ ] H1  `axiom variationalPrinciple`
