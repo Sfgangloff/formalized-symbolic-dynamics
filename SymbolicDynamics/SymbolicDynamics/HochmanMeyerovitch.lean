@@ -1855,3 +1855,68 @@ theorem N_bar_eq_fin_arrow_card {α : Type*} {d : ℕ} [Fintype α] [DecidableEq
   refine Fintype.card_congr (Equiv.subtypeEquiv (patternFnEquiv α d n) ?_)
   intro p
   rw [Equiv.symm_apply_apply]
+
+/-! ## H — Measure-theoretic axioms for Theorem 3.1
+
+The following are the standard measure-theoretic facts used in the proof of
+Theorem 3.1 (Hochman–Meyerovitch). Building the full Mathlib measure theory
+machinery to *prove* them is a substantial effort and is left for a future
+infrastructure pass. We axiomatize the parts that downstream proofs need.
+
+Each axiom corresponds to a deep but well-known theorem in ergodic theory:
+- H1: Variational principle (Misiurewicz, ref [19] in the paper).
+- H2: Upper semi-continuity of measure-theoretic entropy in weak-* topology.
+- H3: Weak-* compactness of the space of shift-invariant probability measures
+  on a compact metrizable subshift. -/
+
+/-- Type of shift-invariant Borel probability measures on `X`. Opaque axiom;
+in the eventual full development this is `MeasureTheory.ProbabilityMeasure`
+restricted to those `μ` invariant under the `Lat d`-action. -/
+axiom InvMeasure {α : Type*} {d : ℕ} [TopologicalSpace α] (X : Subshift α d) : Type
+
+/-- A nonempty subshift carries at least one shift-invariant probability measure
+(by Krylov–Bogolyubov). -/
+axiom InvMeasure.instInhabited {α : Type*} {d : ℕ} [TopologicalSpace α]
+    (X : Subshift α d) : (X.carrier.Nonempty) → Inhabited (InvMeasure X)
+
+/-- Topology on `InvMeasure X` (the weak-* topology). -/
+axiom InvMeasure.instTopologicalSpace {α : Type*} {d : ℕ} [TopologicalSpace α]
+    (X : Subshift α d) : TopologicalSpace (InvMeasure X)
+
+attribute [instance] InvMeasure.instTopologicalSpace
+
+/-- Measure-theoretic (Kolmogorov–Sinai) entropy of a shift-invariant probability
+measure. Opaque; in the full development this is the Kolmogorov–Sinai entropy
+of the `Lat d`-action. -/
+axiom measureEntropy {α : Type*} {d : ℕ} [TopologicalSpace α] {X : Subshift α d}
+    (μ : InvMeasure X) : ℝ
+
+/-- Measure entropy is non-negative. -/
+axiom measureEntropy_nonneg {α : Type*} {d : ℕ} [TopologicalSpace α] {X : Subshift α d}
+    (μ : InvMeasure X) : 0 ≤ measureEntropy μ
+
+/-! ## H1  variationalPrinciple — `topEntropy X = sup_μ measureEntropy μ` -/
+
+/-- **Variational principle.** For a nonempty subshift `X`, the topological
+entropy equals the supremum of measure-theoretic entropies over all shift-
+invariant probability measures on `X`. The supremum is achieved when `X` is
+a compact subshift (Misiurewicz, Theorem 7.7 in the paper's reference [19]). -/
+axiom variationalPrinciple {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
+    {X : Subshift α d} (hX : X.carrier.Nonempty) :
+    topEntropy X = ⨆ μ : InvMeasure X, measureEntropy μ
+
+/-! ## H2  entropy_usc — `μ ↦ measureEntropy μ` is upper semi-continuous -/
+
+/-- **Upper semi-continuity of entropy.** The map `μ ↦ measureEntropy μ` is
+upper semi-continuous in the weak-* topology on `InvMeasure X`. -/
+axiom measureEntropy_uppersemicontinuous {α : Type*} {d : ℕ} [TopologicalSpace α]
+    (X : Subshift α d) :
+    UpperSemicontinuous (fun μ : InvMeasure X => measureEntropy μ)
+
+/-! ## H3  M_compact — `InvMeasure X` is weak-* compact -/
+
+/-- **Compactness of M(X).** When `α` is a finite alphabet (hence the full shift
+is compact metrizable), `InvMeasure X` is compact in the weak-* topology, by
+Banach–Alaoglu / Prokhorov. -/
+axiom InvMeasure.compactSpace {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
+    (X : Subshift α d) (hX : X.carrier.Nonempty) : CompactSpace (InvMeasure X)
