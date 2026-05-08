@@ -201,6 +201,30 @@ return to develop real Mathlib measure-theory infrastructure to discharge them:
 - I1.5: Construct a Computable rational upper approximation of
   `(log N_bar) / n^d` to package into `IsRightRE`.
 
+### I (continued) — Theorem 1.1 (full statement)
+
+The paper's Theorem 1.1 has two directions:
+
+- **Necessity:** every SFT entropy is right r.e. ← I1 (axiomatized).
+- **Sufficiency:** every right r.e. `h ≥ 0` is realized as the topological
+  entropy of some SFT. ← **NOT DONE** (would be a separate Milestone 6).
+
+The sufficiency direction is "by far the harder part" (formalization plan):
+the proof constructs the SFT via three layers (Sections 4-8 of the paper):
+1. Base SFT with uniform density of 1's (Section 6).
+2. Pruning layer driven by a Turing machine that kills points with too-high
+   density (Section 7).
+3. Random-bit layer that raises entropy to exactly `h` (Section 8).
+
+This requires Mozes' substitution theorem (Theorem 5.1) — itself axiomatizable
+in the formalization plan — plus a substantial encoding of Turing machines as
+SFT-tilings (Robinson's technique). Multi-month effort.
+
+- [ ] I2 (sufficiency direction): `theorem rightRE_imp_SFT_entropy` —
+      `∀ h : ℝ, 0 ≤ h → IsRightRE h → ∃ (X : Subshift α d) (_ : IsSFT X), topEntropy X = h`
+- [ ] I3 (combined Theorem 1.1): `theorem SFT_entropy_iff_rightRE` —
+      `topEntropy X = h ∧ IsSFT X ↔ 0 ≤ h ∧ IsRightRE h` (modulo phrasing)
+
 ### J — Milestone 4: Symmetric cubes and r-compatibility (Theorem 1.3)
 - [x] J1  `def symBox (d n : ℕ) : Finset (Lat d)`  (Q_n)
 - [x] J2  `theorem symBox_card`  ((2n+1)^d)
@@ -214,9 +238,17 @@ return to develop real Mathlib measure-theory infrastructure to discharge them:
 - [x] J6d `theorem Lat.supNorm_neg`, `Lat.supNorm_sub_comm`
 - [x] J6e `theorem Pattern.globallyAdmissible_iff_appearsAt_zero`  (offset 0 normalization)
 - [x] J6f `theorem Pattern.rCompatible_of_irreducible`  (irreducibility → r-compatibility)
-- [ ] J7  Lemma 3.4 (compactness dichotomy)
-- [ ] J8  Corollary 3.5 (decidability of global admissibility)
-- [ ] J9  Theorem 1.3 (entropy of irreducible SFT is computable)
+- [x] J7  `axiom Lemma_3_4` (compactness dichotomy, axiomatized with proof sketch)
+- [x] J8  `axiom decidable_globallyAdmissible_irreducible` + `N_X_symBox_computable`
+          (Corollary 3.5, axiomatized — follows from J7)
+- [x] J9  `axiom topEntropy_irreducible_computable` (Theorem 1.3, axiomatized —
+          combines I1's right r.e. with J8b's left r.e. via F5)
+
+**TODO (post-axiomatization, structured proofs):**
+- J7 proof: requires compactness arguments on the closed sets of `x ∈ X` with
+  prescribed `Q_k` patterns + irreducibility (`Pattern.rCompatible_of_irreducible`).
+- J8 proof: derive a Decidable instance from the dichotomy via effective search.
+- J9 proof: package N_X(Q_k) lower approximation as `IsLeftRE`, combine with I1.
 
 ---
 
