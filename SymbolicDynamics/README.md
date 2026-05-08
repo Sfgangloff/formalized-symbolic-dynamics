@@ -44,15 +44,16 @@ commits**.
 
 Every paper formalized in this project lists its **main theorems up front**:
 
-- A `## Main theorems` section at the top of `<paper>_formalization_plan.txt`,
-  with each main theorem named, numbered (matching the paper), and tied to its
-  implementation-list identifier.
-- A "🎯 Main theorems" summary block at the top of `<paper>_implementation_list.md`.
-- A `/-! ## 🎯 MAIN THEOREM N — ... -/` comment-block header above each main
-  theorem in the Lean source.
+- A `## [MAIN] Main theorems` section at the top of
+  `<paper>_formalization_plan.txt`, with each main theorem named, numbered
+  (matching the paper), and tied to its implementation-list identifier.
+- A `## [MAIN] Main theorems` summary block at the top of
+  `<paper>_implementation_list.md`, with each entry prefixed `**[MAIN]**`.
+- A `/-! # MAIN THEOREM N — ... -/` comment-block header (note the `#`, top-
+  level) above each main theorem in the Lean source.
 
-The 🎯 emoji is used as a fast `grep`/search marker so any agent picking up the
-project can immediately locate the main results across plan, list, and source.
+Searching for the literal string `MAIN THEOREM` (or `[MAIN]`) in any project
+file returns the main results across plan, list, and source.
 
 ## GitHub configuration
 

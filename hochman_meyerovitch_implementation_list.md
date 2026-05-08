@@ -6,25 +6,25 @@ Tick the checkbox when the item compiles without errors.
 
 ---
 
-## 🎯 Main theorems (Hochman–Meyerovitch)
+## [MAIN] Main theorems (Hochman–Meyerovitch)
 
 The paper has three main theorems. Their formalization status:
 
-- 🎯 **Theorem 1.1** — *SFT entropies = non-negative right r.e. reals*
+- **[MAIN] Theorem 1.1** — *SFT entropies = non-negative right r.e. reals*
   - **Necessity** (every SFT entropy is right r.e.):
     `I1` → `axiom topEntropy_rightRE`  *(axiomatized; structured proof TODO)*
   - **Sufficiency** (every right r.e. h ≥ 0 is an SFT entropy):
-    `I2` → `rightRE_imp_SFT_entropy`  ❌ **NOT STARTED** (Sections 4-8 of paper)
+    `I2` → `rightRE_imp_SFT_entropy`  *(NOT STARTED — Sections 4-8 of paper)*
   - **Combined statement**:
-    `I3` → `SFT_entropy_iff_rightRE`  ❌ pending I2
-- 🎯 **Theorem 1.2** — *Sofic shift entropies = SFT entropies*
-  ❌ **NOT STARTED** (would be a separate milestone, Section 4 of paper)
-- 🎯 **Theorem 1.3** — *Irreducible SFT entropy is computable*
-  `J9` → `theorem topEntropy_irreducible_computable`  ✓ proven from
+    `I3` → `SFT_entropy_iff_rightRE`  *(pending I2)*
+- **[MAIN] Theorem 1.2** — *Sofic shift entropies = SFT entropies*
+  *(NOT STARTED — would be a separate milestone, Section 4 of paper)*
+- **[MAIN] Theorem 1.3** — *Irreducible SFT entropy is computable*
+  `J9` → `theorem topEntropy_irreducible_computable` — *proven* from
   `topEntropy_rightRE` (I1) + `topEntropy_leftRE_irreducible` (axiomatized) + F5
 
-Search for `🎯` to locate main theorems; in the Lean source they're flagged
-with `/-! ## MAIN THEOREM ... -/` comment-block headers.
+Search for `[MAIN]` to locate main theorems; in the Lean source they're flagged
+with `/-! # MAIN THEOREM ... -/` comment-block headers.
 
 ---
 
@@ -168,7 +168,7 @@ with `/-! ## MAIN THEOREM ... -/` comment-block headers.
 - [x] G4.4i.1 `def admissibleEncoded` (digit-level Prop) + Decidable
             — early form, superseded by admPredNat
 - [x] G4.4i.2 `def admPredNat` (cleaner ℕ-form) + `decidable_admPredNat`, `admPredNat_lt`
-- [x] G4.4i.3 `theorem N_bar_eq_count` — **`N_bar = Nat.count admPredNat (m^(n^d))`** ✓
+- [x] G4.4i.3 `theorem N_bar_eq_count` — **`N_bar = Nat.count admPredNat (m^(n^d))`** —
             the canonical Primrec-friendly form
 
 ##### Phase F: bridge to concrete digit formula
@@ -190,7 +190,7 @@ with `/-! ## MAIN THEOREM ... -/` comment-block headers.
              (axiomatized; full proof needs Primcodable Finset (Lat d) + primrec
              encodings of `Finset.image`/`filter`/`piFinset`/`Finset.Ico` on ℤ;
              metamathematically obvious for the fully-specified arithmetic predicate)
-- [x] G4.4   **`theorem N_bar_computable`** — `Computable (fun n => N_bar F L n)` ✓
+- [x] G4.4   **`theorem N_bar_computable`** — `Computable (fun n => N_bar F L n)`
              Built via primitive recursion on the bound (`Primrec.nat_rec`) with
              countAux n m = Nat.rec 0 (fun i IH => IH + if admPredDigit then 1 else 0) m,
              then `Primrec.to_comp`.

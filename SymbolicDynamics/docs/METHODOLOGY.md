@@ -47,29 +47,33 @@ rarely changes during a session.
 
 For each paper formalized in this project, the main theorems should be:
 
-1. **Listed in a `## Main theorems` section at the top of the plan**, with
-   their paper number and the matching implementation-list identifier:
+1. **Listed in a `## [MAIN] Main theorems` section at the top of the plan**,
+   with their paper number and the matching implementation-list identifier:
 
    ```
-   ## Main theorems (Hochman–Meyerovitch)
-   - Theorem 1.1 (SFT entropies = right r.e. ≥ 0)
+   ## [MAIN] Main theorems (Hochman–Meyerovitch)
+   - [MAIN] Theorem 1.1 (SFT entropies = right r.e. ≥ 0)
        - Necessity: I1 → `topEntropy_rightRE`
        - Sufficiency: I2 → `rightRE_imp_SFT_entropy`  (NOT YET DONE)
        - Combined: I3 → `SFT_entropy_iff_rightRE`
-   - Theorem 1.2 (Sofic shift entropies = SFT entropies)  (NOT YET STARTED)
-   - Theorem 1.3 (irreducible SFT entropy is computable): J9 →
+   - [MAIN] Theorem 1.2 (Sofic shift entropies = SFT entropies)  (NOT YET STARTED)
+   - [MAIN] Theorem 1.3 (irreducible SFT entropy is computable): J9 →
      `topEntropy_irreducible_computable`
    ```
 
-2. **Mirrored at the top of the implementation list** in a "Main theorems
-   summary" block, using `🎯` (or any chosen marker) so they're searchable.
+2. **Mirrored at the top of the implementation list** in a `## [MAIN] Main
+   theorems` summary block, with each entry prefixed `**[MAIN]**` so it can be
+   located by a literal search for `[MAIN]`.
 
-3. **Marked in the Lean source** with a comment-block header
-   (`/-! ## MAIN THEOREM 1.3 — entropy of an irreducible SFT is computable -/`)
-   immediately above the declaration.
+3. **Marked in the Lean source** with a top-level comment-block header
+   (`/-! # MAIN THEOREM 1.3 — entropy of an irreducible SFT is computable -/`,
+   note the `#` rather than `##`, making it stand out as a file-level
+   landmark) immediately above the declaration.
 
 These three locations (plan / list / source) keep the main results
-discoverable from any entry point.
+discoverable from any entry point. Searching for the literal string
+`MAIN THEOREM` in any project file should always return only the main
+results.
 
 ## Artifact 2: the implementation list (`hochman_meyerovitch_implementation_list.md`)
 
