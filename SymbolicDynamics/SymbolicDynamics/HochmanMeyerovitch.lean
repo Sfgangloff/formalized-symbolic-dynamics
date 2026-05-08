@@ -1587,6 +1587,22 @@ def fnFinEquiv (α : Type*) [Fintype α] [DecidableEq α] [Encodable α] (n d : 
     (Fin (n^d) → α) ≃ Fin ((Fintype.card α)^(n^d)) :=
   (Equiv.arrowCongr (Equiv.refl _) Encodable.fintypeEquivFin).trans finFunctionFinEquiv
 
+/-- Full chain: `Pattern α (box d n) ≃ Fin ((Fintype.card α)^(n^d))`. -/
+def patternFinEquiv (α : Type*) [Fintype α] [DecidableEq α] [Encodable α] (d n : ℕ) :
+    Pattern α (box d n) ≃ Fin ((Fintype.card α)^(n^d)) :=
+  (patternFnEquiv α d n).trans (fnFinEquiv α n d)
+
+/-- `N_bar` as a count over `Fin (m^(n^d))` — the most direct uniform-encoding form. -/
+theorem N_bar_eq_fintype_card_fin {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α] [Encodable α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n : ℕ) :
+    N_bar F L n =
+      Fintype.card { k : Fin ((Fintype.card α)^(n^d)) //
+        locallyAdmissible F L ((patternFinEquiv α d n).symm k) } := by
+  rw [N_bar_eq_fintype_card_subtype]
+  refine Fintype.card_congr (Equiv.subtypeEquiv (patternFinEquiv α d n) ?_)
+  intro p
+  rw [Equiv.symm_apply_apply]
+
 /-! ## G4.4h-step3  admissibleEncoded — Bool admissibility on encoded form -/
 
 /-- Admissibility check at the encoded level: given `(n, k)` with `m = Fintype.card α`,
