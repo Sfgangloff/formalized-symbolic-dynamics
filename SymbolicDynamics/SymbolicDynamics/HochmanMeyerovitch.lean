@@ -17,6 +17,8 @@ import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Computability.Partrec
 import Mathlib.Data.Rat.Denumerable
 import Mathlib.Data.Nat.Count
+import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
+import Mathlib.MeasureTheory.MeasurableSpace.Constructions
 import SymbolicDynamics.Dependencies.ComputableRat
 
 /-! ## 0.1  Lat d — the group ℤ^d -/
@@ -1869,9 +1871,17 @@ Each axiom corresponds to a deep but well-known theorem in ergodic theory:
 - H3: Weak-* compactness of the space of shift-invariant probability measures
   on a compact metrizable subshift. -/
 
-/-- Type of shift-invariant Borel probability measures on `X`. Opaque axiom;
-in the eventual full development this is `MeasureTheory.ProbabilityMeasure`
-restricted to those `μ` invariant under the `Lat d`-action. -/
+/-- Type of shift-invariant Borel probability measures on `X`. The intended
+"real" definition (when full Mathlib measure-theoretic infrastructure is set
+up) is the subtype
+
+  `{ μ : MeasureTheory.ProbabilityMeasure (FullShift α d) //
+      (∀ u : Lat d, μ.toMeasure.map (FullShift.shiftMap u) = μ.toMeasure)
+      ∧ μ.toMeasure X.carrier = 1 }`
+
+requiring `[MeasurableSpace α]` (typically discrete for finite α). For the
+moment we keep this opaque so downstream theorems don't need to thread
+measurable-space instances. -/
 axiom InvMeasure {α : Type*} {d : ℕ} [TopologicalSpace α] (X : Subshift α d) : Type
 
 /-- A nonempty subshift carries at least one shift-invariant probability measure
@@ -2034,22 +2044,32 @@ axiom N_X_symBox_computable {α : Type*} {d : ℕ}
 
 /-! ## J9  Theorem 1.3 — entropy of an irreducible SFT is computable
 
-Combining I1 (right r.e. — upper approximations from N_bar) with the lower
-approximations from N_X(Q_k) (computable by J8 / `N_X_symBox_computable`),
-the topological entropy of an irreducible SFT is both right r.e. and left
-r.e., hence computable (by F5).
+Decomposed as: Theorem 1.3 = I1 (right r.e.) + `topEntropy_leftRE_irreducible`
+(left r.e., axiomatized) + F5 (computable iff leftRE ∧ rightRE).
 
-**Proof sketch** (currently axiomatized):
-1. By I1: `topEntropy (mkSFT F L)` is right r.e.
-2. By J8 + a Fekete-style argument on `N_X(Q_k)`:
-   `s(k) := (1/|Q_k|) log N_X(Q_k) → topEntropy (mkSFT F L)` from below.
-3. Construct a Computable rational lower-approximation sequence to package
-   into `IsLeftRE`.
-4. By F5 (`computable_iff_leftRE_and_rightRE`):
-   `IsRightRE ∧ IsLeftRE ⇒ IsComputableReal`. -/
-axiom topEntropy_irreducible_computable {α : Type*} {d : ℕ}
+The left-r.e. axiom captures the lower-approximation argument from the paper:
+the sequence `(1/|Q_k|) log N_X(Q_k)` (using `N_X_symBox_computable` from J8b)
+converges to `topEntropy (mkSFT F L)` from below, packaged as a Computable
+rational sequence. -/
+
+/-- Lower approximation: for a nonempty irreducible SFT, the topological
+entropy is left r.e. (computable rational sequence approaching from below). -/
+axiom topEntropy_leftRE_irreducible {α : Type*} {d : ℕ}
     [Fintype α] [DecidableEq α] [Encodable α] [TopologicalSpace α] [T1Space α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F))
     (hX : (mkSFT F L).carrier.Nonempty)
     (h_irr : IsIrreducibleShift (mkSFT F L)) :
-    IsComputableReal (topEntropy (mkSFT F L))
+    IsLeftRE (topEntropy (mkSFT F L))
+
+/-- **Theorem 1.3.** The topological entropy of a nonempty irreducible SFT is
+computable, derived from the right-r.e. (I1) and left-r.e.
+(`topEntropy_leftRE_irreducible`) approximations via F5. -/
+theorem topEntropy_irreducible_computable {α : Type*} {d : ℕ}
+    [Fintype α] [DecidableEq α] [Encodable α] [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F))
+    (hX : (mkSFT F L).carrier.Nonempty)
+    (h_irr : IsIrreducibleShift (mkSFT F L)) :
+    IsComputableReal (topEntropy (mkSFT F L)) :=
+  (computable_iff_leftRE_and_rightRE).mpr
+    ⟨topEntropy_leftRE_irreducible F L hX h_irr,
+     topEntropy_rightRE F L hX⟩
