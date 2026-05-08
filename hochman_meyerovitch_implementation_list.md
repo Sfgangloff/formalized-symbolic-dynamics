@@ -222,9 +222,21 @@ return to develop real Mathlib measure-theory infrastructure to discharge them:
 
 ## Dependencies (helper modules in `SymbolicDynamics/Dependencies/`)
 
-### Computable ℚ — arithmetic on ℚ for the F-section
-- [ ] DEP.Q.1  `Primrec` instance for ℚ via the `(num, den)` pair encoding
-- [ ] DEP.Q.2  `Computable` rational addition `(· + ·) : ℚ → ℚ → ℚ`
-- [ ] DEP.Q.3  `Computable` rational reciprocal `1 / (·) : ℚ → ℚ`
-- [ ] DEP.Q.4  `Computable` natural-cast `(· : ℕ → ℚ)`
-- [ ] DEP.Q.5  `Computable` of `fun n : ℕ => 1 / ((n : ℚ) + 1)`
+### Computable ℚ — arithmetic on ℚ for the F-section (`Dependencies/ComputableRat.lean`)
+
+**What was actually built (sufficient for F4/F4a/F5):**
+- [x] DEP.Q.1  `instance primcodableRat : Primcodable ℚ` (via structured `(num, den)` encoding)
+- [x] DEP.Q.5  `computable_one_div_succ`: `Computable (fun n => 1/((n : ℚ)+1))`
+- [x] DEP.Q.5+ `primrec_add_one_div_succ`: `Primrec₂ (fun q n => q + 1/(n+1))`
+- [x] DEP.Q.5++ `primrec_rat_neg`, `computable_rat_neg`: rational negation
+- [x] DEP.Q.5+++ `computable_sub_one_div_succ`: `Computable (fun n => q n - 1/(n+1))`
+- [x] DEP.Q.6  `primrec_rat_le`: `PrimrecRel ((· ≤ ·) : ℚ → ℚ → Prop)` via structured encoding
+
+**Not built (not needed by current downstream code):**
+- [ ] DEP.Q.2  `Computable` *general* rational addition `(· + ·) : ℚ → ℚ → ℚ`
+            (we have the specific `q + 1/(n+1)` form but not full add)
+- [ ] DEP.Q.3  `Computable` *general* rational reciprocal `1 / (·) : ℚ → ℚ`
+- [ ] DEP.Q.4  `Computable` natural-cast `((· : ℕ) → ℚ)` as an explicit theorem
+
+These would be useful for I1.5 (Computable rational log approximation) and any
+future numeric work; not blocking the current axiomatized I1.
