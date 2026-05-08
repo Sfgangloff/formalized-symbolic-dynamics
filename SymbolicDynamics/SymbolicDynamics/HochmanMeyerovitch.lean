@@ -1497,6 +1497,32 @@ theorem digit_succ (m k i : ℕ) : digit m k (i + 1) = digit m (k / m) i := by
 theorem digit_zero (m k : ℕ) : digit m k 0 = k % m := by
   unfold digit; simp
 
+/-- Sum-of-digits decomposition: for `k < m^len`,
+`Σ_{i < len} digit m k i * m^i = k`. The base-m positional formula. -/
+theorem sum_digits_pow_eq {m : ℕ} (hm : 0 < m) :
+    ∀ (len k : ℕ), k < m ^ len →
+    (Finset.range len).sum (fun i => digit m k i * m ^ i) = k := by
+  intro len
+  induction len with
+  | zero =>
+    intro k hk
+    rw [pow_zero, Nat.lt_one_iff] at hk
+    subst hk
+    simp
+  | succ len ih =>
+    intro k hk
+    rw [Finset.sum_range_succ']
+    have h_term : ∀ i, digit m k (i + 1) * m ^ (i + 1) = m * (digit m (k / m) i * m ^ i) := by
+      intro i
+      rw [digit_succ, pow_succ]
+      ring
+    rw [Finset.sum_congr rfl (fun i _ => h_term i), ← Finset.mul_sum]
+    have h_kdiv : k / m < m ^ len := by
+      rw [Nat.div_lt_iff_lt_mul hm]
+      rwa [pow_succ] at hk
+    rw [ih (k / m) h_kdiv, digit_zero, pow_zero, Nat.mul_one]
+    exact Nat.div_add_mod k m
+
 /-! ## G4.4h-step2  decodeList — list-of-digits representation -/
 
 /-- Decode `k` as a list of `len` digits in base `m`. -/
