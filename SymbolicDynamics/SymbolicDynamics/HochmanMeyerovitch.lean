@@ -1727,7 +1727,15 @@ theorem N_bar_eq_count {α : Type*} [Fintype α] [DecidableEq α] [Encodable α]
   · rintro ⟨hk_lt, hpred⟩
     exact ⟨⟨k, hk_lt⟩, hpred.choose_spec, rfl⟩
 
-
+/-- N_bar via the digit-level predicate. Combines `N_bar_eq_count` with the
+`admPredNat ↔ admPredDigit` equivalence into the canonical Primrec-friendly form. -/
+theorem N_bar_eq_count_digit {α : Type*} [Fintype α] [DecidableEq α] [Encodable α]
+    {d : ℕ} (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n : ℕ) :
+    N_bar F L n = Nat.count (admPredDigit F L n) ((Fintype.card α)^(n^d)) := by
+  rw [N_bar_eq_count]
+  congr 1
+  funext k
+  exact propext (admPredNat_iff_admPredDigit F L n k)
 
 /-! ## G4.4h-step3  admissibleEncoded — Bool admissibility on encoded form -/
 
