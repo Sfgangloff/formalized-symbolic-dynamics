@@ -204,10 +204,10 @@ with `/-! # MAIN THEOREM ... -/` comment-block headers.
 - [x] H0c `axiom InvMeasure.instInhabited` (Krylov–Bogolyubov for ℤ^d-actions),
           still axiomatized — Mathlib doesn't currently have a Krylov–Bogolyubov
           theorem for general continuous group actions in this form.
-- [x] H0d `axiom InvMeasure.instTopologicalSpace` — could now be derived from
-          the subtype topology of `ProbabilityMeasure.instTopologicalSpace`
-          (with our new `BorelSpace` instance, the prerequisite is satisfied);
-          deferred to avoid threading more typeclass arguments into H1/H2.
+- [x] H0d `instance InvMeasure.instTopologicalSpace` — **discharged** as the
+          subtype topology inherited from `ProbabilityMeasure.instTopologicalSpace`
+          (via `inferInstanceAs`); requires `[SecondCountableTopology α] [BorelSpace α]`,
+          which propagates to H2/H3 (both hold automatically for finite discrete α).
 - [x] H0e `axiom measureEntropy`, `measureEntropy_nonneg` — Kolmogorov–Sinai
           entropy still opaque; defining it via partitions is a separate
           Mathlib gap.

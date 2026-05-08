@@ -1904,17 +1904,19 @@ axiom InvMeasure.instInhabited {α : Type} [MeasurableSpace α] {d : ℕ}
     (X.carrier.Nonempty) → Inhabited (InvMeasure X)
 
 /-- Topology on `InvMeasure X` (the weak-* topology, inherited from
-`MeasureTheory.ProbabilityMeasure`).
+`MeasureTheory.ProbabilityMeasure` via the subtype topology).
 
-In the full development this is just the subtype topology of
-`MeasureTheory.ProbabilityMeasure.instTopologicalSpace`, which requires an
-`[OpensMeasurableSpace (FullShift α d)]` instance (i.e. a Borel-compatible
-σ-algebra). We axiomatize the instance for now so we don't need to thread
-that requirement through every downstream axiom. -/
-axiom InvMeasure.instTopologicalSpace {α : Type} [MeasurableSpace α] {d : ℕ}
-    [TopologicalSpace α] (X : Subshift α d) : TopologicalSpace (InvMeasure X)
-
-attribute [instance] InvMeasure.instTopologicalSpace
+`MeasureTheory.ProbabilityMeasure.instTopologicalSpace` needs
+`[OpensMeasurableSpace (FullShift α d)]`; we get this from `Pi.borelSpace`
+under `[SecondCountableTopology α] [BorelSpace α]`. For the application
+(α finite with discrete topology), both hold automatically. -/
+instance InvMeasure.instTopologicalSpace {α : Type} [MeasurableSpace α] {d : ℕ}
+    [TopologicalSpace α] [SecondCountableTopology α] [BorelSpace α]
+    (X : Subshift α d) : TopologicalSpace (InvMeasure X) :=
+  inferInstanceAs (TopologicalSpace
+    { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) //
+        (∀ u : Lat d, μ.toMeasure.map (FullShift.shiftMap u) = μ.toMeasure)
+        ∧ μ.toMeasure X.carrier = 1 })
 
 /-- Measure-theoretic (Kolmogorov–Sinai) entropy of a shift-invariant probability
 measure. Opaque; in the full development this is the Kolmogorov–Sinai entropy
@@ -1941,7 +1943,8 @@ axiom variationalPrinciple {α : Type} [MeasurableSpace α] {d : ℕ} [Fintype �
 /-- **Upper semi-continuity of entropy.** The map `μ ↦ measureEntropy μ` is
 upper semi-continuous in the weak-* topology on `InvMeasure X`. -/
 axiom measureEntropy_uppersemicontinuous {α : Type} [MeasurableSpace α] {d : ℕ}
-    [TopologicalSpace α] (X : Subshift α d) :
+    [TopologicalSpace α] [SecondCountableTopology α] [BorelSpace α]
+    (X : Subshift α d) :
     UpperSemicontinuous (fun μ : InvMeasure X => measureEntropy μ)
 
 /-! ## H3  M_compact — `InvMeasure X` is weak-* compact -/
@@ -1950,7 +1953,8 @@ axiom measureEntropy_uppersemicontinuous {α : Type} [MeasurableSpace α] {d : �
 is compact metrizable), `InvMeasure X` is compact in the weak-* topology, by
 Banach–Alaoglu / Prokhorov. -/
 axiom InvMeasure.compactSpace {α : Type} [MeasurableSpace α] {d : ℕ} [Fintype α]
-    [TopologicalSpace α] (X : Subshift α d) (hX : X.carrier.Nonempty) :
+    [TopologicalSpace α] [SecondCountableTopology α] [BorelSpace α]
+    (X : Subshift α d) (hX : X.carrier.Nonempty) :
     CompactSpace (InvMeasure X)
 
 /-! # MAIN THEOREM 1.1 (Necessity) — `topEntropy_rightRE` (= I1, Theorem 3.1)
