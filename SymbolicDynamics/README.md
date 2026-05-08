@@ -13,7 +13,7 @@ The active formalization target is `SymbolicDynamics/HochmanMeyerovitch.lean`.
 ```
 SymbolicDynamics/
 ├── docs/
-│   └── METHODOLOGY.md            # how this project is being formalized
+│   └── methodology.md            # how this project is being formalized
 ├── SymbolicDynamics/
 │   ├── HochmanMeyerovitch.lean   # main formalization file
 │   └── Dependencies/
@@ -33,7 +33,7 @@ The plan and progress checklist live at the project root:
 This project is being formalized incrementally with the help of an LLM coding
 agent. The methodology — designed to keep the LLM productive over very long
 sessions by never letting errors accumulate — is documented in
-[`docs/METHODOLOGY.md`](docs/METHODOLOGY.md).
+[`docs/methodoology.md`](docs/methodology.md).
 
 In short: a plan + a checklist + the
 [lean-lsp-mcp](https://github.com/oOo0oOo/lean-lsp-mcp) diagnostics loop, with
