@@ -1642,6 +1642,23 @@ theorem admPredNat_lt {α : Type*} [Fintype α] [DecidableEq α] [Encodable α] 
     (h : admPredNat F L n k) : k < (Fintype.card α)^(n^d) :=
   h.choose
 
+/-- Digit-level admissibility predicate on ℕ, expressed without `patternFinEquiv`.
+This form has a clear path to `Primrec₂`: it's a `∧` of a primrec bound with a
+universal-existential quantifier over fixed Finsets, with the inner check being
+a comparison of digits and constants. -/
+def admPredDigit {α : Type*} [Fintype α] [DecidableEq α] [Encodable α] {d : ℕ}
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n k : ℕ) : Prop :=
+  k < (Fintype.card α) ^ (n ^ d) ∧
+  ∀ u ∈ relevantOffsets F (box d n), ∃ ℓ ∈ L, ∀ v : F,
+    digit (Fintype.card α) k (boxIndexInv d n (v.val + u)) =
+      (Encodable.fintypeEquivFin (ℓ v)).val
+
+instance decidable_admPredDigit {α : Type*} [Fintype α] [DecidableEq α] [Encodable α] {d : ℕ}
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n k : ℕ) :
+    Decidable (admPredDigit F L n k) := by
+  unfold admPredDigit
+  exact inferInstance
+
 /-- `N_bar` as `Nat.count admPredNat`: the count of admissible pattern-encodings
 in `[0, (card α)^(n^d))`. -/
 theorem N_bar_eq_count {α : Type*} [Fintype α] [DecidableEq α] [Encodable α]
