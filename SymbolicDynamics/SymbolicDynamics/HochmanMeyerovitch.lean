@@ -1622,6 +1622,28 @@ theorem admPredNat_lt {α : Type*} [Fintype α] [DecidableEq α] [Encodable α] 
     (h : admPredNat F L n k) : k < (Fintype.card α)^(n^d) :=
   h.choose
 
+/-- `N_bar` as `Nat.count admPredNat`: the count of admissible pattern-encodings
+in `[0, (card α)^(n^d))`. -/
+theorem N_bar_eq_count {α : Type*} [Fintype α] [DecidableEq α] [Encodable α]
+    {d : ℕ} (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n : ℕ) :
+    N_bar F L n = Nat.count (admPredNat F L n) ((Fintype.card α)^(n^d)) := by
+  rw [N_bar_eq_fintype_card_fin, Nat.count_eq_card_filter_range]
+  set bound := (Fintype.card α)^(n^d) with hbound
+  let P : Fin bound → Prop := fun k => locallyAdmissible F L ((patternFinEquiv α d n).symm k)
+  have hSubCard : Fintype.card { k : Fin bound // P k } =
+      ((Finset.univ : Finset (Fin bound)).filter P).card :=
+    Fintype.subtype_card _ (fun _ => by simp [Finset.mem_filter])
+  rw [hSubCard]
+  rw [← Finset.card_image_of_injective _ Fin.val_injective]
+  congr 1
+  ext k
+  simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, Finset.mem_range, true_and]
+  constructor
+  · rintro ⟨k', hP, rfl⟩
+    exact ⟨k'.is_lt, k'.is_lt, hP⟩
+  · rintro ⟨hk_lt, hpred⟩
+    exact ⟨⟨k, hk_lt⟩, hpred.choose_spec, rfl⟩
+
 
 
 /-! ## G4.4h-step3  admissibleEncoded — Bool admissibility on encoded form -/
