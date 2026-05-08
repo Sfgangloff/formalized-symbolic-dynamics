@@ -1617,6 +1617,12 @@ instance decidable_admPredNat {α : Type*} [Fintype α] [DecidableEq α] [Encoda
   unfold admPredNat
   exact inferInstance
 
+theorem admPredNat_lt {α : Type*} [Fintype α] [DecidableEq α] [Encodable α] {d : ℕ}
+    {F : Finset (Lat d)} {L : Finset (Pattern α F)} {n k : ℕ}
+    (h : admPredNat F L n k) : k < (Fintype.card α)^(n^d) :=
+  h.choose
+
+
 
 /-! ## G4.4h-step3  admissibleEncoded — Bool admissibility on encoded form -/
 
