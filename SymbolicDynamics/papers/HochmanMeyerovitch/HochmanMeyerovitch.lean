@@ -2108,19 +2108,34 @@ axiom Lemma_3_4 {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
 irreducible SFTs
 
 For a nonempty `r`-irreducible SFT, the predicate `GloballyAdmissible X a` on
-patterns `a ∈ Pattern α (symBox d k)` is decidable: the dichotomy of Lemma 3.4
-gives an effective procedure (search over locally admissible `Q_N`-patterns
-for increasing `N` until either case (1) or case (2) is detected).
+patterns `a ∈ Pattern α (symBox d k)` is decidable.
+
+**Soft discharge** (axiom replaced by a `noncomputable def`): we use
+`Classical.dec`, which is already in this project's trust base (via
+`Classical.choice`). This is mathematically honest: the original axiom
+`axiom decidable_globallyAdmissible_irreducible : Decidable (...)` adds
+nothing beyond classical decidability of the underlying Prop, so dropping
+it in favour of `Classical.dec` is a strict reduction of project-specific
+axioms.
+
+What is **not yet captured**: the *effective* algorithm hinted at in the
+proof sketch ("search over locally admissible Q_N-patterns until either
+case (1) or case (2) is detected"). Extracting it would require refactoring
+`Lemma_3_4` from a Prop-valued `Or` to a Type-valued sum (e.g. `PSum` /
+`Sigma`) so that pattern-matching can deliver `Decidable` data. This is a
+larger refactor and is recorded as future work.
 
 This is the corollary used to show that `N_X X (symBox d k)` (the count of
-globally admissible `Q_k`-patterns in `X`) is computable as a function of `k`. -/
-axiom decidable_globallyAdmissible_irreducible {α : Type*} {d : ℕ}
+globally admissible `Q_k`-patterns in `X`) is computable as a function of
+`k`. -/
+noncomputable def decidable_globallyAdmissible_irreducible {α : Type*} {d : ℕ}
     [Fintype α] [DecidableEq α] [TopologicalSpace α] [T1Space α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F))
-    (hX : (mkSFT F L).carrier.Nonempty)
-    (h_irr : IsIrreducibleShift (mkSFT F L))
+    (_hX : (mkSFT F L).carrier.Nonempty)
+    (_h_irr : IsIrreducibleShift (mkSFT F L))
     {k : ℕ} (a : Pattern α (symBox d k)) :
-    Decidable (Pattern.GloballyAdmissible (mkSFT F L) a)
+    Decidable (Pattern.GloballyAdmissible (mkSFT F L) a) :=
+  Classical.dec _
 
 /-- For a nonempty irreducible SFT, `N_X (mkSFT F L) (symBox d k)` is Computable
 as a function of k — follows from `decidable_globallyAdmissible_irreducible`. -/

@@ -289,8 +289,12 @@ SFT-tilings (Robinson's technique). Multi-month effort.
 - [x] J6e `theorem Pattern.globallyAdmissible_iff_appearsAt_zero`  (offset 0 normalization)
 - [x] J6f `theorem Pattern.rCompatible_of_irreducible`  (irreducibility → r-compatibility)
 - [x] J7  `axiom Lemma_3_4` (compactness dichotomy, axiomatized with proof sketch)
-- [x] J8  `axiom decidable_globallyAdmissible_irreducible` + `N_X_symBox_computable`
-          (Corollary 3.5, axiomatized — follows from J7)
+- [x] J8  `noncomputable def decidable_globallyAdmissible_irreducible` —
+          **soft-discharged** via `Classical.dec` (only relies on
+          `Classical.choice`, already in trust base). Effective version
+          (search procedure) requires refactoring J7 to Type-valued sum.
+- [x] J8b `axiom N_X_symBox_computable` — still axiomatized (Corollary 3.5
+          half about computability of N_X(Q_k); needs effective Decidable).
 - [x] J9  `axiom topEntropy_irreducible_computable` (Theorem 1.3, axiomatized —
           combines I1's right r.e. with J8b's left r.e. via F5)
 
