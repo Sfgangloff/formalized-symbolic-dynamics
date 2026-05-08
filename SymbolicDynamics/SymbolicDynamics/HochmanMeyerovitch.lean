@@ -1486,6 +1486,17 @@ theorem digit_extract {m : ℕ} (hm : 0 < m) {a r i : ℕ} (ha : a < m) (hr : r 
       Nat.div_eq_of_lt hr, zero_add]
   exact Nat.mod_eq_of_lt ha
 
+/-- Digit recursion: `digit m k (i+1) = digit m (k/m) i`. -/
+theorem digit_succ (m k i : ℕ) : digit m k (i + 1) = digit m (k / m) i := by
+  unfold digit
+  congr 1
+  rw [pow_succ, Nat.mul_comm, ← Nat.div_div_eq_div_mul]
+
+/-- Digit at position 0: `digit m k 0 = k % m`. -/
+@[simp]
+theorem digit_zero (m k : ℕ) : digit m k 0 = k % m := by
+  unfold digit; simp
+
 /-! ## G4.4h-step2  decodeList — list-of-digits representation -/
 
 /-- Decode `k` as a list of `len` digits in base `m`. -/
