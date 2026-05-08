@@ -149,11 +149,16 @@ Tick the checkbox when the item compiles without errors.
 - [x] G4.4i.3 `theorem N_bar_eq_count` — **`N_bar = Nat.count admPredNat (m^(n^d))`** ✓
             the canonical Primrec-friendly form
 
-##### Phase F: remaining — primrec composition and final theorem
-- [ ] G4.4j  Prove `Primrec₂ admPredNat` (or PrimrecPred₂)
-            — needs Primrec₂ on the inner `locallyAdmissible F L ((patternFinEquiv).symm ⟨k, h⟩)`
+##### Phase F: bridge to concrete digit formula
+- [x] G4.4j-pre  `theorem patternFinEquiv_symm_apply` (rfl-level explicit Equiv chain)
+- [x] G4.4j-pre+ `theorem patternFinEquiv_symm_val_eq_digit`
+            **central identity**: pattern value at w (Fin-encoded) = `digit m k.val (boxIndexInv d n w.val)`
+
+##### Phase G: remaining — primrec composition and final theorem
+- [ ] G4.4j  Reformulate `admPredNat` using only `digit` + `Encodable.fintypeEquivFin`
+            (no patternFinEquiv inside the predicate body); prove `Primrec₂`
 - [ ] G4.4   **`theorem N_bar_computable`** — `Computable (fun n => N_bar F L n)`
-            via `Primrec.nat_count` (or built from `Primrec.nat_rec`) applied to G4.4j
+            via Primrec composition on `Nat.count admPredNat (m^(n^d))`
 
 ### H — Key axioms for Theorem 3.1
 - [ ] H1  `axiom variationalPrinciple`
