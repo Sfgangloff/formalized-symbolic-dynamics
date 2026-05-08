@@ -1593,6 +1593,15 @@ def patternFinEquiv (α : Type*) [Fintype α] [DecidableEq α] [Encodable α] (d
     Pattern α (box d n) ≃ Fin ((Fintype.card α)^(n^d)) :=
   (patternFnEquiv α d n).trans (fnFinEquiv α n d)
 
+/-- Explicit formula for `(patternFinEquiv α d n).symm k` evaluated at `w ∈ box d n`:
+the value is decoded from the appropriate base-`(card α)` digit of `k`. -/
+theorem patternFinEquiv_symm_apply {α : Type*} [Fintype α] [DecidableEq α] [Encodable α]
+    {d n : ℕ} (k : Fin ((Fintype.card α)^(n^d))) (w : ↥(box d n)) :
+    (patternFinEquiv α d n).symm k w =
+    Encodable.fintypeEquivFin.symm
+      ((finFunctionFinEquiv.symm k) ((boxIxEquiv d n) w)) := by
+  rfl
+
 /-- `N_bar` as a count over `Fin (m^(n^d))` — the most direct uniform-encoding form. -/
 theorem N_bar_eq_fintype_card_fin {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α] [Encodable α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n : ℕ) :
