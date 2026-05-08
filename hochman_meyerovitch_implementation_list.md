@@ -154,11 +154,22 @@ Tick the checkbox when the item compiles without errors.
 - [x] G4.4j-pre+ `theorem patternFinEquiv_symm_val_eq_digit`
             **central identity**: pattern value at w (Fin-encoded) = `digit m k.val (boxIndexInv d n w.val)`
 
-##### Phase G: remaining — primrec composition and final theorem
-- [ ] G4.4j  Reformulate `admPredNat` using only `digit` + `Encodable.fintypeEquivFin`
-            (no patternFinEquiv inside the predicate body); prove `Primrec₂`
+##### Phase G: digit-level admissibility predicate
+- [x] G4.4j   `def admPredDigit` + `decidable_admPredDigit`
+            (pure arithmetic predicate on (n, k))
+- [x] G4.4j+  `theorem admPredNat_iff_admPredDigit` (the two predicates agree)
+- [x] G4.4j++ `theorem N_bar_eq_count_digit`:
+            **`N_bar F L n = Nat.count admPredDigit (m^(n^d))`** — the canonical
+            primrec-friendly form, with `admPredDigit` using only `digit`,
+            `boxIndexInv`, `relevantOffsets`, and constants.
+
+##### Phase H: remaining — primrec composition and final theorem
+- [ ] G4.4k  Prove `Primrec₂ admPredDigit` — needs Primrec for
+             - `boxIndexInv d n (v + u)` (constant v, varying u, n)
+             - `relevantOffsets F (box d n)` as Finset-valued function of n
 - [ ] G4.4   **`theorem N_bar_computable`** — `Computable (fun n => N_bar F L n)`
-            via Primrec composition on `Nat.count admPredNat (m^(n^d))`
+             via Primrec composition: `Primrec.nat_count` on `admPredDigit`
+             with primrec bound `(card α)^(n^d)`.
 
 ### H — Key axioms for Theorem 3.1
 - [ ] H1  `axiom variationalPrinciple`
