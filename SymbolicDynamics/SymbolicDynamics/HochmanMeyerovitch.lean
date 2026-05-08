@@ -1659,6 +1659,52 @@ instance decidable_admPredDigit {α : Type*} [Fintype α] [DecidableEq α] [Enco
   unfold admPredDigit
   exact inferInstance
 
+/-- The two admissibility predicates agree. This is the bridge from the abstract
+`admPredNat` (using `patternFinEquiv`) to the concrete digit-level `admPredDigit`. -/
+theorem admPredNat_iff_admPredDigit {α : Type*} [Fintype α] [DecidableEq α] [Encodable α]
+    {d : ℕ} (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n k : ℕ) :
+    admPredNat F L n k ↔ admPredDigit F L n k := by
+  constructor
+  · rintro ⟨hk, hloc⟩
+    refine ⟨hk, ?_⟩
+    rw [locallyAdmissible_iff_relevantOffsets] at hloc
+    intro u hu
+    have h_v : ∀ v : F, v.val + u ∈ box d n := by
+      intro v
+      simp only [relevantOffsets] at hu
+      by_cases hF : F = ∅
+      · exact absurd v.property (Finset.eq_empty_iff_forall_notMem.mp hF v.val)
+      · rw [if_neg hF] at hu
+        exact (Finset.mem_filter.mp hu).2 v.val v.property
+    let ℓ : Pattern α F :=
+      fun v => (patternFinEquiv α d n).symm ⟨k, hk⟩ ⟨v.val + u, h_v v⟩
+    refine ⟨ℓ, hloc u hu h_v, ?_⟩
+    intro v
+    have := patternFinEquiv_symm_val_eq_digit (α := α) (d := d) (n := n)
+      ⟨k, hk⟩ ⟨v.val + u, h_v v⟩
+    simpa [ℓ] using this.symm
+  · rintro ⟨hk, hdigit⟩
+    refine ⟨hk, ?_⟩
+    rw [locallyAdmissible_iff_relevantOffsets]
+    intro u hu h_v
+    obtain ⟨ℓ, hℓ_mem, hdig⟩ := hdigit u hu
+    have hpat_eq : (fun v : F =>
+        (patternFinEquiv α d n).symm ⟨k, hk⟩ ⟨v.val + u, h_v v⟩) = ℓ := by
+      funext v
+      have hbridge := patternFinEquiv_symm_val_eq_digit (α := α) (d := d) (n := n)
+        ⟨k, hk⟩ ⟨v.val + u, h_v v⟩
+      have heq_val :
+          (Encodable.fintypeEquivFin
+              ((patternFinEquiv α d n).symm ⟨k, hk⟩ ⟨v.val + u, h_v v⟩)).val =
+          (Encodable.fintypeEquivFin (ℓ v)).val := by
+        rw [hbridge]; exact hdig v
+      have heq_fin :
+          Encodable.fintypeEquivFin
+              ((patternFinEquiv α d n).symm ⟨k, hk⟩ ⟨v.val + u, h_v v⟩) =
+          Encodable.fintypeEquivFin (ℓ v) := Fin.ext heq_val
+      exact Encodable.fintypeEquivFin.injective heq_fin
+    rw [hpat_eq]; exact hℓ_mem
+
 /-- `N_bar` as `Nat.count admPredNat`: the count of admissible pattern-encodings
 in `[0, (card α)^(n^d))`. -/
 theorem N_bar_eq_count {α : Type*} [Fintype α] [DecidableEq α] [Encodable α]
