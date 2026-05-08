@@ -1920,3 +1920,34 @@ is compact metrizable), `InvMeasure X` is compact in the weak-* topology, by
 Banach–Alaoglu / Prokhorov. -/
 axiom InvMeasure.compactSpace {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
     (X : Subshift α d) (hX : X.carrier.Nonempty) : CompactSpace (InvMeasure X)
+
+/-! ## I1  topEntropy_rightRE — Theorem 3.1 (necessity direction)
+
+**Theorem 3.1 of Hochman–Meyerovitch**: the topological entropy of an SFT is
+right recursively enumerable.
+
+**Proof outline** (currently axiomatized; uses H1-H3 + Computable rational log
+infrastructure):
+
+1. Construct `ν_n : InvMeasure (mkSFT F L)` as the i.i.d. uniform measure on
+   the `(box d n)`-tiling by locally admissible patterns (`W_n`, of size
+   `N_bar F L n`).
+2. By a standard entropy calculation, `measureEntropy ν_n = (log N_bar F L n) / n^d`.
+3. By H3 (`InvMeasure.compactSpace`), pass to a weak-* convergent subsequence
+   `ν_{n_k} → ν`.
+4. By H2 (`measureEntropy_uppersemicontinuous`),
+   `measureEntropy ν ≥ limsup measureEntropy ν_{n_k}`.
+5. By H1 (`variationalPrinciple`),
+   `topEntropy (mkSFT F L) ≥ measureEntropy ν ≥ limsup (log N_bar / n^d)`.
+6. Lower bound: `N_bar ≥ N_X` (by `N_X_le_N_bar`), so the limit also exceeds
+   `log N_X / n^d → topEntropy (mkSFT F L)`.
+7. Combined: the sequence `(log N_bar) / n^d → topEntropy (mkSFT F L)` from above.
+8. Take rational upper approximations to obtain a `Computable ℕ → ℚ` witness.
+
+Step 1 needs a constructor for `InvMeasure` (currently opaque); steps 2-7 use
+H1-H3; step 8 needs a Computable rational logarithm approximation. -/
+axiom topEntropy_rightRE {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
+    [Encodable α] [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F))
+    (hX : (mkSFT F L).carrier.Nonempty) :
+    IsRightRE (topEntropy (mkSFT F L))
