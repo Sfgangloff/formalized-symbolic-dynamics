@@ -174,9 +174,19 @@ Tick the checkbox when the item compiles without errors.
              then `Primrec.to_comp`.
 
 ### H — Key axioms for Theorem 3.1
-- [ ] H1  `axiom variationalPrinciple`
-- [ ] H2  `axiom entropy_usc`
-- [ ] H3  `axiom M_compact`
+- [x] H0  `axiom InvMeasure`, `measureEntropy`, `measureEntropy_nonneg`,
+          + Inhabited and TopologicalSpace instances (opaque types/values
+          for the measure-theoretic infrastructure)
+- [x] H1  `axiom variationalPrinciple` — `topEntropy X = ⨆ μ, measureEntropy μ`
+- [x] H2  `axiom measureEntropy_uppersemicontinuous`
+- [x] H3  `axiom InvMeasure.compactSpace`
+
+**TODO (post-I1, axiom discharge):** Once I1 is proven using H0–H3 as axioms,
+return to develop real Mathlib measure-theory infrastructure to discharge them:
+- Replace `axiom InvMeasure X` with `def InvMeasure X := { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) // μ.IsInvariant ∧ μ.support ⊆ X.carrier }` (or analogous).
+- Define `measureEntropy` via partitions / Kolmogorov–Sinai construction.
+- Discharge H1 (Misiurewicz's variational principle for ℤ^d-actions) — major effort, may require new Mathlib contributions.
+- Discharge H2/H3 via Prokhorov + standard arguments.
 
 ### I — Theorem 3.1
 - [ ] I1  `theorem topEntropy_rightRE`
