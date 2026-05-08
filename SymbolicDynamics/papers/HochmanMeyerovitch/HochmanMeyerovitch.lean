@@ -1964,25 +1964,66 @@ Both sub-axioms are individually closer to existing Mathlib infrastructure:
   `MeasureTheory.Measure.Prokhorov`), but that module is not yet present in
   v4.26.0-rc1 of Mathlib used here. -/
 
-/-- **Closedness sub-axiom for H3.** The set of shift-invariant probability
+/-! ### H3a — closedness of the InvMeasure carrier in ProbabilityMeasure
+
+Further split into two narrower sub-axioms (each a single first-order
+property of weak-* convergence), combined into `InvMeasure.isClosed_setOf`
+as a real theorem via `IsClosed.inter` + `isClosed_iInter`. -/
+
+/-- **H3a-i: closedness of the shift-invariance condition (per shift `u`).**
+For each `u : Lat d`, the set of probability measures fixed by the
+pushforward under `FullShift.shiftMap u` is closed in the weak-* topology.
+
+Standard fact: `FullShift.shiftMap u` is continuous, so the pushforward
+`μ ↦ μ.toMeasure.map (FullShift.shiftMap u)` is continuous in weak-* by
+`MeasureTheory.ProbabilityMeasure.tendsto_iff_forall_integral_tendsto`
+(continuous functional → continuous measure-functional). Equality is then
+a closed condition in a Hausdorff space. -/
+axiom InvMeasure.isClosed_setOf_invariant {α : Type} [MeasurableSpace α] {d : ℕ}
+    [TopologicalSpace α] [SecondCountableTopology α] [BorelSpace α] (u : Lat d) :
+    IsClosed { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) |
+      μ.toMeasure.map (FullShift.shiftMap u) = μ.toMeasure }
+
+/-- **H3a-ii: closedness of the support condition.** The set of probability
+measures with full mass on the closed shift `X.carrier` is closed in the
+weak-* topology.
+
+Standard portmanteau consequence: `μ ↦ μ.toMeasure F` is upper-semicontinuous
+on closed `F` (`MeasureTheory.FiniteMeasure.limsup_measure_closed_le_of_tendsto`),
+combined with the upper bound `μ.toMeasure F ≤ 1` (probability) — the level
+set `{μ | μ F = 1}` is closed. -/
+axiom InvMeasure.isClosed_setOf_support {α : Type} [MeasurableSpace α] {d : ℕ}
+    [TopologicalSpace α] [SecondCountableTopology α] [BorelSpace α]
+    (X : Subshift α d) :
+    IsClosed { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) |
+      μ.toMeasure X.carrier = 1 }
+
+/-- **Closedness of H3 carrier.** The set of shift-invariant probability
 measures concentrated on `X.carrier`, viewed as a subset of
 `ProbabilityMeasure (FullShift α d)`, is closed in the weak-* topology.
 
-Standard consequence of:
-- `μ ↦ μ.toMeasure.map (FullShift.shiftMap u)` is continuous in weak-*
-  (continuous pushforward, since `FullShift.shiftMap u` is continuous),
-- `μ ↦ μ.toMeasure C` is upper-semicontinuous on closed sets `C`
-  (portmanteau), so `μ X.carrier = 1` is a closed condition (probability
-  mass is bounded by 1, and `X.carrier` is closed by `Subshift.isClosed`).
-
-Axiomatized pending the precise Mathlib portmanteau / pushforward-continuity
-lemmas in the appropriate weak-* formulation. -/
-axiom InvMeasure.isClosed_setOf {α : Type} [MeasurableSpace α] {d : ℕ}
+**Discharged** as a theorem from `InvMeasure.isClosed_setOf_invariant`
+(applied for each `u`) and `InvMeasure.isClosed_setOf_support`, via
+`isClosed_iInter` and `IsClosed.inter`. -/
+theorem InvMeasure.isClosed_setOf {α : Type} [MeasurableSpace α] {d : ℕ}
     [TopologicalSpace α] [SecondCountableTopology α] [BorelSpace α]
     (X : Subshift α d) :
     IsClosed { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) |
       (∀ u : Lat d, μ.toMeasure.map (FullShift.shiftMap u) = μ.toMeasure)
-      ∧ μ.toMeasure X.carrier = 1 }
+      ∧ μ.toMeasure X.carrier = 1 } := by
+  have h_eq :
+      { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) |
+          (∀ u : Lat d, μ.toMeasure.map (FullShift.shiftMap u) = μ.toMeasure)
+          ∧ μ.toMeasure X.carrier = 1 }
+        = (⋂ u : Lat d, { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) |
+              μ.toMeasure.map (FullShift.shiftMap u) = μ.toMeasure })
+          ∩ { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) |
+              μ.toMeasure X.carrier = 1 } := by
+    ext μ
+    simp [Set.mem_iInter, Set.mem_inter_iff, Set.mem_setOf_eq, and_comm]
+  rw [h_eq]
+  exact (isClosed_iInter (fun u => InvMeasure.isClosed_setOf_invariant u)).inter
+    (InvMeasure.isClosed_setOf_support X)
 
 /-- **Ambient-compactness sub-axiom for H3.** For a finite, T2, compact
 alphabet `α`, the space of probability measures on `FullShift α d` is itself

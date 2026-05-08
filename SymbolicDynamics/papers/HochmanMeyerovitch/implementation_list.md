@@ -214,10 +214,14 @@ with `/-! # MAIN THEOREM ... -/` comment-block headers.
 - [x] H1  `axiom variationalPrinciple` — `topEntropy X = ⨆ μ, measureEntropy μ`
 - [x] H2  `axiom measureEntropy_uppersemicontinuous`
 - [x] H3  `theorem InvMeasure.compactSpace` — **partially discharged** as a
-          theorem, derived from two narrower sub-axioms:
-          - `axiom InvMeasure.isClosed_setOf` — closedness of the
-            shift-invariant + X-supported predicate in
-            `ProbabilityMeasure (FullShift α d)` (portmanteau-style).
+          theorem, derived from sub-axioms:
+          - `theorem InvMeasure.isClosed_setOf` — **discharged** from two
+            narrower sub-axioms:
+            - `axiom InvMeasure.isClosed_setOf_invariant` (per shift `u`,
+              closedness of `{μ | μ.map σ_u = μ}`).
+            - `axiom InvMeasure.isClosed_setOf_support` (closedness of
+              `{μ | μ X.carrier = 1}` for closed X.carrier; portmanteau).
+            Combined via `isClosed_iInter` + `IsClosed.inter`.
           - `axiom ProbabilityMeasure.compactSpace_aux` — compactness of
             `ProbabilityMeasure (FullShift α d)` for finite α; this is
             Mathlib's `instCompactSpaceProbabilityMeasure` from
