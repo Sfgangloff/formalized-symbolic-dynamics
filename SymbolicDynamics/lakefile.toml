@@ -16,3 +16,4 @@ rev = "v4.26.0-rc1"
 
 [[lean_lib]]
 name = "SymbolicDynamics"
+roots = ["SymbolicDynamics", "papers.HochmanMeyerovitch.HochmanMeyerovitch", "dependencies.ComputableRat"]

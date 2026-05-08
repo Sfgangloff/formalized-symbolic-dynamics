@@ -12,21 +12,30 @@ The active formalization target is `SymbolicDynamics/HochmanMeyerovitch.lean`.
 
 ```
 SymbolicDynamics/
+├── SymbolicDynamics.lean         # library entry-point
+├── lakefile.toml
+├── lean-toolchain
+├── README.md
 ├── docs/
 │   └── methodology.md            # how this project is being formalized
-├── SymbolicDynamics/
-│   ├── HochmanMeyerovitch.lean   # main formalization file
-│   └── Dependencies/
-│       └── ComputableRat.lean    # Primrec/Computable for ℚ (helper)
-├── lakefile.toml
-└── lean-toolchain
+├── papers/                       # one folder per paper, all materials co-located
+│   └── HochmanMeyerovitch/
+│       ├── README.md             # paper-level overview + status
+│       ├── 0703206v1.pdf         # the paper
+│       ├── plan.txt              # long-form mathematical plan
+│       ├── implementation_list.md
+│       └── HochmanMeyerovitch.lean   # the Lean formalization
+├── dependencies/                 # cross-paper Lean helpers
+│   └── ComputableRat.lean
+└── open-problems/                # placeholder for open-problem formalizations
 ```
 
-The plan and progress checklist live at the project root:
+**Per-paper folders are self-contained**: PDF, plan, checklist, and Lean source
+all live together under `papers/<PaperShortName>/`. Cross-paper helpers go in
+`dependencies/`.
 
-- `hochman_meyerovitch_formalization_plan.txt` — the long-form mathematical plan.
-- `hochman_meyerovitch_implementation_list.md` — the per-item checklist (what
-  is built / what is next).
+Lake is configured (in `lakefile.toml`) to recognise this layout via explicit
+`roots` for the `SymbolicDynamics` library.
 
 ## Methodology
 

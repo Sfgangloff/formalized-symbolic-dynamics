@@ -1,2 +1,2 @@
-import SymbolicDynamics.HochmanMeyerovitch
-import SymbolicDynamics.Dependencies.ComputableRat
+import papers.HochmanMeyerovitch.HochmanMeyerovitch
+import dependencies.ComputableRat

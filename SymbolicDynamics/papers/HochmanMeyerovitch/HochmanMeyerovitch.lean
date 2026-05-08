@@ -19,7 +19,7 @@ import Mathlib.Data.Rat.Denumerable
 import Mathlib.Data.Nat.Count
 import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
 import Mathlib.MeasureTheory.MeasurableSpace.Constructions
-import SymbolicDynamics.Dependencies.ComputableRat
+import dependencies.ComputableRat
 
 /-! ## 0.1  Lat d — the group ℤ^d -/
 
