@@ -16,6 +16,7 @@ import Mathlib.Analysis.Subadditive
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Computability.Partrec
 import Mathlib.Data.Rat.Denumerable
+import Mathlib.Data.Nat.Count
 import SymbolicDynamics.Dependencies.ComputableRat
 
 /-! ## 0.1  Lat d — the group ℤ^d -/
@@ -1615,6 +1616,7 @@ instance decidable_admPredNat {α : Type*} [Fintype α] [DecidableEq α] [Encoda
     Decidable (admPredNat F L n k) := by
   unfold admPredNat
   exact inferInstance
+
 
 /-! ## G4.4h-step3  admissibleEncoded — Bool admissibility on encoded form -/
 
