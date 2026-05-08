@@ -129,8 +129,9 @@ Tick the checkbox when the item compiles without errors.
             between `box d n` and `[0, n^d)`)
 - [x] G4.4h-step3 `def admissibleEncoded` — Prop predicate on (n, k) at digit level
 - [x] G4.4h-step4 `instance decidable_admissibleEncoded` — auto-derived Decidable
+- [x] G4.4h-step5-pre `theorem digit_extract` (digit recovery from `a * m^i + r`)
 - [ ] G4.4h-step5 Connect `admissibleEncoded` to `locallyAdmissible` via patternFnEquiv
-            (round-trip via `Encodable.encode_decode`)
+            (round-trip via `digit_extract` + `Encodable.encode_decode`)
 - [ ] G4.4i Express `N_bar F L` via `Nat.count (decide ∘ admissibleEncoded) (m^(n^d))`
             and prove Primrec
 - [ ] G4.4 `theorem N_bar_computable` — Lean-level `Computable (fun n => N_bar F L n)`
