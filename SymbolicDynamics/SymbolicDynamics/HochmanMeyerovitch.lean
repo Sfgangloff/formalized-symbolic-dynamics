@@ -1477,6 +1477,15 @@ theorem primrec_digit (m : ℕ) : Primrec₂ (fun k i : ℕ => digit m k i) := b
 theorem digit_lt {m : ℕ} (hm : 0 < m) (k i : ℕ) : digit m k i < m :=
   Nat.mod_lt _ hm
 
+/-- Digit-extraction: `digit m (a * m^i + r) i = a` when `a < m` and `r < m^i`. -/
+theorem digit_extract {m : ℕ} (hm : 0 < m) {a r i : ℕ} (ha : a < m) (hr : r < m ^ i) :
+    digit m (a * m ^ i + r) i = a := by
+  unfold digit
+  have h_pow_pos : 0 < m ^ i := Nat.pow_pos hm
+  rw [Nat.add_comm, Nat.mul_comm, Nat.add_mul_div_left _ _ h_pow_pos,
+      Nat.div_eq_of_lt hr, zero_add]
+  exact Nat.mod_eq_of_lt ha
+
 /-! ## G4.4h-step2  decodeList — list-of-digits representation -/
 
 /-- Decode `k` as a list of `len` digits in base `m`. -/
