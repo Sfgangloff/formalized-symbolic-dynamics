@@ -23,19 +23,19 @@ is a *navigable* corpus where, given a concept, a researcher can:
 - see which of those definitions are proven equivalent (and how), and
 - pick the formulation that fits their proof context.
 
-## 2. Active and planned papers
+## 2. Paper queue
 
-| Status | Paper | Folder |
-| --- | --- | --- |
-| active  | Hochman & Meyerovitch (2007) — characterization of multidimensional SFT entropies | `papers/HochmanMeyerovitch/` |
-| queued  | Hochman (2009) — universal minimal systems / dynamical embedding | TBD |
-| queued  | Pavlov & Schraudner — sofic shifts on ℤ^d | TBD |
-| queued  | Boyle–Pavlov–Schraudner — multidimensional sofic entropies | TBD |
-| open    | A paper of the user's choice on tilings / Wang shifts | TBD |
+The repo holds one folder per formalized paper under
+`SymbolicDynamics/papers/`. Up-to-date status (active / queued /
+done) lives in `SymbolicDynamics/papers/README.md`; the roadmap
+deliberately does **not** duplicate that list, because keeping two
+sources of truth in sync is a dead-letter office.
 
-The queue is a *suggestion*, not a commitment. Papers are added to the
-queue when they share enough infrastructure with already-formalized
-papers that the marginal cost is low.
+A paper is added to the queue when it shares enough infrastructure
+with an already-formalized paper that the marginal cost is low — i.e.
+when at least one definition or lemma in the existing library can be
+reused (see §4 on uniformization). Speculative additions are not
+recorded here.
 
 ## 3. Methodology recap
 
