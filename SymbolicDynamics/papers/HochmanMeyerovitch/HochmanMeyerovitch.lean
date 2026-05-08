@@ -135,6 +135,15 @@ instance instCompactSpace {α : Type*} {d : ℕ} [TopologicalSpace α] [CompactS
 instance instT2Space {α : Type*} {d : ℕ} [TopologicalSpace α] [T2Space α] :
     T2Space (FullShift α d) := inferInstance
 
+/-! ## 0.12b  Measurable-space instances on FullShift (Pi/Borel) -/
+
+instance instMeasurableSpace {α : Type*} {d : ℕ} [MeasurableSpace α] :
+    MeasurableSpace (FullShift α d) := inferInstance
+
+instance instBorelSpace {α : Type*} {d : ℕ} [TopologicalSpace α] [MeasurableSpace α]
+    [SecondCountableTopology α] [BorelSpace α] :
+    BorelSpace (FullShift α d) := Pi.borelSpace
+
 /-! ## 0.13  shiftMap_continuous -/
 
 theorem shiftMap_continuous {α : Type*} {d : ℕ} [TopologicalSpace α] (u : Lat d) :
