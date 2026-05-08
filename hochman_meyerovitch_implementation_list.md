@@ -138,6 +138,13 @@ Tick the checkbox when the item compiles without errors.
 - [x] G4.4h-step5 `def fnFinEquiv`, `def patternFinEquiv`, `theorem N_bar_eq_fintype_card_fin`
             — full chain `Pattern α (box d n) ≃ Fin ((card α)^(n^d))`
             and N_bar expressed as a Fintype.card over Fin (m^(n^d))
+- [x] G4.4i-pre `def admPredNat`, `instance decidable_admPredNat`, `admPredNat_lt`
+            — admissibility predicate on ℕ with bound corollary
+- [x] G4.4i `theorem N_bar_eq_count` — `N_bar = Nat.count admPredNat (m^(n^d))`
+            (the most primrec-friendly form)
+- [ ] G4.4j Prove `Primrec₂ admPredNat` (or Computable₂) — the substantial remaining piece
+- [ ] G4.4 `theorem N_bar_computable` via `Primrec.nat_count` (or via Nat.count built up
+            from primitive recursion)
 - [ ] G4.4i Express `N_bar F L` via `Nat.count (decide ∘ admissibleEncoded) (m^(n^d))`
             and prove Primrec
 - [ ] G4.4 `theorem N_bar_computable` — Lean-level `Computable (fun n => N_bar F L n)`
