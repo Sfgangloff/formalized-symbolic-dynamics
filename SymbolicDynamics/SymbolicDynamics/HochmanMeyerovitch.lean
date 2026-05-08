@@ -1578,6 +1578,15 @@ theorem primrec_decodeList (m : ℕ) : Primrec₂ (fun k len : ℕ => decodeList
     (primrec_digit m).comp (Primrec.fst.comp Primrec.fst) Primrec.snd
   exact Primrec.list_map h_range h_digit
 
+/-! ## G4.4h-step5  decodedPattern + bridge -/
+
+/-- `(Fin (n^d) → α) ≃ Fin ((Fintype.card α)^(n^d))` — the uniform-shape encoding
+of patterns as natural numbers. Composes `Encodable.fintypeEquivFin` (α ≃ Fin (card α))
+with `finFunctionFinEquiv` ((Fin n^d → Fin m) ≃ Fin (m^(n^d))). -/
+def fnFinEquiv (α : Type*) [Fintype α] [DecidableEq α] [Encodable α] (n d : ℕ) :
+    (Fin (n^d) → α) ≃ Fin ((Fintype.card α)^(n^d)) :=
+  (Equiv.arrowCongr (Equiv.refl _) Encodable.fintypeEquivFin).trans finFunctionFinEquiv
+
 /-! ## G4.4h-step3  admissibleEncoded — Bool admissibility on encoded form -/
 
 /-- Admissibility check at the encoded level: given `(n, k)` with `m = Fintype.card α`,
