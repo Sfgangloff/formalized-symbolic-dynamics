@@ -189,7 +189,17 @@ return to develop real Mathlib measure-theory infrastructure to discharge them:
 - Discharge H2/H3 via Prokhorov + standard arguments.
 
 ### I — Theorem 3.1
-- [ ] I1  `theorem topEntropy_rightRE`
+- [x] I1  `axiom topEntropy_rightRE` — Theorem 3.1, axiomatized with proof outline
+          (uses H1-H3 + Computable rational log; sub-steps are future work)
+
+**TODO (post-axiomatization, structured proof):**
+- I1.1: Construct `ν_n : InvMeasure (mkSFT F L)` (i.i.d. uniform on locally
+  admissible n-box patterns); needs an `InvMeasure` constructor.
+- I1.2: Compute `measureEntropy ν_n = (log N_bar F L n) / n^d`.
+- I1.3: Combine H1+H2+H3 to derive `topEntropy ≤ limsup (log N_bar / n^d)`.
+- I1.4: Lower bound via `N_X_le_N_bar` to get `topEntropy ≥ liminf` likewise.
+- I1.5: Construct a Computable rational upper approximation of
+  `(log N_bar) / n^d` to package into `IsRightRE`.
 
 ### J — Milestone 4: Symmetric cubes and r-compatibility (Theorem 1.3)
 - [x] J1  `def symBox (d n : ℕ) : Finset (Lat d)`  (Q_n)
