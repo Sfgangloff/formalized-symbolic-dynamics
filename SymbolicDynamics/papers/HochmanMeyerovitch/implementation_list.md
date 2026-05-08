@@ -199,23 +199,31 @@ with `/-! # MAIN THEOREM ... -/` comment-block headers.
 - [x] H0a `def InvMeasure` — **discharged** as a real Mathlib subtype
           `{ μ : ProbabilityMeasure (FullShift α d) // shift-invariant ∧ supported on X }`,
           requiring `[MeasurableSpace α]` (restricted to `α : Type` for universe).
-- [x] H0b `axiom InvMeasure.instInhabited` (Krylov–Bogolyubov), still axiomatized.
-- [x] H0c `axiom InvMeasure.instTopologicalSpace` — could be derived from
-          `ProbabilityMeasure`'s topology + an `[OpensMeasurableSpace]` instance,
-          axiomatized for now.
-- [x] H0d `axiom measureEntropy`, `measureEntropy_nonneg` — Kolmogorov–Sinai
+- [x] H0b `instMeasurableSpace`, `instBorelSpace` on `FullShift α d` —
+          **discharged** (Pi `MeasurableSpace` + Mathlib's `Pi.borelSpace`).
+- [x] H0c `axiom InvMeasure.instInhabited` (Krylov–Bogolyubov for ℤ^d-actions),
+          still axiomatized — Mathlib doesn't currently have a Krylov–Bogolyubov
+          theorem for general continuous group actions in this form.
+- [x] H0d `axiom InvMeasure.instTopologicalSpace` — could now be derived from
+          the subtype topology of `ProbabilityMeasure.instTopologicalSpace`
+          (with our new `BorelSpace` instance, the prerequisite is satisfied);
+          deferred to avoid threading more typeclass arguments into H1/H2.
+- [x] H0e `axiom measureEntropy`, `measureEntropy_nonneg` — Kolmogorov–Sinai
           entropy still opaque; defining it via partitions is a separate
           Mathlib gap.
 - [x] H1  `axiom variationalPrinciple` — `topEntropy X = ⨆ μ, measureEntropy μ`
 - [x] H2  `axiom measureEntropy_uppersemicontinuous`
-- [x] H3  `axiom InvMeasure.compactSpace`
+- [x] H3  `axiom InvMeasure.compactSpace` — could now be derived from Mathlib's
+          `instCompactSpaceProbabilityMeasure` (which gives compactness of the
+          ambient `ProbabilityMeasure (FullShift α d)`) plus a closedness axiom
+          for `InvMeasure X`. Deferred until we have closedness lemmas for
+          shift-invariance and X-supported measures.
 
 **TODO (post-I1, axiom discharge):** Once I1 is proven using H0–H3 as axioms,
 return to develop real Mathlib measure-theory infrastructure to discharge them:
-- Replace `axiom InvMeasure X` with `def InvMeasure X := { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) // μ.IsInvariant ∧ μ.support ⊆ X.carrier }` (or analogous).
 - Define `measureEntropy` via partitions / Kolmogorov–Sinai construction.
 - Discharge H1 (Misiurewicz's variational principle for ℤ^d-actions) — major effort, may require new Mathlib contributions.
-- Discharge H2/H3 via Prokhorov + standard arguments.
+- Discharge H2/H3 via Prokhorov + standard arguments (the BorelSpace setup is now in place).
 
 ### I — Theorem 3.1
 - [x] I1  `axiom topEntropy_rightRE` — Theorem 3.1, axiomatized with proof outline
