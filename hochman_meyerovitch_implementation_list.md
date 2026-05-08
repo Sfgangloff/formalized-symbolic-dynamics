@@ -135,8 +135,9 @@ Tick the checkbox when the item compiles without errors.
             — closes the algebraic loop: digits recover k under base-m encoding
 - [x] G4.4h-step5-pre+++ `theorem sum_pow_lt` (`Σ f i * m^i < m^len` for digit-valued f)
             — the inverse-direction bound completing the [0, m^len) ↔ digits dictionary
-- [ ] G4.4h-step5 Connect `admissibleEncoded` to `locallyAdmissible` via patternFnEquiv
-            (using the digit toolkit + `Encodable.encode_decode`)
+- [x] G4.4h-step5 `def fnFinEquiv`, `def patternFinEquiv`, `theorem N_bar_eq_fintype_card_fin`
+            — full chain `Pattern α (box d n) ≃ Fin ((card α)^(n^d))`
+            and N_bar expressed as a Fintype.card over Fin (m^(n^d))
 - [ ] G4.4i Express `N_bar F L` via `Nat.count (decide ∘ admissibleEncoded) (m^(n^d))`
             and prove Primrec
 - [ ] G4.4 `theorem N_bar_computable` — Lean-level `Computable (fun n => N_bar F L n)`
