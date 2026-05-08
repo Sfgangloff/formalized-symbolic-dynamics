@@ -1603,6 +1603,19 @@ theorem N_bar_eq_fintype_card_fin {α : Type*} {d : ℕ} [Fintype α] [Decidable
   intro p
   rw [Equiv.symm_apply_apply]
 
+/-- The decode predicate on ℕ: `k < (card α)^(n^d)` and the corresponding pattern
+is locally admissible. Used as a primrec-friendly form of admissibility. -/
+def admPredNat {α : Type*} [Fintype α] [DecidableEq α] [Encodable α] {d : ℕ}
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n k : ℕ) : Prop :=
+  ∃ h : k < (Fintype.card α)^(n^d),
+    locallyAdmissible F L ((patternFinEquiv α d n).symm ⟨k, h⟩)
+
+instance decidable_admPredNat {α : Type*} [Fintype α] [DecidableEq α] [Encodable α] {d : ℕ}
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) (n k : ℕ) :
+    Decidable (admPredNat F L n k) := by
+  unfold admPredNat
+  exact inferInstance
+
 /-! ## G4.4h-step3  admissibleEncoded — Bool admissibility on encoded form -/
 
 /-- Admissibility check at the encoded level: given `(n, k)` with `m = Fintype.card α`,
