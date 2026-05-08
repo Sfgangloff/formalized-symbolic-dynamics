@@ -1523,6 +1523,33 @@ theorem sum_digits_pow_eq {m : ℕ} (hm : 0 < m) :
     rw [ih (k / m) h_kdiv, digit_zero, pow_zero, Nat.mul_one]
     exact Nat.div_add_mod k m
 
+/-- Sum bound: for any digit-valued function `f : ℕ → ℕ` with each `f i < m` (i < len),
+the positional sum `Σ_{i < len} f i * m^i < m^len`. -/
+theorem sum_pow_lt {m : ℕ} (hm : 0 < m) :
+    ∀ (len : ℕ) {f : ℕ → ℕ}, (∀ i < len, f i < m) →
+    (Finset.range len).sum (fun i => f i * m ^ i) < m ^ len := by
+  intro len
+  induction len with
+  | zero => intro f _; simp
+  | succ len ih =>
+    intro f hf
+    rw [Finset.sum_range_succ, pow_succ]
+    have h_pow_pos : 0 < m ^ len := Nat.pow_pos hm
+    have h_rest : (Finset.range len).sum (fun i => f i * m ^ i) < m ^ len :=
+      ih (fun i hi => hf i (Nat.lt_succ_of_lt hi))
+    have h_last_lt : f len < m := hf len (Nat.lt_succ_self _)
+    -- Σ_{i < len} f i * m^i + f len * m^len < m^len + f len * m^len
+    -- ≤ m^len + (m - 1) * m^len = m * m^len.
+    have key : (Finset.range len).sum (fun i => f i * m ^ i) + f len * m ^ len
+                < (1 + f len) * m ^ len := by
+      have : (1 + f len) * m ^ len = m ^ len + f len * m ^ len := by ring
+      rw [this]
+      exact Nat.add_lt_add_right h_rest _
+    calc (Finset.range len).sum (fun i => f i * m ^ i) + f len * m ^ len
+        < (1 + f len) * m ^ len := key
+      _ ≤ m * m ^ len := Nat.mul_le_mul_right _ (by omega)
+      _ = m ^ len * m := by ring
+
 /-! ## G4.4h-step2  decodeList — list-of-digits representation -/
 
 /-- Decode `k` as a list of `len` digits in base `m`. -/
