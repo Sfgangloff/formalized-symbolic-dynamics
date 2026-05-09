@@ -1920,33 +1920,40 @@ instance InvMeasure.instTopologicalSpace {α : Type} [MeasurableSpace α] {d : �
         ∧ μ.toMeasure X.carrier = 1 })
 
 /-- Measure-theoretic (Kolmogorov–Sinai) entropy of a shift-invariant probability
-measure. Opaque; in the full development this is the Kolmogorov–Sinai entropy
-of the `Lat d`-action. -/
+measure, valued in `ℝ≥0` (`NNReal`). Opaque; in the full development this is
+the Kolmogorov–Sinai entropy of the `Lat d`-action. Returning `NNReal` makes
+non-negativity automatic — the previous `measureEntropy_nonneg` axiom is
+discharged for free as `(measureEntropy μ : ℝ).coe_nonneg`. -/
 axiom measureEntropy {α : Type} [MeasurableSpace α] {d : ℕ} [TopologicalSpace α]
-    {X : Subshift α d} (μ : InvMeasure X) : ℝ
+    {X : Subshift α d} (μ : InvMeasure X) : NNReal
 
-/-- Measure entropy is non-negative. -/
-axiom measureEntropy_nonneg {α : Type} [MeasurableSpace α] {d : ℕ}
-    [TopologicalSpace α] {X : Subshift α d} (μ : InvMeasure X) : 0 ≤ measureEntropy μ
+/-- Measure entropy is non-negative. **Discharged** for free: `measureEntropy`
+returns `NNReal`, so the underlying real value is automatically `≥ 0`. -/
+theorem measureEntropy_nonneg {α : Type} [MeasurableSpace α] {d : ℕ}
+    [TopologicalSpace α] {X : Subshift α d} (μ : InvMeasure X) :
+    (0 : ℝ) ≤ ((measureEntropy μ : NNReal) : ℝ) :=
+  NNReal.coe_nonneg _
 
 /-! ## H1  variationalPrinciple — `topEntropy X = sup_μ measureEntropy μ` -/
 
 /-- **Variational principle.** For a nonempty subshift `X`, the topological
-entropy equals the supremum of measure-theoretic entropies over all shift-
-invariant probability measures on `X`. The supremum is achieved when `X` is
-a compact subshift (Misiurewicz, Theorem 7.7 in the paper's reference [19]). -/
+entropy equals the supremum of measure-theoretic entropies (coerced to `ℝ`)
+over all shift-invariant probability measures on `X`. The supremum is achieved
+when `X` is a compact subshift (Misiurewicz, Theorem 7.7 in the paper's
+reference [19]). -/
 axiom variationalPrinciple {α : Type} [MeasurableSpace α] {d : ℕ} [Fintype α]
     [TopologicalSpace α] {X : Subshift α d} (hX : X.carrier.Nonempty) :
-    topEntropy X = ⨆ μ : InvMeasure X, measureEntropy μ
+    topEntropy X = ⨆ μ : InvMeasure X, ((measureEntropy μ : NNReal) : ℝ)
 
 /-! ## H2  entropy_usc — `μ ↦ measureEntropy μ` is upper semi-continuous -/
 
-/-- **Upper semi-continuity of entropy.** The map `μ ↦ measureEntropy μ` is
-upper semi-continuous in the weak-* topology on `InvMeasure X`. -/
+/-- **Upper semi-continuity of entropy.** The real-valued map
+`μ ↦ ((measureEntropy μ : NNReal) : ℝ)` is upper semi-continuous in the
+weak-* topology on `InvMeasure X`. -/
 axiom measureEntropy_uppersemicontinuous {α : Type} [MeasurableSpace α] {d : ℕ}
     [TopologicalSpace α] [SecondCountableTopology α] [BorelSpace α]
     (X : Subshift α d) :
-    UpperSemicontinuous (fun μ : InvMeasure X => measureEntropy μ)
+    UpperSemicontinuous (fun μ : InvMeasure X => ((measureEntropy μ : NNReal) : ℝ))
 
 /-! ## H3  M_compact — `InvMeasure X` is weak-* compact
 

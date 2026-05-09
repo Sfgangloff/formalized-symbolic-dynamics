@@ -208,9 +208,12 @@ with `/-! # MAIN THEOREM ... -/` comment-block headers.
           subtype topology inherited from `ProbabilityMeasure.instTopologicalSpace`
           (via `inferInstanceAs`); requires `[SecondCountableTopology α] [BorelSpace α]`,
           which propagates to H2/H3 (both hold automatically for finite discrete α).
-- [x] H0e `axiom measureEntropy`, `measureEntropy_nonneg` — Kolmogorov–Sinai
-          entropy still opaque; defining it via partitions is a separate
-          Mathlib gap.
+- [x] H0e `axiom measureEntropy : ... → NNReal` — Kolmogorov–Sinai entropy
+          still opaque, but now valued in `NNReal` (`ℝ≥0`) rather than `ℝ`.
+          `measureEntropy_nonneg` is **discharged** as a `theorem`
+          (`NNReal.coe_nonneg _`) — non-negativity is automatic from the
+          codomain. Defining `measureEntropy` via partitions is still a
+          separate Mathlib gap.
 - [x] H1  `axiom variationalPrinciple` — `topEntropy X = ⨆ μ, measureEntropy μ`
 - [x] H2  `axiom measureEntropy_uppersemicontinuous`
 - [x] H3  `theorem InvMeasure.compactSpace` — **partially discharged** as a
