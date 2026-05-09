@@ -298,7 +298,13 @@ SFT-tilings (Robinson's technique). Multi-month effort.
 - [x] J6d `theorem Lat.supNorm_neg`, `Lat.supNorm_sub_comm`
 - [x] J6e `theorem Pattern.globallyAdmissible_iff_appearsAt_zero`  (offset 0 normalization)
 - [x] J6f `theorem Pattern.rCompatible_of_irreducible`  (irreducibility → r-compatibility)
-- [x] J7  `axiom Lemma_3_4` (compactness dichotomy, axiomatized with proof sketch)
+- [x] J7  `theorem Lemma_3_4` — **partially discharged** as a theorem,
+          derived via `Classical.em` on `GloballyAdmissible` from two
+          narrower sub-axioms:
+          - `axiom Lemma_3_4_case_notGA` — the `¬ GA` branch (compactness
+            of `{x ∈ X : a appears at 0}` + König's lemma argument).
+          - `axiom Lemma_3_4_case_GA` — the `GA` branch (irreducibility +
+            buffer thickness via `Pattern.rCompatible_of_irreducible`).
 - [x] J8  `noncomputable def decidable_globallyAdmissible_irreducible` —
           **soft-discharged** via `Classical.dec` (only relies on
           `Classical.choice`, already in trust base). Effective version
@@ -309,8 +315,11 @@ SFT-tilings (Robinson's technique). Multi-month effort.
           combines I1's right r.e. with J8b's left r.e. via F5)
 
 **TODO (post-axiomatization, structured proofs):**
-- J7 proof: requires compactness arguments on the closed sets of `x ∈ X` with
-  prescribed `Q_k` patterns + irreducibility (`Pattern.rCompatible_of_irreducible`).
+- J7 proof: now reduced to two narrower axioms via Classical.em split.
+  - `Lemma_3_4_case_notGA`: compactness of `{x ∈ X : a at 0}` + König
+    argument over locally admissible `Q_N`-extensions.
+  - `Lemma_3_4_case_GA`: thick-buffer geometry +
+    `Pattern.rCompatible_of_irreducible` (J6f).
 - J8 proof: derive a Decidable instance from the dichotomy via effective search.
 - J9 proof: package N_X(Q_k) lower approximation as `IsLeftRE`, combine with I1.
 

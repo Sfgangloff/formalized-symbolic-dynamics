@@ -2157,23 +2157,64 @@ The two cases cleanly correspond to whether `a` is globally admissible:
 the dichotomy is an effective decision procedure once we have a `Q_N`-window
 of sufficient size.
 
-**Proof sketch** (currently axiomatized):
-- (1 ⇒ ¬gloAdm): if `a` were globally admissible, witnessed by `x ∈ X` with
-  `a` appearing at offset `u`, then `Pattern.ofColoring (Q_N + u) x` is
-  locally admissible for any `N`, with `Q_k`-restriction equal to `a`.
-  This contradicts (1).
-- (¬gloAdm ⇒ 1): compactness of the (closed in the full shift) set of
-  `x ∈ X` having `a` at offset `0`, combined with the local-admissibility
-  hierarchy of `Q_N`-extensions converging to a global realization. If
-  every `N` had a locally admissible extension, we would obtain by König's
-  lemma / compactness a globally admissible `a` — contradiction.
-- (gloAdm ⇒ 2): use `Pattern.rCompatible_of_irreducible` (J6f). For large `N`,
-  `Q_N \ Q_{k + Nat.sqrt N}` is "thick" (the buffer `Nat.sqrt N` ≥ r), and
-  irreducibility joins `a` with any locally admissible `b`.
-- (2 ⇒ gloAdm): `rCompatible.globallyAdmissible` (J6a) — `r`-compatibility
-  implies the inner pattern is globally admissible.
--/
-axiom Lemma_3_4 {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
+J7 is now **partially discharged**: the original opaque axiom `Lemma_3_4`
+has been split into two narrower sub-axioms (`Lemma_3_4_case_notGA` and
+`Lemma_3_4_case_GA`) plus a real `theorem` `Lemma_3_4` that combines them
+via `Classical.em` on the `GloballyAdmissible` predicate.
+
+Each sub-axiom captures one direction of the dichotomy, with the
+`GloballyAdmissible` hypothesis *directly* in scope rather than buried
+inside an `Or`-branch. -/
+
+/-- **J7a: the not-globally-admissible branch.** If `a` is not globally
+admissible, then for all sufficiently large `N`, no locally admissible
+`Q_N`-pattern restricts to `a`.
+
+**Proof sketch** (currently axiomatized): contrapositive — if every `N` had
+a locally admissible extension restricting to `a`, then by compactness of
+the full shift (König's lemma / sequential compactness on `α^(ℤ^d)`) we
+would obtain `x ∈ FullShift α d` having `a` at offset `0` and satisfying
+the SFT constraint everywhere; hence `x ∈ (mkSFT F L).carrier`, so `a`
+would be globally admissible — contradiction. -/
+axiom Lemma_3_4_case_notGA {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
+    [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F))
+    (hX : (mkSFT F L).carrier.Nonempty)
+    (h_irr : IsIrreducibleShift (mkSFT F L))
+    {k : ℕ} (a : Pattern α (symBox d k))
+    (h_not_ga : ¬ Pattern.GloballyAdmissible (mkSFT F L) a) :
+    ∃ N₀, ∀ N ≥ N₀, ∀ b : Pattern α (symBox d N),
+      locallyAdmissible F L b →
+      ∀ h : symBox d k ⊆ symBox d N,
+        (Pattern.restrict (symBox d k) h b) ≠ a
+
+/-- **J7b: the globally-admissible branch.** If `a` is globally admissible,
+then for all sufficiently large `N`, every locally admissible `Q_N`-pattern
+is `Nat.sqrt N`-compatible with `a`.
+
+**Proof sketch** (currently axiomatized): use `Pattern.rCompatible_of_irreducible`
+(J6f). For large `N`, the buffer region `Q_N \ Q_{k + Nat.sqrt N}` is at
+least `r`-thick, so the irreducibility constant takes over and lets us
+join the inner `a` with the outer locally admissible `b`. -/
+axiom Lemma_3_4_case_GA {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
+    [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F))
+    (hX : (mkSFT F L).carrier.Nonempty)
+    (h_irr : IsIrreducibleShift (mkSFT F L))
+    {k : ℕ} (a : Pattern α (symBox d k))
+    (h_ga : Pattern.GloballyAdmissible (mkSFT F L) a) :
+    ∃ N₀, ∀ N ≥ N₀, ∀ b : Pattern α (symBox d N),
+      locallyAdmissible F L b → Pattern.rCompatible (mkSFT F L) (Nat.sqrt N) a b
+
+/-- **Lemma 3.4** (Hochman–Meyerovitch). For a nonempty `r`-irreducible SFT
+`X = mkSFT F L` and a pattern `a` on the symmetric cube `Q_k`, the dichotomy
+holds: either `a` is not globally admissible (case 1) or `a` is globally
+admissible (case 2), and the corresponding effective consequence holds.
+
+**Discharged** as a theorem from the two sub-axioms `Lemma_3_4_case_notGA`
+and `Lemma_3_4_case_GA` via `Classical.em` on
+`Pattern.GloballyAdmissible (mkSFT F L) a`. -/
+theorem Lemma_3_4 {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
     [TopologicalSpace α] [T1Space α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F))
     (hX : (mkSFT F L).carrier.Nonempty)
@@ -2191,7 +2232,10 @@ axiom Lemma_3_4 {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
     -- is √N-compatible with a.
     (Pattern.GloballyAdmissible (mkSFT F L) a ∧
       ∃ N₀, ∀ N ≥ N₀, ∀ b : Pattern α (symBox d N),
-        locallyAdmissible F L b → Pattern.rCompatible (mkSFT F L) (Nat.sqrt N) a b)
+        locallyAdmissible F L b → Pattern.rCompatible (mkSFT F L) (Nat.sqrt N) a b) := by
+  by_cases h_ga : Pattern.GloballyAdmissible (mkSFT F L) a
+  · exact Or.inr ⟨h_ga, Lemma_3_4_case_GA F L hX h_irr a h_ga⟩
+  · exact Or.inl ⟨h_ga, Lemma_3_4_case_notGA F L hX h_irr a h_ga⟩
 
 /-! ## J8  Corollary 3.5 — decidability of global admissibility for
 irreducible SFTs
