@@ -1974,15 +1974,34 @@ as a real theorem via `IsClosed.inter` + `isClosed_iInter`. -/
 For each `u : Lat d`, the set of probability measures fixed by the
 pushforward under `FullShift.shiftMap u` is closed in the weak-* topology.
 
-Standard fact: `FullShift.shiftMap u` is continuous, so the pushforward
-`μ ↦ μ.toMeasure.map (FullShift.shiftMap u)` is continuous in weak-* by
-`MeasureTheory.ProbabilityMeasure.tendsto_iff_forall_integral_tendsto`
-(continuous functional → continuous measure-functional). Equality is then
-a closed condition in a Hausdorff space. -/
-axiom InvMeasure.isClosed_setOf_invariant {α : Type} [MeasurableSpace α] {d : ℕ}
-    [TopologicalSpace α] [SecondCountableTopology α] [BorelSpace α] (u : Lat d) :
+**Discharged** as a theorem: pushforward by the continuous map
+`FullShift.shiftMap u` is continuous on `ProbabilityMeasure` (Mathlib's
+`continuous_map`); equality with the identity in the Hausdorff
+`ProbabilityMeasure` topology is closed (`isClosed_eq`). The bridge
+between `ProbabilityMeasure` equality and the original `Measure`-level
+equality is via `toMeasure_injective` and `toMeasure_map`. -/
+theorem InvMeasure.isClosed_setOf_invariant {α : Type} [MeasurableSpace α] {d : ℕ}
+    [TopologicalSpace α] [SecondCountableTopology α] [BorelSpace α]
+    [HasOuterApproxClosed (FullShift α d)] (u : Lat d) :
     IsClosed { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) |
-      μ.toMeasure.map (FullShift.shiftMap u) = μ.toMeasure }
+      μ.toMeasure.map (FullShift.shiftMap u) = μ.toMeasure } := by
+  have h_cont : Continuous (FullShift.shiftMap (α := α) (d := d) u) :=
+    FullShift.shiftMap_continuous u
+  set f : MeasureTheory.ProbabilityMeasure (FullShift α d) →
+      MeasureTheory.ProbabilityMeasure (FullShift α d) :=
+    fun ν => ν.map h_cont.measurable.aemeasurable with hf_def
+  have h_f_cont : Continuous f :=
+    MeasureTheory.ProbabilityMeasure.continuous_map h_cont
+  have set_eq :
+      { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) |
+          μ.toMeasure.map (FullShift.shiftMap u) = μ.toMeasure }
+        = { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) | f μ = μ } := by
+    ext μ
+    refine ⟨fun h => ?_, fun h => ?_⟩
+    · exact MeasureTheory.ProbabilityMeasure.toMeasure_injective h
+    · exact congr_arg MeasureTheory.ProbabilityMeasure.toMeasure h
+  rw [set_eq]
+  exact isClosed_eq h_f_cont continuous_id
 
 /-- **H3a-ii: closedness of the support condition.** The set of probability
 measures with full mass on the closed shift `X.carrier` is closed in the
@@ -1994,6 +2013,7 @@ combined with the upper bound `μ.toMeasure F ≤ 1` (probability) — the level
 set `{μ | μ F = 1}` is closed. -/
 axiom InvMeasure.isClosed_setOf_support {α : Type} [MeasurableSpace α] {d : ℕ}
     [TopologicalSpace α] [SecondCountableTopology α] [BorelSpace α]
+    [HasOuterApproxClosed (FullShift α d)]
     (X : Subshift α d) :
     IsClosed { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) |
       μ.toMeasure X.carrier = 1 }
@@ -2007,6 +2027,7 @@ measures concentrated on `X.carrier`, viewed as a subset of
 `isClosed_iInter` and `IsClosed.inter`. -/
 theorem InvMeasure.isClosed_setOf {α : Type} [MeasurableSpace α] {d : ℕ}
     [TopologicalSpace α] [SecondCountableTopology α] [BorelSpace α]
+    [HasOuterApproxClosed (FullShift α d)]
     (X : Subshift α d) :
     IsClosed { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) |
       (∀ u : Lat d, μ.toMeasure.map (FullShift.shiftMap u) = μ.toMeasure)
@@ -2046,7 +2067,7 @@ the weak-* topology. Discharged as a theorem from the two sub-axioms
 `IsClosed.isCompact` and `isCompact_iff_compactSpace`. -/
 theorem InvMeasure.compactSpace {α : Type} [MeasurableSpace α] {d : ℕ} [Fintype α]
     [TopologicalSpace α] [SecondCountableTopology α] [BorelSpace α]
-    [T2Space α] [CompactSpace α]
+    [T2Space α] [CompactSpace α] [HasOuterApproxClosed (FullShift α d)]
     (X : Subshift α d) (_hX : X.carrier.Nonempty) :
     CompactSpace (InvMeasure X) :=
   haveI : CompactSpace (MeasureTheory.ProbabilityMeasure (FullShift α d)) :=

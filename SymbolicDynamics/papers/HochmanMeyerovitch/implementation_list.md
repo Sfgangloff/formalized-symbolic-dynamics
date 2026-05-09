@@ -215,10 +215,12 @@ with `/-! # MAIN THEOREM ... -/` comment-block headers.
 - [x] H2  `axiom measureEntropy_uppersemicontinuous`
 - [x] H3  `theorem InvMeasure.compactSpace` — **partially discharged** as a
           theorem, derived from sub-axioms:
-          - `theorem InvMeasure.isClosed_setOf` — **discharged** from two
-            narrower sub-axioms:
-            - `axiom InvMeasure.isClosed_setOf_invariant` (per shift `u`,
-              closedness of `{μ | μ.map σ_u = μ}`).
+          - `theorem InvMeasure.isClosed_setOf` — **discharged** from:
+            - `theorem InvMeasure.isClosed_setOf_invariant` — **fully
+              discharged**: continuity of pushforward via Mathlib's
+              `ProbabilityMeasure.continuous_map`, equality closed via
+              `isClosed_eq` in T2 `ProbabilityMeasure`.
+              Requires `[HasOuterApproxClosed (FullShift α d)]`.
             - `axiom InvMeasure.isClosed_setOf_support` (closedness of
               `{μ | μ X.carrier = 1}` for closed X.carrier; portmanteau).
             Combined via `isClosed_iInter` + `IsClosed.inter`.
@@ -227,8 +229,9 @@ with `/-! # MAIN THEOREM ... -/` comment-block headers.
             Mathlib's `instCompactSpaceProbabilityMeasure` from
             `Measure.Prokhorov`, not yet present in pinned Mathlib v4.26.0-rc1
             but available on bump.
-          Hypotheses now also require `[T2Space α] [CompactSpace α]` (free for
-          finite discrete α).
+          Hypotheses now also require `[T2Space α] [CompactSpace α]
+          [HasOuterApproxClosed (FullShift α d)]` (free for finite discrete α
+          via Pi-metrizability).
 
 **TODO (post-I1, axiom discharge):** Once I1 is proven using H0–H3 as axioms,
 return to develop real Mathlib measure-theory infrastructure to discharge them:
