@@ -337,9 +337,12 @@ SFT-tilings (Robinson's technique). Multi-month effort.
 - [x] J9  `theorem topEntropy_leftRE_irreducible` — **partially
           discharged** as a theorem, derived via two narrower sub-axioms
           mirroring the I1 split:
-          - **J9b (axiom)**: `log_N_X_symBox_div_pow_tendsto_topEntropy_irreducible`
-            — `log (N_X X (symBox d k)) / (2k+1)^d ≤ topEntropy` and
-            converges to it (deep — irreducible-SFT lower-approximation).
+          - **J9b-bound (axiom)**: `log_N_X_symBox_div_pow_le_topEntropy_irreducible`
+            — `∀ k, log (N_X X (symBox d k)) / (2k+1)^d ≤ topEntropy`
+            (super-additivity of `N_X` for irreducible SFTs).
+          - **J9b-conv (axiom)**: `log_N_X_symBox_div_pow_tendsto_topEntropy_irreducible`
+            — Tendsto … to `topEntropy` (Fekete-style conclusion for
+            super-additive sequences).
           - **J9c-generic (axiom)**: `rationalLowerApprox_log_div_oddPow_of_computable`
             — abstract Computable rational lower-approximation of
             `Real.log (f k) / (2k+1)^d` for arbitrary Computable `f : ℕ → ℕ`

@@ -2463,18 +2463,31 @@ J9b's upper bound `log/(2k+1)^d ≤ topEntropy` we get `q n ≤ topEntropy`.
 For convergence, `(q n) = (q n - log/(2k+1)^d) + log/(2k+1)^d → 0 +
 topEntropy = topEntropy`. -/
 
-/-- **J9b: convergence-from-below for the symmetric-box count.** For a
-nonempty irreducible SFT, the sequence
-`Real.log (N_X (mkSFT F L) (symBox d k)) / ((2k+1) : ℝ)^d` is bounded
-above by `topEntropy (mkSFT F L)` and converges to it. -/
+/-- **J9b-bound: each `Real.log (N_X X (symBox d k)) / (2k+1)^d` is below
+`topEntropy X`.** This is the *super-additivity* content for irreducible
+SFTs: the sequence `a_k := log N_X (symBox d k)` satisfies the buffer-shift
+super-additivity `a_{k+l+r} ≥ a_k + a_l` (where `r` is the irreducibility
+constant), and a Fekete-style argument for super-additive sequences yields
+`a_k / |Q_k| ≤ topEntropy X` for every `k`. -/
+axiom log_N_X_symBox_div_pow_le_topEntropy_irreducible {α : Type*} {d : ℕ}
+    [Fintype α] [DecidableEq α] [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F))
+    (hX : (mkSFT F L).carrier.Nonempty)
+    (h_irr : IsIrreducibleShift (mkSFT F L)) :
+    ∀ k : ℕ,
+      Real.log (N_X (mkSFT F L) (symBox d k)) / ((2 * k + 1 : ℕ) : ℝ) ^ d
+        ≤ topEntropy (mkSFT F L)
+
+/-- **J9b-conv: convergence of `Real.log (N_X X (symBox d k)) / (2k+1)^d`
+to `topEntropy X` for irreducible SFTs.** The Fekete-style limit of a
+super-additive sequence equals its supremum; combined with the bound
+`≤ topEntropy` (companion sub-axiom J9b-bound), the sequence approaches
+`topEntropy X` from below. -/
 axiom log_N_X_symBox_div_pow_tendsto_topEntropy_irreducible {α : Type*} {d : ℕ}
     [Fintype α] [DecidableEq α] [TopologicalSpace α] [T1Space α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F))
     (hX : (mkSFT F L).carrier.Nonempty)
     (h_irr : IsIrreducibleShift (mkSFT F L)) :
-    (∀ k : ℕ,
-        Real.log (N_X (mkSFT F L) (symBox d k)) / ((2 * k + 1 : ℕ) : ℝ) ^ d
-          ≤ topEntropy (mkSFT F L)) ∧
     Filter.Tendsto
       (fun k : ℕ =>
         Real.log (N_X (mkSFT F L) (symBox d k)) / ((2 * k + 1 : ℕ) : ℝ) ^ d)
@@ -2532,7 +2545,8 @@ theorem topEntropy_leftRE_irreducible {α : Type*} {d : ℕ}
     (hX : (mkSFT F L).carrier.Nonempty)
     (h_irr : IsIrreducibleShift (mkSFT F L)) :
     IsLeftRE (topEntropy (mkSFT F L)) := by
-  obtain ⟨h_upper, h_conv⟩ :=
+  have h_upper := log_N_X_symBox_div_pow_le_topEntropy_irreducible F L hX h_irr
+  have h_conv :=
     log_N_X_symBox_div_pow_tendsto_topEntropy_irreducible F L hX h_irr
   obtain ⟨q, hq_comp, hq_lower, hq_gap⟩ :=
     rationalLowerApprox_log_N_X_symBox F L hX h_irr
