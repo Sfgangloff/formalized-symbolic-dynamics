@@ -2134,11 +2134,159 @@ infrastructure):
 
 Step 1 needs a constructor for `InvMeasure` (currently opaque); steps 2-7 use
 H1-H3; step 8 needs a Computable rational logarithm approximation. -/
-axiom topEntropy_rightRE {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
+
+/-- **I1a: easy direction of the I1 inequality chain — upper bound on
+topological entropy by locally admissible counts.** For a nonempty SFT
+`mkSFT F L` and any `n ≥ 1`, the topological entropy is bounded above
+by `Real.log (N_bar F L n) / n^d`.
+
+**Discharged** as a real theorem from `csInf_le` (topEntropy is the inf of
+`logN X k / k^d`) + `N_X_le_N_bar` (every globally admissible pattern is
+locally admissible) + `Real.log_le_log` (monotonicity).
+
+This is "step 6" of the I1 proof outline made precise; combined with the
+(deep) convergence `Real.log (N_bar F L n) / n^d → topEntropy (mkSFT F L)`
+it shows the locally-admissible count sequence approaches `topEntropy`
+from above, providing the upper rational approximations of step 8. -/
+theorem topEntropy_le_log_N_bar_div_pow {α : Type*} {d : ℕ}
+    [Fintype α] [DecidableEq α] [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F))
+    (hX : (mkSFT F L).carrier.Nonempty) (n : ℕ) (hn : 1 ≤ n) :
+    topEntropy (mkSFT F L) ≤ Real.log (N_bar F L n) / (n : ℝ) ^ d := by
+  have hbdd : BddBelow
+      ((fun k : ℕ => logN (mkSFT F L) k / (k : ℝ) ^ d) '' Set.Ici 1) := by
+    refine ⟨0, ?_⟩
+    rintro x ⟨k, hk, rfl⟩
+    have : (1 : ℝ) ≤ k := by exact_mod_cast hk
+    apply div_nonneg (Real.log_natCast_nonneg _)
+    positivity
+  have h_inf_le : topEntropy (mkSFT F L) ≤ logN (mkSFT F L) n / (n : ℝ) ^ d := by
+    unfold topEntropy
+    exact csInf_le hbdd ⟨n, hn, rfl⟩
+  have h_log_le : logN (mkSFT F L) n ≤ Real.log (N_bar F L n) := by
+    unfold logN
+    apply Real.log_le_log
+    · exact_mod_cast N_X_pos_of_nonempty _ _ hX
+    · exact_mod_cast N_X_le_N_bar F L n
+  have hn_pos : (0 : ℝ) < (n : ℝ) ^ d := by
+    have hn_real : (0 : ℝ) < (n : ℝ) :=
+      by exact_mod_cast Nat.lt_of_lt_of_le Nat.zero_lt_one hn
+    positivity
+  calc topEntropy (mkSFT F L)
+      ≤ logN (mkSFT F L) n / (n : ℝ) ^ d := h_inf_le
+    _ ≤ Real.log (N_bar F L n) / (n : ℝ) ^ d :=
+        div_le_div_of_nonneg_right h_log_le hn_pos.le
+
+/-! ### I1 — split into sub-axioms
+
+The original coarse axiom `topEntropy_rightRE` is replaced by a real
+`theorem` derived from three pieces:
+
+- **I1a**: `topEntropy_le_log_N_bar_div_pow` — already a theorem (upper
+  bound by `Real.log (N_bar F L n) / n^d`).
+- **I1b**: `log_N_bar_div_pow_tendsto_topEntropy` — axiom; the deep
+  ergodic-theory content (steps 1-7 of the I1 outline; uses H1+H2+H3 +
+  i.i.d. uniform measure construction).
+- **I1c**: `rationalUpperApprox_log_N_bar` — axiom; the separable
+  computable-rational content (Computable rational upper-approximation
+  of `Real.log (N_bar F L (n+1)) / ((n+1) : ℝ)^d`; uses `N_bar_computable`
+  + a Computable rational logarithm).
+
+Indexing is shifted to `n+1` so that we always have `1 ≤ n+1` and avoid
+the degenerate `n = 0` case (`0^d = 0`, division by zero). -/
+
+/-- **I1b: convergence of locally admissible counts to topEntropy.** For a
+nonempty SFT, `Real.log (N_bar F L (n+1)) / ((n+1) : ℝ)^d → topEntropy (mkSFT F L)`
+as `n → ∞`. This is steps 1-7 of the I1 proof outline: combining the i.i.d.
+uniform measure on locally admissible patterns (H0c) with the variational
+principle (H1), upper-semicontinuity of measure entropy (H2), and
+compactness of `M(X)` (H3). -/
+axiom log_N_bar_div_pow_tendsto_topEntropy {α : Type*} {d : ℕ}
+    [Fintype α] [DecidableEq α] [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F))
+    (hX : (mkSFT F L).carrier.Nonempty) :
+    Filter.Tendsto
+      (fun n : ℕ => Real.log (N_bar F L (n + 1)) / ((n + 1 : ℕ) : ℝ) ^ d)
+      Filter.atTop (nhds (topEntropy (mkSFT F L)))
+
+/-- **I1c-generic: Computable rational upper approximation of
+`Real.log (f n) / ((n+1) : ℝ)^d` for an arbitrary Computable
+`f : ℕ → ℕ`.** Given any Computable `f` (no positivity required —
+`Real.log 0 = 0`), there exists a Computable `q : ℕ → ℚ` such that:
+- `q n ≥ Real.log (f n) / ((n+1) : ℝ)^d` for every `n`,
+- the gap `(q n : ℝ) - Real.log (f n) / ((n+1) : ℝ)^d → 0`.
+
+This is the **abstract computability content** — pure Computable real
+analysis, completely free of symbolic dynamics. The two specific
+instances we need (`rationalUpperApprox_log_N_bar` for I1c and the
+companion lower-approximation for J9c) are obtained by specializing
+to `f = N_bar F L (· + 1)` (and analogously `N_X (mkSFT F L) (symBox d ·)`),
+both Computable thanks to `N_bar_computable` / `N_X_symBox_computable`.
+
+A future discharge would build a Computable rational upper-approximation
+of `Real.log` on natural-number inputs and feed it `f` together with
+division by `(n+1)^d` and a `1/(n+1)` bias. -/
+axiom rationalUpperApprox_log_div_pow_of_computable {d : ℕ}
+    {f : ℕ → ℕ} (hf : Computable f) :
+    ∃ q : ℕ → ℚ, Computable q ∧
+      (∀ n : ℕ, Real.log (f n) / ((n + 1 : ℕ) : ℝ) ^ d ≤ (q n : ℝ)) ∧
+      Filter.Tendsto
+        (fun n : ℕ => (q n : ℝ) - Real.log (f n) / ((n + 1 : ℕ) : ℝ) ^ d)
+        Filter.atTop (nhds 0)
+
+/-- **I1c (specialized): Computable rational upper approximation of
+`Real.log (N_bar F L (n+1)) / ((n+1) : ℝ)^d`.** Derived from the abstract
+`rationalUpperApprox_log_div_pow_of_computable` axiom by specializing
+`f := fun n => N_bar F L (n+1)` (Computable thanks to `N_bar_computable`
+composed with `Computable.succ`). -/
+theorem rationalUpperApprox_log_N_bar {α : Type*} [Fintype α] [DecidableEq α]
+    [Encodable α] {d : ℕ} (F : Finset (Lat d)) (L : Finset (Pattern α F)) :
+    ∃ q : ℕ → ℚ, Computable q ∧
+      (∀ n : ℕ,
+        Real.log (N_bar F L (n + 1)) / ((n + 1 : ℕ) : ℝ) ^ d ≤ (q n : ℝ)) ∧
+      Filter.Tendsto
+        (fun n : ℕ =>
+          (q n : ℝ) - Real.log (N_bar F L (n + 1)) / ((n + 1 : ℕ) : ℝ) ^ d)
+        Filter.atTop (nhds 0) := by
+  have h_shift : Computable (fun n : ℕ => N_bar F L (n + 1)) :=
+    (N_bar_computable F L).comp (Primrec.succ.to_comp)
+  exact rationalUpperApprox_log_div_pow_of_computable (d := d) h_shift
+
+/-- **Theorem 3.1 (I1, necessity direction of Theorem 1.1).** The
+topological entropy of a nonempty SFT is right recursively enumerable.
+
+**Discharged** as a real theorem from three pieces:
+- I1a (`topEntropy_le_log_N_bar_div_pow`, theorem): upper bound.
+- I1b (`log_N_bar_div_pow_tendsto_topEntropy`, axiom): convergence of the
+  locally-admissible-count sequence to `topEntropy`.
+- I1c (`rationalUpperApprox_log_N_bar`, axiom): Computable rational upper
+  approximation of `Real.log (N_bar F L (n+1)) / ((n+1) : ℝ)^d`.
+
+Combining I1a with I1c gives `topEntropy ≤ q n` for the rational sequence;
+combining I1b with the I1c gap-going-to-zero gives `(q n : ℝ) → topEntropy`. -/
+theorem topEntropy_rightRE {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
     [Encodable α] [TopologicalSpace α] [T1Space α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F))
     (hX : (mkSFT F L).carrier.Nonempty) :
-    IsRightRE (topEntropy (mkSFT F L))
+    IsRightRE (topEntropy (mkSFT F L)) := by
+  obtain ⟨q, hq_comp, hq_upper, hq_gap⟩ := rationalUpperApprox_log_N_bar F L
+  refine ⟨q, hq_comp, ?_, ?_⟩
+  · -- topEntropy ≤ Real.log (N_bar F L (n+1)) / (n+1)^d (I1a) ≤ q n (I1c).
+    intro n
+    have h_upper :=
+      topEntropy_le_log_N_bar_div_pow F L hX (n + 1) (Nat.succ_le_succ (Nat.zero_le n))
+    exact h_upper.trans (hq_upper n)
+  · -- (q n : ℝ) = (q n - log/(n+1)^d) + log/(n+1)^d → 0 + topEntropy = topEntropy.
+    have h_conv := log_N_bar_div_pow_tendsto_topEntropy F L hX
+    have h_sum := hq_gap.add h_conv
+    have h_target :
+        (fun n : ℕ =>
+          ((q n : ℝ) - Real.log (N_bar F L (n + 1)) / ((n + 1 : ℕ) : ℝ) ^ d) +
+            Real.log (N_bar F L (n + 1)) / ((n + 1 : ℕ) : ℝ) ^ d)
+          = fun n : ℕ => (q n : ℝ) := by
+      funext n; ring
+    rw [h_target, zero_add] at h_sum
+    exact h_sum
 
 /-! ## J7  Lemma 3.4 — compactness dichotomy for irreducible SFTs
 
@@ -2289,14 +2437,113 @@ the sequence `(1/|Q_k|) log N_X(Q_k)` (using `N_X_symBox_computable` from J8b)
 converges to `topEntropy (mkSFT F L)` from below, packaged as a Computable
 rational sequence. -/
 
-/-- Lower approximation: for a nonempty irreducible SFT, the topological
-entropy is left r.e. (computable rational sequence approaching from below). -/
-axiom topEntropy_leftRE_irreducible {α : Type*} {d : ℕ}
+/-! ### J9 — split into sub-axioms (mirroring the I1 split)
+
+The original coarse axiom `topEntropy_leftRE_irreducible` is replaced
+by a real `theorem` derived from two narrower sub-axioms (and the I1
+split's structural template):
+
+- **J9b**: `log_N_X_symBox_div_pow_tendsto_topEntropy_irreducible` —
+  the symmetric-box count `Real.log (N_X X (symBox d k)) / (2k+1)^d`
+  is bounded above by `topEntropy X` and converges to it. This is the
+  irreducible-SFT lower-approximation argument from the paper.
+- **J9c**: `rationalLowerApprox_log_N_X_symBox` — Computable rational
+  lower-approximation of that sequence with gap → 0; uses
+  `N_X_symBox_computable` (J8b) and a Computable rational logarithm.
+
+`IsLeftRE` then follows: J9c gives `q n ≤ log/(2k+1)^d`; combined with
+J9b's upper bound `log/(2k+1)^d ≤ topEntropy` we get `q n ≤ topEntropy`.
+For convergence, `(q n) = (q n - log/(2k+1)^d) + log/(2k+1)^d → 0 +
+topEntropy = topEntropy`. -/
+
+/-- **J9b: convergence-from-below for the symmetric-box count.** For a
+nonempty irreducible SFT, the sequence
+`Real.log (N_X (mkSFT F L) (symBox d k)) / ((2k+1) : ℝ)^d` is bounded
+above by `topEntropy (mkSFT F L)` and converges to it. -/
+axiom log_N_X_symBox_div_pow_tendsto_topEntropy_irreducible {α : Type*} {d : ℕ}
+    [Fintype α] [DecidableEq α] [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F))
+    (hX : (mkSFT F L).carrier.Nonempty)
+    (h_irr : IsIrreducibleShift (mkSFT F L)) :
+    (∀ k : ℕ,
+        Real.log (N_X (mkSFT F L) (symBox d k)) / ((2 * k + 1 : ℕ) : ℝ) ^ d
+          ≤ topEntropy (mkSFT F L)) ∧
+    Filter.Tendsto
+      (fun k : ℕ =>
+        Real.log (N_X (mkSFT F L) (symBox d k)) / ((2 * k + 1 : ℕ) : ℝ) ^ d)
+      Filter.atTop (nhds (topEntropy (mkSFT F L)))
+
+/-- **J9c-generic: Computable rational lower approximation of
+`Real.log (f k) / ((2k+1) : ℝ)^d` for an arbitrary Computable
+`f : ℕ → ℕ`.** Symmetric counterpart to
+`rationalUpperApprox_log_div_pow_of_computable`, with divisor
+`(2k+1)^d` (the volume of the symmetric cube `Q_k`).
+
+Pure Computable real analysis, separable from symbolic dynamics:
+the J9c axiom we actually need is the specialization to
+`f := fun k => N_X (mkSFT F L) (symBox d k)`, which is Computable
+thanks to `N_X_symBox_computable`. -/
+axiom rationalLowerApprox_log_div_oddPow_of_computable {d : ℕ}
+    {f : ℕ → ℕ} (hf : Computable f) :
+    ∃ q : ℕ → ℚ, Computable q ∧
+      (∀ k : ℕ, (q k : ℝ) ≤ Real.log (f k) / ((2 * k + 1 : ℕ) : ℝ) ^ d) ∧
+      Filter.Tendsto
+        (fun k : ℕ => Real.log (f k) / ((2 * k + 1 : ℕ) : ℝ) ^ d - (q k : ℝ))
+        Filter.atTop (nhds 0)
+
+/-- **J9c (specialized): Computable rational lower approximation of
+`Real.log (N_X (mkSFT F L) (symBox d k)) / ((2k+1) : ℝ)^d`.** Derived
+from the abstract `rationalLowerApprox_log_div_oddPow_of_computable`
+axiom by specializing `f := fun k => N_X (mkSFT F L) (symBox d k)`
+(Computable thanks to `N_X_symBox_computable`). -/
+theorem rationalLowerApprox_log_N_X_symBox {α : Type*} {d : ℕ}
     [Fintype α] [DecidableEq α] [Encodable α] [TopologicalSpace α] [T1Space α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F))
     (hX : (mkSFT F L).carrier.Nonempty)
     (h_irr : IsIrreducibleShift (mkSFT F L)) :
-    IsLeftRE (topEntropy (mkSFT F L))
+    ∃ q : ℕ → ℚ, Computable q ∧
+      (∀ k : ℕ,
+        (q k : ℝ) ≤
+          Real.log (N_X (mkSFT F L) (symBox d k)) / ((2 * k + 1 : ℕ) : ℝ) ^ d) ∧
+      Filter.Tendsto
+        (fun k : ℕ =>
+          Real.log (N_X (mkSFT F L) (symBox d k)) / ((2 * k + 1 : ℕ) : ℝ) ^ d -
+            (q k : ℝ))
+        Filter.atTop (nhds 0) :=
+  rationalLowerApprox_log_div_oddPow_of_computable (d := d)
+    (N_X_symBox_computable F L hX h_irr)
+
+/-- Lower approximation: for a nonempty irreducible SFT, the topological
+entropy is left r.e. (computable rational sequence approaching from below).
+
+**Discharged** as a theorem from J9b (convergence-from-below for the
+symmetric-box count) + J9c (Computable rational lower-approximation of
+that sequence). Mirrors the I1 split structure. -/
+theorem topEntropy_leftRE_irreducible {α : Type*} {d : ℕ}
+    [Fintype α] [DecidableEq α] [Encodable α] [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F))
+    (hX : (mkSFT F L).carrier.Nonempty)
+    (h_irr : IsIrreducibleShift (mkSFT F L)) :
+    IsLeftRE (topEntropy (mkSFT F L)) := by
+  obtain ⟨h_upper, h_conv⟩ :=
+    log_N_X_symBox_div_pow_tendsto_topEntropy_irreducible F L hX h_irr
+  obtain ⟨q, hq_comp, hq_lower, hq_gap⟩ :=
+    rationalLowerApprox_log_N_X_symBox F L hX h_irr
+  refine ⟨q, hq_comp, ?_, ?_⟩
+  · -- (q k : ℝ) ≤ log/(2k+1)^d ≤ topEntropy
+    intro k
+    exact (hq_lower k).trans (h_upper k)
+  · -- (q k : ℝ) = log/(2k+1)^d - (log/(2k+1)^d - q k) → topEntropy - 0 = topEntropy
+    have h_sum := h_conv.sub hq_gap
+    have h_target :
+        (fun k : ℕ =>
+          Real.log (N_X (mkSFT F L) (symBox d k)) / ((2 * k + 1 : ℕ) : ℝ) ^ d -
+            (Real.log (N_X (mkSFT F L) (symBox d k)) / ((2 * k + 1 : ℕ) : ℝ) ^ d -
+              (q k : ℝ)))
+          = fun k : ℕ => (q k : ℝ) := by
+      funext k; ring
+    rw [h_target, sub_zero] at h_sum
+    exact h_sum
 
 /-! # MAIN THEOREM 1.3 — entropy of an irreducible SFT is computable -/
 

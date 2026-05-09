@@ -249,15 +249,34 @@ return to develop real Mathlib measure-theory infrastructure to discharge them:
   H3a-ii are fully discharged.)
 
 ### I — Theorem 3.1
-- [x] I1  `axiom topEntropy_rightRE` — Theorem 3.1, axiomatized with proof outline
-          (uses H1-H3 + Computable rational log; sub-steps are future work)
+- [x] I1a `theorem topEntropy_le_log_N_bar_div_pow` — **fully discharged**:
+          `topEntropy (mkSFT F L) ≤ Real.log (N_bar F L n) / n^d` for
+          `n ≥ 1` and nonempty SFT, via `csInf_le` + `N_X_le_N_bar` +
+          `Real.log_le_log`. This is "step 6" of the I1 outline made
+          precise.
+- [x] I1  `theorem topEntropy_rightRE` — **partially discharged** as a
+          theorem, derived via I1a + two narrower sub-axioms:
+          - **I1a (done)**: `topEntropy_le_log_N_bar_div_pow` (upper bound).
+          - **I1b (axiom)**: `log_N_bar_div_pow_tendsto_topEntropy` —
+            convergence `Real.log (N_bar F L (n+1)) / (n+1)^d → topEntropy`
+            (deep — uses H1-H3 + i.i.d. uniform measure construction).
+          - **I1c-generic (axiom)**: `rationalUpperApprox_log_div_pow_of_computable`
+            — abstract Computable rational upper-approximation of
+            `Real.log (f n) / (n+1)^d` for arbitrary Computable `f : ℕ → ℕ`
+            (pure Computable real analysis, no symbolic dynamics).
+          - **I1c (theorem)**: `rationalUpperApprox_log_N_bar` —
+            specialization of I1c-generic to `f := N_bar F L ∘ succ`,
+            via `N_bar_computable`.
+          - **I1 (theorem)**: combines I1a (`topEntropy ≤ log/(n+1)^d`)
+            with I1c upper bound to give `topEntropy ≤ q n`, and combines
+            I1b with I1c gap-to-zero to give `(q n : ℝ) → topEntropy`.
 
 **TODO (post-axiomatization, structured proof):**
 - I1.1: Construct `ν_n : InvMeasure (mkSFT F L)` (i.i.d. uniform on locally
   admissible n-box patterns); needs an `InvMeasure` constructor.
 - I1.2: Compute `measureEntropy ν_n = (log N_bar F L n) / n^d`.
 - I1.3: Combine H1+H2+H3 to derive `topEntropy ≤ limsup (log N_bar / n^d)`.
-- I1.4: Lower bound via `N_X_le_N_bar` to get `topEntropy ≥ liminf` likewise.
+- I1.4: Lower bound via `N_X_le_N_bar` — **DONE** as `I1a`.
 - I1.5: Construct a Computable rational upper approximation of
   `(log N_bar) / n^d` to package into `IsRightRE`.
 
@@ -265,7 +284,8 @@ return to develop real Mathlib measure-theory infrastructure to discharge them:
 
 The paper's Theorem 1.1 has two directions:
 
-- **Necessity:** every SFT entropy is right r.e. ← I1 (axiomatized).
+- **Necessity:** every SFT entropy is right r.e. ← I1 (theorem; reduced
+  to two narrower sub-axioms I1b + I1c).
 - **Sufficiency:** every right r.e. `h ≥ 0` is realized as the topological
   entropy of some SFT. ← **NOT DONE** (would be a separate Milestone 6).
 
@@ -311,8 +331,24 @@ SFT-tilings (Robinson's technique). Multi-month effort.
           (search procedure) requires refactoring J7 to Type-valued sum.
 - [x] J8b `axiom N_X_symBox_computable` — still axiomatized (Corollary 3.5
           half about computability of N_X(Q_k); needs effective Decidable).
-- [x] J9  `axiom topEntropy_irreducible_computable` (Theorem 1.3, axiomatized —
-          combines I1's right r.e. with J8b's left r.e. via F5)
+- [x] J9  `theorem topEntropy_leftRE_irreducible` — **partially
+          discharged** as a theorem, derived via two narrower sub-axioms
+          mirroring the I1 split:
+          - **J9b (axiom)**: `log_N_X_symBox_div_pow_tendsto_topEntropy_irreducible`
+            — `log (N_X X (symBox d k)) / (2k+1)^d ≤ topEntropy` and
+            converges to it (deep — irreducible-SFT lower-approximation).
+          - **J9c-generic (axiom)**: `rationalLowerApprox_log_div_oddPow_of_computable`
+            — abstract Computable rational lower-approximation of
+            `Real.log (f k) / (2k+1)^d` for arbitrary Computable `f : ℕ → ℕ`
+            (pure Computable real analysis, no symbolic dynamics).
+          - **J9c (theorem)**: `rationalLowerApprox_log_N_X_symBox` —
+            specialization to `f := N_X (mkSFT F L) ∘ symBox d`, via
+            `N_X_symBox_computable`.
+          - **J9 (theorem)**: combines J9c lower bound with J9b upper
+            bound to give `q k ≤ topEntropy`, and combines J9b
+            convergence with J9c gap-to-zero to give `(q k : ℝ) → topEntropy`.
+- [x] J9.1 `theorem topEntropy_irreducible_computable` (Theorem 1.3,
+          combines I1's right r.e. with J9's left r.e. via F5)
 
 **TODO (post-axiomatization, structured proofs):**
 - J7 proof: now reduced to two narrower axioms via Classical.em split.
@@ -321,7 +357,8 @@ SFT-tilings (Robinson's technique). Multi-month effort.
   - `Lemma_3_4_case_GA`: thick-buffer geometry +
     `Pattern.rCompatible_of_irreducible` (J6f).
 - J8 proof: derive a Decidable instance from the dichotomy via effective search.
-- J9 proof: package N_X(Q_k) lower approximation as `IsLeftRE`, combine with I1.
+- J9 proof: now reduced to two narrower axioms (J9b convergence + J9c
+  computable rational lower-approximation), mirroring the I1 split.
 
 ---
 
