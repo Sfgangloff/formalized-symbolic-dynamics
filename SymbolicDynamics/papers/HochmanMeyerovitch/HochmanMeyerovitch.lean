@@ -18,6 +18,7 @@ import Mathlib.Computability.Partrec
 import Mathlib.Data.Rat.Denumerable
 import Mathlib.Data.Nat.Count
 import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
+import Mathlib.MeasureTheory.Measure.Portmanteau
 import Mathlib.MeasureTheory.MeasurableSpace.Constructions
 import dependencies.ComputableRat
 
@@ -2007,16 +2008,42 @@ theorem InvMeasure.isClosed_setOf_invariant {α : Type} [MeasurableSpace α] {d 
 measures with full mass on the closed shift `X.carrier` is closed in the
 weak-* topology.
 
-Standard portmanteau consequence: `μ ↦ μ.toMeasure F` is upper-semicontinuous
-on closed `F` (`MeasureTheory.FiniteMeasure.limsup_measure_closed_le_of_tendsto`),
-combined with the upper bound `μ.toMeasure F ≤ 1` (probability) — the level
-set `{μ | μ F = 1}` is closed. -/
-axiom InvMeasure.isClosed_setOf_support {α : Type} [MeasurableSpace α] {d : ℕ}
+**Discharged** as a theorem via portmanteau:
+- `μ ↦ μ.toMeasure X.carrier` is upper-semicontinuous on the closed
+  `X.carrier` (Mathlib's
+  `MeasureTheory.ProbabilityMeasure.limsup_measure_closed_le_of_tendsto`
+  applied with `μs = id`).
+- The level set `{μ | g μ = 1}` equals `{μ | g μ ≥ 1}` (since
+  `μ.toMeasure X.carrier ≤ μ.toMeasure univ = 1`).
+- The latter is closed by `UpperSemicontinuous.isClosed_preimage`. -/
+theorem InvMeasure.isClosed_setOf_support {α : Type} [MeasurableSpace α] {d : ℕ}
     [TopologicalSpace α] [SecondCountableTopology α] [BorelSpace α]
     [HasOuterApproxClosed (FullShift α d)]
     (X : Subshift α d) :
     IsClosed { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) |
-      μ.toMeasure X.carrier = 1 }
+      μ.toMeasure X.carrier = 1 } := by
+  set g : MeasureTheory.ProbabilityMeasure (FullShift α d) → ENNReal :=
+    fun μ => μ.toMeasure X.carrier with hg_def
+  have h_usc : UpperSemicontinuous g := by
+    apply upperSemicontinuous_iff_limsup_le.mpr
+    intro μ₀
+    exact MeasureTheory.ProbabilityMeasure.limsup_measure_closed_le_of_tendsto
+      Filter.tendsto_id X.isClosed
+  have h_le_one : ∀ μ : MeasureTheory.ProbabilityMeasure (FullShift α d), g μ ≤ 1 := by
+    intro μ
+    calc g μ
+        = μ.toMeasure X.carrier := rfl
+      _ ≤ μ.toMeasure Set.univ := μ.toMeasure.mono (Set.subset_univ _)
+      _ = 1 := MeasureTheory.measure_univ
+  have set_eq :
+      { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) |
+          μ.toMeasure X.carrier = 1 }
+        = g ⁻¹' Set.Ici 1 := by
+    ext μ
+    simp only [Set.mem_setOf_eq, Set.mem_preimage, Set.mem_Ici]
+    refine ⟨fun h => h.ge, fun h => le_antisymm (h_le_one μ) h⟩
+  rw [set_eq]
+  exact h_usc.isClosed_preimage 1
 
 /-- **Closedness of H3 carrier.** The set of shift-invariant probability
 measures concentrated on `X.carrier`, viewed as a subset of

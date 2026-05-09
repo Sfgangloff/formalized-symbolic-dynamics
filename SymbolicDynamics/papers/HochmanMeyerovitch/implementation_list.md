@@ -221,8 +221,12 @@ with `/-! # MAIN THEOREM ... -/` comment-block headers.
               `ProbabilityMeasure.continuous_map`, equality closed via
               `isClosed_eq` in T2 `ProbabilityMeasure`.
               Requires `[HasOuterApproxClosed (FullShift α d)]`.
-            - `axiom InvMeasure.isClosed_setOf_support` (closedness of
-              `{μ | μ X.carrier = 1}` for closed X.carrier; portmanteau).
+            - `theorem InvMeasure.isClosed_setOf_support` — **fully
+              discharged**: `μ ↦ μ X.carrier` is upper-semicontinuous on
+              closed `X.carrier` via portmanteau
+              (`ProbabilityMeasure.limsup_measure_closed_le_of_tendsto`),
+              and `{μ | g μ = 1} = {μ | g μ ≥ 1}` since `μ univ = 1`,
+              closed by `UpperSemicontinuous.isClosed_preimage`.
             Combined via `isClosed_iInter` + `IsClosed.inter`.
           - `axiom ProbabilityMeasure.compactSpace_aux` — compactness of
             `ProbabilityMeasure (FullShift α d)` for finite α; this is
@@ -238,12 +242,11 @@ return to develop real Mathlib measure-theory infrastructure to discharge them:
 - Define `measureEntropy` via partitions / Kolmogorov–Sinai construction.
 - Discharge H1 (Misiurewicz's variational principle for ℤ^d-actions) — major effort, may require new Mathlib contributions.
 - Discharge H2 via Prokhorov + standard arguments (the BorelSpace setup is now in place).
-- Discharge H3's two sub-axioms:
+- Discharge H3's remaining sub-axiom:
   - `ProbabilityMeasure.compactSpace_aux`: free on Mathlib bump (already
     `instCompactSpaceProbabilityMeasure` on master).
-  - `InvMeasure.isClosed_setOf`: portmanteau argument
-    (`MeasureTheory.Measure.Portmanteau`) + continuity of pushforward by
-    `FullShift.shiftMap`.
+  (`InvMeasure.isClosed_setOf` is now a real theorem; both H3a-i and
+  H3a-ii are fully discharged.)
 
 ### I — Theorem 3.1
 - [x] I1  `axiom topEntropy_rightRE` — Theorem 3.1, axiomatized with proof outline
