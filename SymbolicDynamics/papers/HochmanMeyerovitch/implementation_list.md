@@ -334,25 +334,13 @@ SFT-tilings (Robinson's technique). Multi-month effort.
           (search procedure) requires refactoring J7 to Type-valued sum.
 - [x] J8b `axiom N_X_symBox_computable` — still axiomatized (Corollary 3.5
           half about computability of N_X(Q_k); needs effective Decidable).
-- [x] J9  `theorem topEntropy_leftRE_irreducible` — **partially
-          discharged** as a theorem, derived via two narrower sub-axioms
-          mirroring the I1 split:
-          - **J9b-bound (axiom)**: `log_N_X_symBox_div_pow_le_topEntropy_irreducible`
-            — `∀ k, log (N_X X (symBox d k)) / (2k+1)^d ≤ topEntropy`
-            (super-additivity of `N_X` for irreducible SFTs).
-          - **J9b-conv (axiom)**: `log_N_X_symBox_div_pow_tendsto_topEntropy_irreducible`
-            — Tendsto … to `topEntropy` (Fekete-style conclusion for
-            super-additive sequences).
-          - **J9c-generic (axiom)**: `rationalLowerApprox_log_div_oddPow_of_computable`
-            — abstract Computable rational lower-approximation of
-            `Real.log (f k) / (2k+1)^d` for arbitrary Computable `f : ℕ → ℕ`
-            (pure Computable real analysis, no symbolic dynamics).
-          - **J9c (theorem)**: `rationalLowerApprox_log_N_X_symBox` —
-            specialization to `f := N_X (mkSFT F L) ∘ symBox d`, via
-            `N_X_symBox_computable`.
-          - **J9 (theorem)**: combines J9c lower bound with J9b upper
-            bound to give `q k ≤ topEntropy`, and combines J9b
-            convergence with J9c gap-to-zero to give `(q k : ℝ) → topEntropy`.
+- [x] J9  `axiom topEntropy_leftRE_irreducible` — still axiomatized as
+          a coarse axiom. **Cannot be split through `log N_X(symBox)`:**
+          translation-invariance gives `N_X(symBox d k) = N_X(box d (2k+1))`,
+          and sub-additivity gives `log N_X(box d k)/k^d ≥ topEntropy`,
+          so that sequence approaches `topEntropy` from *above*, not
+          below — wrong direction for `IsLeftRE`. The standard discharge
+          route uses periodic-point counts (Bowen), not pattern counts.
 - [x] J9.1 `theorem topEntropy_irreducible_computable` (Theorem 1.3,
           combines I1's right r.e. with J9's left r.e. via F5)
 
