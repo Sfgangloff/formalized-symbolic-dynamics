@@ -2685,33 +2685,97 @@ the sequence `(1/|Q_k|) log N_X(Q_k)` (using `N_X_symBox_computable` from J8b)
 converges to `topEntropy (mkSFT F L)` from below, packaged as a Computable
 rational sequence. -/
 
-/-! ### J9 — left-r.e. axiom (NOT split, intentionally)
+/-! ### J9 — left-r.e. via periodic-point counts (Bowen)
 
-**Why J9 is NOT split like I1.** The natural mirror of the I1 split would
-factor `IsLeftRE` through `(1/|Q_k|) log N_X(Q_k) ≤ topEntropy` — but this
-inequality is the *wrong direction*. By translation-invariance of `N_X`
-under shift-invariant subshifts, `N_X X (symBox d k) = N_X X (box d (2k+1))`,
-and by sub-additivity `log N_X(box d k) / k^d ≥ topEntropy = sInf` (so the
-sequence approaches `topEntropy` from *above*, not below).
+The natural mirror of the I1 split (factoring `IsLeftRE` through
+`log N_X(Q_k) / |Q_k|`) would *fail* — by translation-invariance,
+`N_X X (symBox d k) = N_X X (box d (2k+1))` and by sub-additivity
+`log N_X(box d k) / k^d ≥ topEntropy = sInf`, so that sequence approaches
+`topEntropy` from *above*, not below.
 
-The actual irreducible-SFT lower-approximation argument uses a different
-sequence — typically periodic-point counts (Bowen-style: the number of
-periodic points of period n grows like `exp(n^d · topEntropy)`, and these
-counts are exactly computable for irreducible SFTs). Until that machinery
-is in place, we keep the coarse axiom. -/
+The actual lower-approximation argument is via **periodic-point counts**
+(Bowen-style): for an irreducible SFT, the number `P n` of period-`n`
+configurations grows like `exp(n^d · topEntropy)`, and these counts are
+exactly computable. The split: one axiom asserts the existence of such a
+Computable count satisfying the bound + convergence, and a separate
+abstract axiom (mirror of `rationalUpperApprox_log_div_pow_of_computable`)
+delivers a Computable rational lower-approximation of `log f / (n+1)^d`
+for arbitrary Computable `f : ℕ → ℕ`. The two combine into a real
+`theorem topEntropy_leftRE_irreducible`. -/
+
+/-- **J9-pp: existence of a Computable periodic-point count for irreducible
+SFTs satisfying the entropy bound and convergence.** For a nonempty
+irreducible SFT, there is a Computable function `P : ℕ → ℕ` (intended to
+count period-`(n+1)` configurations) such that:
+- `Real.log (P (n+1)) / ((n+1) : ℝ)^d ≤ topEntropy (mkSFT F L)` for every `n`,
+- the sequence converges to `topEntropy (mkSFT F L)`.
+
+This isolates the deep Bowen-style content (irreducibility ⇒ periodic-point
+count grows exactly as the entropy). A future discharge would (i) define
+`P n` as the cardinality of locally admissible patterns on `box d n` whose
+periodic extension lies in the SFT, (ii) prove `Computable P` via the
+same Primrec-recursion technique as `N_bar_computable`, and (iii) prove
+the Bowen equality directly. -/
+axiom existsPeriodicCount_for_irreducible_SFT
+    {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α] [Encodable α]
+    [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F))
+    (hX : (mkSFT F L).carrier.Nonempty)
+    (h_irr : IsIrreducibleShift (mkSFT F L)) :
+    ∃ P : ℕ → ℕ, Computable P ∧
+      (∀ n : ℕ,
+        Real.log (P (n + 1)) / ((n + 1 : ℕ) : ℝ) ^ d ≤ topEntropy (mkSFT F L)) ∧
+      Filter.Tendsto
+        (fun n : ℕ => Real.log (P (n + 1)) / ((n + 1 : ℕ) : ℝ) ^ d)
+        Filter.atTop (nhds (topEntropy (mkSFT F L)))
+
+/-- **Computable rational lower approximation of `log (f n) / (n+1)^d`** for
+arbitrary Computable `f : ℕ → ℕ`. Symmetric counterpart to the existing
+`rationalUpperApprox_log_div_pow_of_computable` (I1c-generic). Used in the
+J9 derivation to convert a Computable nat-valued count into a Computable
+rational lower-approximation. -/
+axiom rationalLowerApprox_log_div_pow_of_computable {d : ℕ}
+    {f : ℕ → ℕ} (hf : Computable f) :
+    ∃ q : ℕ → ℚ, Computable q ∧
+      (∀ n : ℕ, (q n : ℝ) ≤ Real.log (f n) / ((n + 1 : ℕ) : ℝ) ^ d) ∧
+      Filter.Tendsto
+        (fun n : ℕ => Real.log (f n) / ((n + 1 : ℕ) : ℝ) ^ d - (q n : ℝ))
+        Filter.atTop (nhds 0)
 
 /-- Lower approximation: for a nonempty irreducible SFT, the topological
-entropy is left r.e. (computable rational sequence approaching from below).
+entropy is left r.e.
 
-**Currently axiomatized**; cannot be split into a `log N_X(symBox)`-style
-sequence because that sequence approaches `topEntropy` from above, not
-below. The standard discharge route is via periodic-point counts (Bowen). -/
-axiom topEntropy_leftRE_irreducible {α : Type*} {d : ℕ}
+**Discharged** as a theorem from `existsPeriodicCount_for_irreducible_SFT`
+(Bowen-style periodic-point bound + convergence) and
+`rationalLowerApprox_log_div_pow_of_computable` (abstract Computable
+rational lower-approximation of `log f / (n+1)^d` for any Computable `f`). -/
+theorem topEntropy_leftRE_irreducible {α : Type*} {d : ℕ}
     [Fintype α] [DecidableEq α] [Encodable α] [TopologicalSpace α] [T1Space α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F))
     (hX : (mkSFT F L).carrier.Nonempty)
     (h_irr : IsIrreducibleShift (mkSFT F L)) :
-    IsLeftRE (topEntropy (mkSFT F L))
+    IsLeftRE (topEntropy (mkSFT F L)) := by
+  obtain ⟨P, hP_comp, hP_le, hP_conv⟩ :=
+    existsPeriodicCount_for_irreducible_SFT F L hX h_irr
+  -- Apply the rational lower-approximation generic axiom to f := P ∘ succ.
+  have hP_shift : Computable (fun n : ℕ => P (n + 1)) :=
+    hP_comp.comp (Primrec.succ.to_comp)
+  obtain ⟨q, hq_comp, hq_lower, hq_gap⟩ :=
+    rationalLowerApprox_log_div_pow_of_computable (d := d) hP_shift
+  refine ⟨q, hq_comp, ?_, ?_⟩
+  · -- (q n : ℝ) ≤ log (P (n+1)) / (n+1)^d ≤ topEntropy
+    intro n
+    exact (hq_lower n).trans (hP_le n)
+  · -- (q n : ℝ) = log/(n+1)^d - (log/(n+1)^d - q n) → topEntropy - 0 = topEntropy
+    have h_sum := hP_conv.sub hq_gap
+    have h_target :
+        (fun n : ℕ =>
+          Real.log (P (n + 1)) / ((n + 1 : ℕ) : ℝ) ^ d -
+            (Real.log (P (n + 1)) / ((n + 1 : ℕ) : ℝ) ^ d - (q n : ℝ)))
+          = fun n : ℕ => (q n : ℝ) := by
+      funext n; ring
+    rw [h_target, sub_zero] at h_sum
+    exact h_sum
 
 /-! # MAIN THEOREM 1.3 — entropy of an irreducible SFT is computable -/
 

@@ -351,13 +351,18 @@ SFT-tilings (Robinson's technique). Multi-month effort.
           (search procedure) requires refactoring J7 to Type-valued sum.
 - [x] J8b `axiom N_X_symBox_computable` — still axiomatized (Corollary 3.5
           half about computability of N_X(Q_k); needs effective Decidable).
-- [x] J9  `axiom topEntropy_leftRE_irreducible` — still axiomatized as
-          a coarse axiom. **Cannot be split through `log N_X(symBox)`:**
-          translation-invariance gives `N_X(symBox d k) = N_X(box d (2k+1))`,
-          and sub-additivity gives `log N_X(box d k)/k^d ≥ topEntropy`,
-          so that sequence approaches `topEntropy` from *above*, not
-          below — wrong direction for `IsLeftRE`. The standard discharge
-          route uses periodic-point counts (Bowen), not pattern counts.
+- [x] J9  `theorem topEntropy_leftRE_irreducible` — **partially
+          discharged** as a theorem, derived via two narrower axioms
+          (the periodic-point route Bowen-style):
+          - **J9-pp (axiom)**: `existsPeriodicCount_for_irreducible_SFT`
+            — for irreducible SFT, exists Computable `P : ℕ → ℕ` with
+            `log P(n+1)/(n+1)^d ≤ topEntropy` AND `Tendsto …`. The
+            symbolic-dynamics content (Bowen).
+          - **J9-rat-lower (axiom)**: `rationalLowerApprox_log_div_pow_of_computable`
+            — abstract Computable rational lower-approximation of
+            `log f / (n+1)^d` for arbitrary Computable `f : ℕ → ℕ`
+            (symmetric to existing `rationalUpperApprox_…` from I1c).
+          - **J9 (theorem)**: combines via `Tendsto.sub` and transitivity.
 - [x] J9.1 `theorem topEntropy_irreducible_computable` (Theorem 1.3,
           combines I1's right r.e. with J9's left r.e. via F5)
 
