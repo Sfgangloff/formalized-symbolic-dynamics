@@ -671,7 +671,7 @@ def patternFnEquiv (α : Type*) (d n : ℕ) : Pattern α (box d n) ≃ (Fin (n^d
 theorem fintype_card_pattern_eq {α : Type*} [Fintype α] (d n : ℕ) :
     Fintype.card (Pattern α (box d n)) = (Fintype.card α) ^ (n ^ d) := by
   rw [Fintype.card_congr (patternFnEquiv α d n)]
-  simp [Fintype.card_pi_const]
+  simp
 
 /-! ## C4a  boxIndex — computable enumeration of `box d n` via base-n digits -/
 
