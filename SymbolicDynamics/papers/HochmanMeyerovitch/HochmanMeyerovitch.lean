@@ -2325,23 +2325,162 @@ inside an `Or`-branch. -/
 admissible, then for all sufficiently large `N`, no locally admissible
 `Q_N`-pattern restricts to `a`.
 
-**Proof sketch** (currently axiomatized): contrapositive — if every `N` had
-a locally admissible extension restricting to `a`, then by compactness of
-the full shift (König's lemma / sequential compactness on `α^(ℤ^d)`) we
-would obtain `x ∈ FullShift α d` having `a` at offset `0` and satisfying
-the SFT constraint everywhere; hence `x ∈ (mkSFT F L).carrier`, so `a`
-would be globally admissible — contradiction. -/
-axiom Lemma_3_4_case_notGA {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
+**Discharged** as a real theorem via compactness of `FullShift α d`. The
+proof: by contrapositive, assume infinitely many `N` admit locally admissible
+extensions of `a`; build configurations extending these patterns; by compactness
+of `FullShift α d` (CompactSpace), the decreasing sequence of closed sets
+"cylinder a 0 ∩ {x | x|symBox d N is locally admissible}" has nonempty
+intersection; the limit configuration is in `mkSFT.carrier` and has `a` at
+offset 0, contradicting `¬ GloballyAdmissible`. -/
+theorem Lemma_3_4_case_notGA {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
     [TopologicalSpace α] [T1Space α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F))
     (hX : (mkSFT F L).carrier.Nonempty)
-    (h_irr : IsIrreducibleShift (mkSFT F L))
+    (_h_irr : IsIrreducibleShift (mkSFT F L))
     {k : ℕ} (a : Pattern α (symBox d k))
     (h_not_ga : ¬ Pattern.GloballyAdmissible (mkSFT F L) a) :
     ∃ N₀, ∀ N ≥ N₀, ∀ b : Pattern α (symBox d N),
       locallyAdmissible F L b →
       ∀ h : symBox d k ⊆ symBox d N,
-        (Pattern.restrict (symBox d k) h b) ≠ a
+        (Pattern.restrict (symBox d k) h b) ≠ a := by
+  by_contra hcon
+  push_neg at hcon
+  -- Pick a baseline configuration x₀ from the carrier (gives us a default value).
+  obtain ⟨x₀, _hx₀⟩ := hX
+  -- For each lattice point u, S u is the closed set of configurations
+  -- whose F-pattern at offset u lies in the allowed list L.
+  let S : Lat d → Set (FullShift α d) := fun u =>
+    {x | Pattern.ofColoring F (FullShift.shiftMap u x) ∈ L}
+  have hS_closed : ∀ u : Lat d, IsClosed (S u) := by
+    intro u
+    apply IsClosed.preimage
+    · apply continuous_pi; intro v; exact continuous_apply (v.val + u)
+    · exact L.finite_toSet.isClosed
+  -- E N := cylinder a 0 ∩ ⋂ u ∈ relevantOffsets F (symBox d N), S u
+  -- Each E N is closed, antitone in N, nonempty under hcon.
+  let E : ℕ → Set (FullShift α d) := fun N =>
+    Pattern.cylinder a 0 ∩ ⋂ u ∈ relevantOffsets F (symBox d N), S u
+  have hE_closed : ∀ N, IsClosed (E N) := by
+    intro N
+    refine IsClosed.inter (Pattern.cylinder_isClosed a 0) ?_
+    apply isClosed_biInter
+    intro u _; exact hS_closed u
+  -- Antitone: M ≤ N → E N ⊆ E M.
+  have hE_anti : ∀ M N, M ≤ N → E N ⊆ E M := by
+    intro M N hMN x hx
+    refine ⟨hx.1, ?_⟩
+    rw [Set.mem_iInter₂]; intro u hu_M
+    -- Move u from relevantOffsets at level M up to level N.
+    have hu_N : u ∈ relevantOffsets F (symBox d N) := by
+      unfold relevantOffsets at hu_M ⊢
+      by_cases hF : F = ∅
+      · simp [hF] at hu_M ⊢; exact hu_M
+      · rw [if_neg hF] at hu_M; rw [if_neg hF]
+        rw [Finset.mem_filter] at hu_M
+        rw [Finset.mem_filter]
+        refine ⟨?_, fun w hw => symBox_mono hMN (hu_M.2 w hw)⟩
+        simp only [Finset.mem_image, Finset.mem_product] at hu_M ⊢
+        obtain ⟨⟨v, w⟩, ⟨hv, hw⟩, hsub⟩ := hu_M.1
+        exact ⟨(v, w), ⟨hv, symBox_mono hMN hw⟩, hsub⟩
+    exact (Set.mem_iInter₂.mp hx.2) u hu_N
+  -- Nonempty: extract a witness configuration extending the locally-admissible patterns.
+  have hE_nonempty : ∀ N, (E N).Nonempty := by
+    intro N
+    obtain ⟨M, hMN, b, hb_loc, hsub, hb_restr⟩ := hcon N
+    classical
+    let x : FullShift α d := fun v =>
+      if hv : v ∈ symBox d M then b ⟨v, hv⟩ else x₀ v
+    refine ⟨x, ?_, ?_⟩
+    · -- x ∈ cylinder a 0: x agrees with a on symBox d k.
+      intro v
+      have hv_M : v.val ∈ symBox d M := hsub v.property
+      change x (v.val + 0) = a v
+      simp only [add_zero]
+      have hx_eq : x v.val = b ⟨v.val, hv_M⟩ := by
+        simp only [x, dif_pos hv_M]
+      rw [hx_eq]
+      have h_restr : Pattern.restrict (symBox d k) hsub b v = b ⟨v.val, hv_M⟩ := rfl
+      rw [← h_restr, hb_restr]
+    · -- x satisfies the F-translate constraints for u ∈ relevantOffsets F (symBox d N).
+      rw [Set.mem_iInter₂]; intro u hu_N
+      -- For F nonempty: u ∈ relevantOffsets gives F + u ⊆ symBox d N ⊆ symBox d M.
+      change Pattern.ofColoring F (FullShift.shiftMap u x) ∈ L
+      by_cases hF : F = ∅
+      · -- F = ∅: ofColoring ∅ z is the empty function regardless of z.
+        -- We need this empty pattern ∈ L.
+        have hempty := _hx₀ u
+        have heq : Pattern.ofColoring F (FullShift.shiftMap u x) =
+                   Pattern.ofColoring F (FullShift.shiftMap u x₀) := by
+          subst hF; funext v; exact absurd v.property (Finset.notMem_empty v.val)
+        rw [heq]; exact hempty
+      · have hFu_M : ∀ v : F, v.val + u ∈ symBox d M := by
+          intro v
+          unfold relevantOffsets at hu_N
+          rw [if_neg hF, Finset.mem_filter] at hu_N
+          exact symBox_mono hMN (hu_N.2 v.val v.property)
+        have heq : Pattern.ofColoring F (FullShift.shiftMap u x) =
+                   (fun v : F => b ⟨v.val + u, hFu_M v⟩) := by
+          funext v
+          simp only [Pattern.ofColoring, FullShift.shiftMap, x, dif_pos (hFu_M v)]
+        rw [heq]
+        exact hb_loc u hFu_M
+  -- Compactness: the decreasing sequence E N has nonempty intersection.
+  have h_inter_ne : (⋂ N, E N).Nonempty := by
+    apply IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed
+    · intro N
+      exact hE_anti N (N + 1) (Nat.le_succ N)
+    · exact hE_nonempty
+    · exact (CompactSpace.isCompact_univ).of_isClosed_subset
+        (hE_closed 0) (Set.subset_univ _)
+    · exact hE_closed
+  obtain ⟨x, hx⟩ := h_inter_ne
+  -- Step (e): x ∈ mkSFT.carrier with a appearing at offset 0.
+  have hx_cyl : x ∈ Pattern.cylinder a 0 := (Set.mem_iInter.mp hx 0).1
+  -- For any u : Lat d, F + u is a finite set; embed it in some symBox d N.
+  have hx_S : ∀ u : Lat d, x ∈ S u := by
+    intro u
+    by_cases hF : F = ∅
+    · -- F = ∅: ofColoring ∅ z is the empty function — same for any z.
+      -- We have x ∈ E 0, so x ∈ S 0 (where 0 ∈ relevantOffsets ∅ (symBox d 0)).
+      have h0_rel : (0 : Lat d) ∈ relevantOffsets F (symBox d 0) := by
+        unfold relevantOffsets
+        simp [hF]
+      have hxS0 : x ∈ S 0 :=
+        (Set.mem_iInter₂.mp (Set.mem_iInter.mp hx 0).2) 0 h0_rel
+      have heq : Pattern.ofColoring F (FullShift.shiftMap u x) =
+                 Pattern.ofColoring F (FullShift.shiftMap (0 : Lat d) x) := by
+        subst hF; funext v; exact absurd v.property (Finset.notMem_empty v.val)
+      change Pattern.ofColoring F (FullShift.shiftMap u x) ∈ L
+      rw [heq]
+      exact hxS0
+    · -- F ≠ ∅: pick N large enough that F + u ⊆ symBox d N.
+      obtain ⟨v0, hv0⟩ := Finset.nonempty_iff_ne_empty.mpr hF
+      let N : ℕ := F.sup (fun v =>
+        (Finset.univ.sup (fun i : Fin d => ((v + u) i).natAbs)))
+      have hFu_in : ∀ v : F, v.val + u ∈ symBox d N := by
+        intro v
+        simp only [symBox, Fintype.mem_piFinset, Finset.mem_Icc]
+        intro i
+        have h_le_local : ((v.val + u) i).natAbs ≤
+            Finset.univ.sup (fun i : Fin d => ((v.val + u) i).natAbs) :=
+          Finset.le_sup (f := fun i : Fin d => ((v.val + u) i).natAbs)
+            (Finset.mem_univ i)
+        have h_le_N : Finset.univ.sup (fun i : Fin d => ((v.val + u) i).natAbs) ≤ N :=
+          Finset.le_sup (f := fun w : Lat d =>
+              Finset.univ.sup (fun i : Fin d => ((w + u) i).natAbs)) v.property
+        have h_abs : ((v.val + u) i).natAbs ≤ N := le_trans h_le_local h_le_N
+        have h_abs_int : |((v.val + u) i)| ≤ (N : ℤ) := by
+          rw [Int.abs_eq_natAbs]; exact_mod_cast h_abs
+        exact abs_le.mp h_abs_int
+      have hu_rel : u ∈ relevantOffsets F (symBox d N) := by
+        unfold relevantOffsets
+        rw [if_neg hF, Finset.mem_filter]
+        refine ⟨?_, fun w hw => hFu_in ⟨w, hw⟩⟩
+        simp only [Finset.mem_image, Finset.mem_product]
+        refine ⟨(v0, v0 + u), ⟨hv0, hFu_in ⟨v0, hv0⟩⟩, by simp⟩
+      exact (Set.mem_iInter₂.mp (Set.mem_iInter.mp hx N).2) u hu_rel
+  have hx_mk : x ∈ mkSFT F L := fun u => hx_S u
+  exact h_not_ga ⟨x, hx_mk, 0, hx_cyl⟩
 
 /-- **J7b: the globally-admissible branch.** If `a` is globally admissible,
 then for all sufficiently large `N`, every locally admissible `Q_N`-pattern

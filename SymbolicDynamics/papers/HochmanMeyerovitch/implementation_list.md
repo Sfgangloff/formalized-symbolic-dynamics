@@ -322,10 +322,14 @@ SFT-tilings (Robinson's technique). Multi-month effort.
 - [x] J6e `theorem Pattern.globallyAdmissible_iff_appearsAt_zero`  (offset 0 normalization)
 - [x] J6f `theorem Pattern.rCompatible_of_irreducible`  (irreducibility → r-compatibility)
 - [x] J7  `theorem Lemma_3_4` — **partially discharged** as a theorem,
-          derived via `Classical.em` on `GloballyAdmissible` from two
-          narrower sub-axioms:
-          - `axiom Lemma_3_4_case_notGA` — the `¬ GA` branch (compactness
-            of `{x ∈ X : a appears at 0}` + König's lemma argument).
+          derived via `Classical.em` on `GloballyAdmissible`:
+          - `theorem Lemma_3_4_case_notGA` — **fully discharged** via
+            compactness of `FullShift α d`. The closed sets
+            `cylinder a 0 ∩ ⋂ u ∈ relevantOffsets F (symBox d N), S u`
+            are decreasing, nonempty under hypothesis, hence
+            `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed`
+            yields a configuration in `mkSFT.carrier` with `a` at offset 0,
+            contradicting `¬ GA`.
           - `axiom Lemma_3_4_case_GA` — the `GA` branch (irreducibility +
             buffer thickness via `Pattern.rCompatible_of_irreducible`).
 - [x] J8  `noncomputable def decidable_globallyAdmissible_irreducible` —
