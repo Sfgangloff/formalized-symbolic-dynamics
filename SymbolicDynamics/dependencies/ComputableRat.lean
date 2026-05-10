@@ -682,4 +682,31 @@ theorem primrec_rat_le : PrimrecRel ((· ≤ ·) : ℚ → ℚ → Prop) := by
   exact Primrec₂.comp primrec_ratLeEnc
     (Primrec.encode.comp Primrec.fst) (Primrec.encode.comp Primrec.snd)
 
+/-! ## `Primrec` / `Computable` for `n ↦ (n : ℚ)` (nat-cast to ℚ)
+
+Encoded form: `(n : ℚ)` has `.num = n` (as Int) and `.den = 1`. Under the
+standard ℤ encoding `Int.ofNat n ↦ 2 * n`, the rat-encoding becomes
+`Nat.pair (2 * n) 1`. -/
+
+theorem rat_natCast_num (n : ℕ) : ((n : ℚ).num) = (n : ℤ) := by
+  simp [Rat.num_natCast]
+
+theorem rat_natCast_den (n : ℕ) : ((n : ℚ).den) = 1 := by
+  simp [Rat.den_natCast]
+
+theorem encode_rat_natCast (n : ℕ) :
+    Encodable.encode ((n : ℚ)) = Nat.pair (2 * n) 1 := by
+  rw [rat_encode_eq, rat_natCast_num, rat_natCast_den]
+  rfl
+
+theorem primrec_rat_natCast : Primrec (fun n : ℕ => (n : ℚ)) := by
+  apply Primrec.encode_iff.mp
+  refine Primrec.of_eq ?_ (fun n => (encode_rat_natCast n).symm)
+  exact Primrec₂.natPair.comp
+    (Primrec.nat_mul.comp (Primrec.const 2) Primrec.id)
+    (Primrec.const 1)
+
+theorem computable_rat_natCast : Computable (fun n : ℕ => (n : ℚ)) :=
+  primrec_rat_natCast.to_comp
+
 end ComputableRat
