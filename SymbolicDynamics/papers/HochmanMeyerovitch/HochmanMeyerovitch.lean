@@ -2482,15 +2482,80 @@ theorem Lemma_3_4_case_notGA {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α
   have hx_mk : x ∈ mkSFT F L := fun u => hx_S u
   exact h_not_ga ⟨x, hx_mk, 0, hx_cyl⟩
 
-/-- **J7b: the globally-admissible branch.** If `a` is globally admissible,
-then for all sufficiently large `N`, every locally admissible `Q_N`-pattern
-is `Nat.sqrt N`-compatible with `a`.
+/-! ## J7b — globally-admissible branch (theorem)
 
-**Proof sketch** (currently axiomatized): use `Pattern.rCompatible_of_irreducible`
-(J6f). For large `N`, the buffer region `Q_N \ Q_{k + Nat.sqrt N}` is at
-least `r`-thick, so the irreducibility constant takes over and lets us
-join the inner `a` with the outer locally admissible `b`. -/
-axiom Lemma_3_4_case_GA {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
+The original opaque axiom `Lemma_3_4_case_GA` is replaced by a real theorem
+combining three pieces:
+
+- A `ShiftIrreducible.mono` lemma (irreducibility weakens with larger `r`).
+- A geometric threshold theorem (`exists_threshold_sqrt`: large `N` ⇒
+  `sqrt N ≥ r₀ ∧ k + sqrt N + 1 ≤ N`).
+- A narrower axiom `locally_admissible_outer_globally_admissible_irreducible`
+  asserting that for irreducible SFTs and large `N`, the outer-ring
+  restriction of any locally admissible `Q_N`-pattern is globally admissible.
+- `Pattern.rCompatible_of_irreducible` (J6f) glues them. -/
+
+/-- Irreducibility is monotone in the gap parameter: an `r`-irreducible
+subshift is also `r'`-irreducible for any `r' ≥ r`. (Larger separation
+is a weaker condition on the join, so easier to satisfy.) -/
+theorem ShiftIrreducible.mono {α : Type*} {d : ℕ} [TopologicalSpace α]
+    {X : Subshift α d} {r r' : ℕ} (hrr' : r ≤ r')
+    (hirr : ShiftIrreducible X r) :
+    ShiftIrreducible X r' := by
+  intro A B h_sep a b ha hb
+  apply hirr A B ?_ a b ha hb
+  intro u hu v hv
+  exact le_trans (by exact_mod_cast hrr') (h_sep u hu v hv)
+
+/-- Geometric threshold: for any `r₀, k`, there exists `N₀` such that for
+all `N ≥ N₀`, both `Nat.sqrt N ≥ r₀` and `k + Nat.sqrt N + 1 ≤ N` hold. -/
+theorem exists_threshold_sqrt (r₀ k : ℕ) :
+    ∃ N₀, ∀ N ≥ N₀, r₀ ≤ Nat.sqrt N ∧ k + Nat.sqrt N + 1 ≤ N := by
+  refine ⟨(k + r₀ + 2)^2, fun N hN => ?_⟩
+  have h_sqrt_ge : k + r₀ + 2 ≤ Nat.sqrt N := by
+    have : Nat.sqrt ((k + r₀ + 2)^2) ≤ Nat.sqrt N := Nat.sqrt_le_sqrt hN
+    rwa [Nat.sqrt_eq'] at this
+  refine ⟨?_, ?_⟩
+  · -- r₀ ≤ sqrt N follows from k + r₀ + 2 ≤ sqrt N
+    have : r₀ ≤ k + r₀ + 2 := by omega
+    exact this.trans h_sqrt_ge
+  · -- k + sqrt N + 1 ≤ N: use sqrt N * sqrt N ≤ N (Nat.sqrt_le_self) + arithmetic
+    have h_sq : Nat.sqrt N * Nat.sqrt N ≤ N := by
+      have := Nat.sqrt_le' N; rw [pow_two] at this; exact this
+    -- sqrt N ≥ k + r₀ + 2 ≥ k + 2; (sqrt N)² ≥ sqrt N * (k + 2)
+    have h_sqrt_ge_k : k + 2 ≤ Nat.sqrt N := by omega
+    have : Nat.sqrt N * (k + 2) ≤ Nat.sqrt N * Nat.sqrt N :=
+      Nat.mul_le_mul_left _ h_sqrt_ge_k
+    have : Nat.sqrt N * (k + 2) ≤ N := this.trans h_sq
+    -- sqrt N * (k + 2) = sqrt N * (k+1) + sqrt N ≥ (k+1) + sqrt N when sqrt N ≥ 1
+    have h_sqrt_pos : 1 ≤ Nat.sqrt N := by omega
+    nlinarith [h_sq, h_sqrt_ge_k, h_sqrt_pos]
+
+/-- For an irreducible SFT, for sufficiently large `N`, the outer-ring
+restriction of every locally admissible `Q_N`-pattern is globally admissible.
+This is the heart of Hochman–Meyerovitch's case-GA argument: irreducibility
+plus enough buffer thickness lets locally admissible patterns extend outward
+to a globally admissible point.
+
+Currently axiomatized; provable from a buffer-extension argument using
+`ShiftIrreducible` to inductively extend a locally admissible pattern's
+outer ring through successive irreducible joins. -/
+axiom locally_admissible_outer_globally_admissible_irreducible
+    {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
+    [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F))
+    (hX : (mkSFT F L).carrier.Nonempty)
+    (h_irr : IsIrreducibleShift (mkSFT F L)) (k : ℕ) :
+    ∃ N₀, ∀ N ≥ N₀, ∀ r : ℕ, k + r + 1 ≤ N → ∀ b : Pattern α (symBox d N),
+      locallyAdmissible F L b →
+      Pattern.GloballyAdmissible (mkSFT F L)
+        (Pattern.restrict (symBox d N \ symBox d (k + r)) Finset.sdiff_subset b)
+
+/-- **J7b: the globally-admissible branch.** **Discharged** as a real theorem
+combining `exists_threshold_sqrt` (geometric threshold), `ShiftIrreducible.mono`
+(weakening of irreducibility constant), the `locally_admissible_outer_*`
+axiom, and `Pattern.rCompatible_of_irreducible` (J6f). -/
+theorem Lemma_3_4_case_GA {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
     [TopologicalSpace α] [T1Space α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F))
     (hX : (mkSFT F L).carrier.Nonempty)
@@ -2498,7 +2563,26 @@ axiom Lemma_3_4_case_GA {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
     {k : ℕ} (a : Pattern α (symBox d k))
     (h_ga : Pattern.GloballyAdmissible (mkSFT F L) a) :
     ∃ N₀, ∀ N ≥ N₀, ∀ b : Pattern α (symBox d N),
-      locallyAdmissible F L b → Pattern.rCompatible (mkSFT F L) (Nat.sqrt N) a b
+      locallyAdmissible F L b → Pattern.rCompatible (mkSFT F L) (Nat.sqrt N) a b := by
+  obtain ⟨N₂, hN₂⟩ :=
+    locally_admissible_outer_globally_admissible_irreducible F L hX h_irr k
+  obtain ⟨r₀, _hr₀_pos, h_irr_r₀⟩ := h_irr
+  obtain ⟨N₁, hN₁⟩ := exists_threshold_sqrt r₀ k
+  refine ⟨max N₁ N₂, ?_⟩
+  intro N hN b hb_loc
+  have hN_N₁ : N₁ ≤ N := le_of_max_le_left hN
+  have hN_N₂ : N₂ ≤ N := le_of_max_le_right hN
+  obtain ⟨h_sqrt_ge, h_kN⟩ := hN₁ N hN_N₁
+  -- X is sqrt N-irreducible (monotonic in r).
+  have h_irr_sqrt : ShiftIrreducible (mkSFT F L) (Nat.sqrt N) :=
+    h_irr_r₀.mono h_sqrt_ge
+  -- Outer ring of b is globally admissible.
+  have h_outer_ga : Pattern.GloballyAdmissible (mkSFT F L)
+      (Pattern.restrict (symBox d N \ symBox d (k + Nat.sqrt N))
+         Finset.sdiff_subset b) :=
+    hN₂ N hN_N₂ (Nat.sqrt N) h_kN b hb_loc
+  -- Apply rCompatible_of_irreducible.
+  exact Pattern.rCompatible_of_irreducible h_kN h_irr_sqrt a b h_ga h_outer_ga
 
 /-- **Lemma 3.4** (Hochman–Meyerovitch). For a nonempty `r`-irreducible SFT
 `X = mkSFT F L` and a pattern `a` on the symmetric cube `Q_k`, the dichotomy

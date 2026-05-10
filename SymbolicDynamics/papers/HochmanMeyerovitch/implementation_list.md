@@ -330,8 +330,17 @@ SFT-tilings (Robinson's technique). Multi-month effort.
             `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed`
             yields a configuration in `mkSFT.carrier` with `a` at offset 0,
             contradicting `¬ GA`.
-          - `axiom Lemma_3_4_case_GA` — the `GA` branch (irreducibility +
-            buffer thickness via `Pattern.rCompatible_of_irreducible`).
+          - `theorem Lemma_3_4_case_GA` — **partially discharged** as a
+            theorem combining:
+            - `theorem ShiftIrreducible.mono` (irreducibility weakens with
+              larger r) — fully proved.
+            - `theorem exists_threshold_sqrt` (large N ⇒ sqrt N ≥ r₀ ∧
+              k + sqrt N + 1 ≤ N) — fully proved.
+            - `axiom locally_admissible_outer_globally_admissible_irreducible`
+              (still axiomatized; the local-to-global GA claim that
+              irreducibility provides via buffer extension).
+            - `Pattern.rCompatible_of_irreducible` (J6f, theorem) for the
+              gluing.
 - [x] J8  `noncomputable def decidable_globallyAdmissible_irreducible` —
           **soft-discharged** via `Classical.dec` (only relies on
           `Classical.choice`, already in trust base). Effective version
