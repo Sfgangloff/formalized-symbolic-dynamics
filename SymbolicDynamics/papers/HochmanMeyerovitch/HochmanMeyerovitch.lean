@@ -2216,30 +2216,50 @@ axiom log_N_bar_div_pow_tendsto_topEntropy {α : Type*} {d : ℕ}
       (fun n : ℕ => Real.log (N_bar F L (n + 1)) / ((n + 1 : ℕ) : ℝ) ^ d)
       Filter.atTop (nhds (topEntropy (mkSFT F L)))
 
-/-- **I1c-generic: Computable rational upper approximation of
-`Real.log (f n) / ((n+1) : ℝ)^d` for an arbitrary Computable
-`f : ℕ → ℕ`.** Given any Computable `f` (no positivity required —
-`Real.log 0 = 0`), there exists a Computable `q : ℕ → ℚ` such that:
-- `q n ≥ Real.log (f n) / ((n+1) : ℝ)^d` for every `n`,
-- the gap `(q n : ℝ) - Real.log (f n) / ((n+1) : ℝ)^d → 0`.
+/-- **Computable rational bracket of `Real.log (f n) / ((n+1) : ℝ)^d` for
+an arbitrary Computable `f : ℕ → ℕ`.** Given any Computable `f`, there exist
+Computable rational sequences `qU, qL : ℕ → ℚ` simultaneously bracketing
+the real-valued `log f / (n+1)^d`:
+- `qL n ≤ Real.log (f n) / ((n+1) : ℝ)^d ≤ qU n` for every `n`,
+- the bracket width `(qU n : ℝ) - (qL n : ℝ) → 0`.
 
 This is the **abstract computability content** — pure Computable real
-analysis, completely free of symbolic dynamics. The two specific
-instances we need (`rationalUpperApprox_log_N_bar` for I1c and the
-companion lower-approximation for J9c) are obtained by specializing
-to `f = N_bar F L (· + 1)` (and analogously `N_X (mkSFT F L) (symBox d ·)`),
-both Computable thanks to `N_bar_computable` / `N_X_symBox_computable`.
+analysis, completely free of symbolic dynamics. Both `rationalUpperApprox_…`
+(I1c, used by `rationalUpperApprox_log_N_bar`) and `rationalLowerApprox_…`
+(J9, used in `topEntropy_leftRE_irreducible`) are derived as theorems by
+extracting `qU` or `qL` from this bracket.
 
-A future discharge would build a Computable rational upper-approximation
-of `Real.log` on natural-number inputs and feed it `f` together with
-division by `(n+1)^d` and a `1/(n+1)` bias. -/
-axiom rationalUpperApprox_log_div_pow_of_computable {d : ℕ}
+A future discharge would build a Computable rational approximation of
+`Real.log` on natural inputs (with effective rate), divide by `(n+1)^d`, and
+add ±`1/(n+1)` biases to get `qU` and `qL` directly. -/
+axiom rationalApprox_log_div_pow_of_computable {d : ℕ}
+    {f : ℕ → ℕ} (hf : Computable f) :
+    ∃ qU qL : ℕ → ℚ, Computable qU ∧ Computable qL ∧
+      (∀ n : ℕ,
+        (qL n : ℝ) ≤ Real.log (f n) / ((n + 1 : ℕ) : ℝ) ^ d ∧
+        Real.log (f n) / ((n + 1 : ℕ) : ℝ) ^ d ≤ (qU n : ℝ)) ∧
+      Filter.Tendsto
+        (fun n : ℕ => (qU n : ℝ) - (qL n : ℝ))
+        Filter.atTop (nhds 0)
+
+/-- **Computable rational *upper* approximation** — extract `qU` from the
+bracket axiom. Gap `(qU n : ℝ) - log f / (n+1)^d → 0` follows from
+`qU n - qL n → 0` via squeeze on the bracket. -/
+theorem rationalUpperApprox_log_div_pow_of_computable {d : ℕ}
     {f : ℕ → ℕ} (hf : Computable f) :
     ∃ q : ℕ → ℚ, Computable q ∧
       (∀ n : ℕ, Real.log (f n) / ((n + 1 : ℕ) : ℝ) ^ d ≤ (q n : ℝ)) ∧
       Filter.Tendsto
         (fun n : ℕ => (q n : ℝ) - Real.log (f n) / ((n + 1 : ℕ) : ℝ) ^ d)
-        Filter.atTop (nhds 0)
+        Filter.atTop (nhds 0) := by
+  obtain ⟨qU, qL, hqU_comp, _hqL_comp, h_bracket, h_gap⟩ :=
+    rationalApprox_log_div_pow_of_computable (d := d) hf
+  refine ⟨qU, hqU_comp, fun n => (h_bracket n).2, ?_⟩
+  -- 0 ≤ (qU n : ℝ) - log f / (n+1)^d ≤ (qU n - qL n : ℝ); squeeze to 0.
+  refine squeeze_zero (fun n => sub_nonneg.mpr (h_bracket n).2)
+    (fun n => ?_) h_gap
+  have h_lower := (h_bracket n).1
+  linarith
 
 /-- **I1c (specialized): Computable rational upper approximation of
 `Real.log (N_bar F L (n+1)) / ((n+1) : ℝ)^d`.** Derived from the abstract
@@ -2729,18 +2749,24 @@ axiom existsPeriodicCount_for_irreducible_SFT
         (fun n : ℕ => Real.log (P (n + 1)) / ((n + 1 : ℕ) : ℝ) ^ d)
         Filter.atTop (nhds (topEntropy (mkSFT F L)))
 
-/-- **Computable rational lower approximation of `log (f n) / (n+1)^d`** for
-arbitrary Computable `f : ℕ → ℕ`. Symmetric counterpart to the existing
-`rationalUpperApprox_log_div_pow_of_computable` (I1c-generic). Used in the
-J9 derivation to convert a Computable nat-valued count into a Computable
-rational lower-approximation. -/
-axiom rationalLowerApprox_log_div_pow_of_computable {d : ℕ}
+/-- **Computable rational *lower* approximation** — extract `qL` from the
+bracket axiom `rationalApprox_log_div_pow_of_computable`. Gap
+`log f / (n+1)^d - (qL n : ℝ) → 0` follows from `qU n - qL n → 0` via
+squeeze on the bracket. -/
+theorem rationalLowerApprox_log_div_pow_of_computable {d : ℕ}
     {f : ℕ → ℕ} (hf : Computable f) :
     ∃ q : ℕ → ℚ, Computable q ∧
       (∀ n : ℕ, (q n : ℝ) ≤ Real.log (f n) / ((n + 1 : ℕ) : ℝ) ^ d) ∧
       Filter.Tendsto
         (fun n : ℕ => Real.log (f n) / ((n + 1 : ℕ) : ℝ) ^ d - (q n : ℝ))
-        Filter.atTop (nhds 0)
+        Filter.atTop (nhds 0) := by
+  obtain ⟨qU, qL, _hqU_comp, hqL_comp, h_bracket, h_gap⟩ :=
+    rationalApprox_log_div_pow_of_computable (d := d) hf
+  refine ⟨qL, hqL_comp, fun n => (h_bracket n).1, ?_⟩
+  refine squeeze_zero (fun n => sub_nonneg.mpr (h_bracket n).1)
+    (fun n => ?_) h_gap
+  have h_upper := (h_bracket n).2
+  linarith
 
 /-- Lower approximation: for a nonempty irreducible SFT, the topological
 entropy is left r.e.

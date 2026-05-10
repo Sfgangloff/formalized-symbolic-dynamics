@@ -263,10 +263,11 @@ return to develop real Mathlib measure-theory infrastructure to discharge them:
           - **I1b (axiom)**: `log_N_bar_div_pow_tendsto_topEntropy` —
             convergence `Real.log (N_bar F L (n+1)) / (n+1)^d → topEntropy`
             (deep — uses H1-H3 + i.i.d. uniform measure construction).
-          - **I1c-generic (axiom)**: `rationalUpperApprox_log_div_pow_of_computable`
+          - **I1c-generic (theorem)**: `rationalUpperApprox_log_div_pow_of_computable`
             — abstract Computable rational upper-approximation of
-            `Real.log (f n) / (n+1)^d` for arbitrary Computable `f : ℕ → ℕ`
-            (pure Computable real analysis, no symbolic dynamics).
+            `Real.log (f n) / (n+1)^d` for arbitrary Computable `f : ℕ → ℕ`.
+            Derived from the bracket axiom `rationalApprox_log_div_pow_of_computable`
+            (which delivers simultaneous upper + lower with width → 0).
           - **I1c (theorem)**: `rationalUpperApprox_log_N_bar` —
             specialization of I1c-generic to `f := N_bar F L ∘ succ`,
             via `N_bar_computable`.
@@ -358,10 +359,10 @@ SFT-tilings (Robinson's technique). Multi-month effort.
             — for irreducible SFT, exists Computable `P : ℕ → ℕ` with
             `log P(n+1)/(n+1)^d ≤ topEntropy` AND `Tendsto …`. The
             symbolic-dynamics content (Bowen).
-          - **J9-rat-lower (axiom)**: `rationalLowerApprox_log_div_pow_of_computable`
+          - **J9-rat-lower (theorem)**: `rationalLowerApprox_log_div_pow_of_computable`
             — abstract Computable rational lower-approximation of
-            `log f / (n+1)^d` for arbitrary Computable `f : ℕ → ℕ`
-            (symmetric to existing `rationalUpperApprox_…` from I1c).
+            `log f / (n+1)^d` for arbitrary Computable `f : ℕ → ℕ`.
+            Derived from the same bracket axiom as the upper form.
           - **J9 (theorem)**: combines via `Tendsto.sub` and transitivity.
 - [x] J9.1 `theorem topEntropy_irreducible_computable` (Theorem 1.3,
           combines I1's right r.e. with J9's left r.e. via F5)
