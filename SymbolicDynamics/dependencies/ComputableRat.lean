@@ -709,4 +709,32 @@ theorem primrec_rat_natCast : Primrec (fun n : ℕ => (n : ℚ)) := by
 theorem computable_rat_natCast : Computable (fun n : ℕ => (n : ℚ)) :=
   primrec_rat_natCast.to_comp
 
+/-! ## `Primrec` projections `q ↦ q.num` and `q ↦ q.den`
+
+Under the structured encoding `encode q = Nat.pair (encode q.num) q.den`,
+both projections are `Primrec` by direct composition with `Nat.unpair`. -/
+
+theorem primrec_rat_num : Primrec (fun q : ℚ => q.num) := by
+  apply Primrec.encode_iff.mp
+  refine Primrec.of_eq
+    (Primrec.fst.comp (Primrec.unpair.comp (Primrec.encode (α := ℚ))))
+    (fun q => ?_)
+  show (Nat.unpair (Encodable.encode q)).1 = Encodable.encode q.num
+  conv_lhs => rw [rat_encode_eq q]
+  rw [Nat.unpair_pair]
+
+theorem primrec_rat_den : Primrec (fun q : ℚ => q.den) := by
+  refine Primrec.of_eq
+    (Primrec.snd.comp (Primrec.unpair.comp (Primrec.encode (α := ℚ))))
+    (fun q => ?_)
+  show (Nat.unpair (Encodable.encode q)).2 = q.den
+  conv_lhs => rw [rat_encode_eq q]
+  rw [Nat.unpair_pair]
+
+theorem computable_rat_num : Computable (fun q : ℚ => q.num) :=
+  primrec_rat_num.to_comp
+
+theorem computable_rat_den : Computable (fun q : ℚ => q.den) :=
+  primrec_rat_den.to_comp
+
 end ComputableRat
