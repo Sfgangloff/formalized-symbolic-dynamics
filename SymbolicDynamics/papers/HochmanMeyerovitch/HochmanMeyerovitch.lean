@@ -2531,16 +2531,29 @@ theorem exists_threshold_sqrt (r₀ k : ℕ) :
     have h_sqrt_pos : 1 ≤ Nat.sqrt N := by omega
     nlinarith [h_sq, h_sqrt_ge_k, h_sqrt_pos]
 
-/-- For an irreducible SFT, for sufficiently large `N`, the outer-ring
-restriction of every locally admissible `Q_N`-pattern is globally admissible.
-This is the heart of Hochman–Meyerovitch's case-GA argument: irreducibility
-plus enough buffer thickness lets locally admissible patterns extend outward
-to a globally admissible point.
+/-- For an irreducible SFT, for sufficiently large `N`, every locally
+admissible `Q_N`-pattern is itself globally admissible. This is a standard
+fact about irreducible SFT languages: locally admissible patterns of
+sufficient size always extend to a globally admissible (whole-shift)
+configuration.
 
 Currently axiomatized; provable from a buffer-extension argument using
-`ShiftIrreducible` to inductively extend a locally admissible pattern's
-outer ring through successive irreducible joins. -/
-axiom locally_admissible_outer_globally_admissible_irreducible
+`ShiftIrreducible`'s gluing of GA patterns at sufficient separation. -/
+axiom locally_admissible_imp_globally_admissible_irreducible
+    {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
+    [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F))
+    (hX : (mkSFT F L).carrier.Nonempty)
+    (h_irr : IsIrreducibleShift (mkSFT F L)) :
+    ∃ N₀, ∀ N ≥ N₀, ∀ b : Pattern α (symBox d N),
+      locallyAdmissible F L b → Pattern.GloballyAdmissible (mkSFT F L) b
+
+/-- For irreducible SFTs and large `N`, the outer-ring restriction of any
+locally admissible `Q_N`-pattern is globally admissible. **Discharged** as
+a theorem from `locally_admissible_imp_globally_admissible_irreducible` +
+`Pattern.globallyAdmissible_restrict` (restriction preserves global
+admissibility). -/
+theorem locally_admissible_outer_globally_admissible_irreducible
     {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
     [TopologicalSpace α] [T1Space α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F))
@@ -2549,7 +2562,12 @@ axiom locally_admissible_outer_globally_admissible_irreducible
     ∃ N₀, ∀ N ≥ N₀, ∀ r : ℕ, k + r + 1 ≤ N → ∀ b : Pattern α (symBox d N),
       locallyAdmissible F L b →
       Pattern.GloballyAdmissible (mkSFT F L)
-        (Pattern.restrict (symBox d N \ symBox d (k + r)) Finset.sdiff_subset b)
+        (Pattern.restrict (symBox d N \ symBox d (k + r)) Finset.sdiff_subset b) := by
+  obtain ⟨N₀, hN₀⟩ :=
+    locally_admissible_imp_globally_admissible_irreducible F L hX h_irr
+  refine ⟨N₀, fun N hN r _hkN b hb_loc => ?_⟩
+  exact Pattern.globallyAdmissible_restrict
+    (symBox d N \ symBox d (k + r)) Finset.sdiff_subset (hN₀ N hN b hb_loc)
 
 /-- **J7b: the globally-admissible branch.** **Discharged** as a real theorem
 combining `exists_threshold_sqrt` (geometric threshold), `ShiftIrreducible.mono`

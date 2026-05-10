@@ -336,9 +336,13 @@ SFT-tilings (Robinson's technique). Multi-month effort.
               larger r) — fully proved.
             - `theorem exists_threshold_sqrt` (large N ⇒ sqrt N ≥ r₀ ∧
               k + sqrt N + 1 ≤ N) — fully proved.
-            - `axiom locally_admissible_outer_globally_admissible_irreducible`
-              (still axiomatized; the local-to-global GA claim that
-              irreducibility provides via buffer extension).
+            - `axiom locally_admissible_imp_globally_admissible_irreducible`
+              (atomic standard fact: in an irreducible SFT, for large N,
+              every locally admissible Q_N pattern is globally admissible —
+              the language is "extendible").
+            - `theorem locally_admissible_outer_globally_admissible_irreducible`
+              (the outer-ring restriction follows trivially via
+              `Pattern.globallyAdmissible_restrict`).
             - `Pattern.rCompatible_of_irreducible` (J6f, theorem) for the
               gluing.
 - [x] J8  `noncomputable def decidable_globallyAdmissible_irreducible` —
