@@ -1,42 +1,39 @@
 # Weiss conjecture — implementation checklist
 
-Each item is a single self-contained Lean unit. Tick when it compiles.
+Each item is a single self-contained Lean unit. Everything **except**
+the conjecture statement itself lives in `dependencies/` so it can be
+reused by other open problems and papers.
 
 ---
 
-## Dependencies (in `dependencies/FactorMap.lean`)
+## Foundational shift-finite-type predicate (in `dependencies/Subshift.lean`)
 
-- [ ] D.1 `structure FactorMap (X : Subshift α d) (Y : Subshift β d)`
-  bundling: a function `FullShift α d → FullShift β d`, continuity,
-  shift-equivariance, image-in-Y.
-- [ ] D.2 `def FactorMap.IsOnto`.
-- [ ] D.3 `def FactorMap.id` — identity factor map `FactorMap X X`.
-- [ ] D.4 `theorem FactorMap.id_isOnto`.
+- [x] D.S.1 `def IsSFT (X : Subshift α d) : Prop` — `∃ F L,
+  X.carrier = (mkSFT F L).carrier`.
+- [x] D.S.2 `theorem mkSFT_isSFT` — the obvious witness.
 
-## Subshift predicates (in `WeissConjecture.lean`)
+## Factor-map infrastructure (in `dependencies/FactorMap.lean`)
 
-- [ ] W.1 `def IsSFT (X : Subshift α d) : Prop` — `∃ F L, X = mkSFT F L`.
-- [ ] W.2 `theorem mkSFT_isSFT` — the obvious witness.
-- [ ] W.3 `def IsSofic (X : Subshift α d) : Prop` — exists a finite
-  alphabet `β`, an SFT `Y : Subshift β d`, and an onto factor map `Y → X`.
+- [x] D.F.1 `structure FactorMap (Y : Subshift β d) (X : Subshift α d)`
+  bundling: a function `FullShift β d → FullShift α d`, continuity,
+  shift-equivariance, image-in-X.
+- [x] D.F.2 `def FactorMap.IsOnto`.
+- [x] D.F.3 `def FactorMap.id`, `theorem FactorMap.id_isOnto`.
+- [x] D.F.4 `def IsSofic (X : Subshift α d) : Prop` — exists a finite
+  alphabet `β`, an SFT, and an onto factor map onto `X`.
+- [x] D.F.5 `def HasEntropyPreservingSFTCover (X : Subshift α d) : Prop`
+  — same as `IsSofic` plus `topEntropy Y = topEntropy X`.
+- [x] D.F.6 `theorem mkSFT_hasEntropyPreservingSFTCover`,
+  `theorem mkSFT_isSofic` — sanity lemmas (every SFT is its own cover
+  via the identity factor map).
 
-## Conjecture statement
+## Conjecture statement (in `WeissConjecture.lean`)
 
-- [ ] W.4 `def HasEntropyPreservingSFTCover (X : Subshift α d) : Prop` —
-  exists `β`, SFT `Y : Subshift β d`, onto factor map `Y → X`,
-  `topEntropy Y = topEntropy X`.
-- [ ] W.5 `def WeissConjectureStatement (d : ℕ) : Prop` — for every
+- [x] W.1 `def WeissConjectureStatement (d : ℕ) : Prop` — for every
   finite alphabet `α` and every sofic `X : Subshift α d`,
   `HasEntropyPreservingSFTCover X`. **Recorded as a `def`, not proved.**
-
-## Trivial sanity lemmas
-
-- [ ] W.6 `theorem isSFT_imp_hasEntropyPreservingSFTCover` — every SFT
-  trivially has an entropy-preserving cover (itself via the identity).
-- [ ] W.7 `theorem isSFT_imp_isSofic` — every SFT is sofic via the
-  identity factor map.
 
 ## Not started / out of scope
 
 - Proof of the 1D case via labelled-graph right-resolving presentations.
-- Any progress on the multidimensional case.
+- Any progress on the multidimensional (`d ≥ 2`) case — open conjecture.

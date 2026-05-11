@@ -428,6 +428,21 @@ theorem mem_mkSFT {α : Type*} {d : ℕ} [TopologicalSpace α] [T1Space α]
     x ∈ mkSFT F L ↔ SFT_admissible F L x :=
   Iff.rfl
 
+/-! ## 0.35  IsSFT — predicate "is a shift of finite type" -/
+
+/-- A subshift `X : Subshift α d` is a **shift of finite type (SFT)** if
+it equals `mkSFT F L` for some finite window `F` and finite list of
+allowed `F`-patterns `L`. -/
+def IsSFT {α : Type*} {d : ℕ} [TopologicalSpace α] [T1Space α]
+    (X : Subshift α d) : Prop :=
+  ∃ (F : Finset (Lat d)) (L : Finset (Pattern α F)),
+    X.carrier = (mkSFT F L).carrier
+
+/-- Every `mkSFT F L` is, by definition, an SFT. -/
+theorem mkSFT_isSFT {α : Type*} {d : ℕ} [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) :
+    IsSFT (mkSFT F L) := ⟨F, L, rfl⟩
+
 /-! ## B1  GloballyAdmissible — pattern appears in some point of X -/
 
 namespace Pattern

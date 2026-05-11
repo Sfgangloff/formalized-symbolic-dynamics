@@ -71,3 +71,39 @@ def IsSofic {α : Type*} {d : ℕ} [TopologicalSpace α]
     (_ : TopologicalSpace β) (_ : T1Space β)
     (F : Finset (Lat d)) (L : Finset (Pattern β F))
     (π : FactorMap (mkSFT F L) X), π.IsOnto
+
+/-- A subshift `X : Subshift α d` has an **entropy-preserving SFT cover**
+if there exists a finite alphabet `β`, an SFT `Y : Subshift β d`, and an
+onto factor map `Y → X` with `topEntropy Y = topEntropy X`. -/
+def HasEntropyPreservingSFTCover {α : Type*} {d : ℕ}
+    [Fintype α] [TopologicalSpace α]
+    (X : Subshift α d) : Prop :=
+  ∃ (β : Type) (_ : Fintype β) (_ : DecidableEq β)
+    (_ : TopologicalSpace β) (_ : T1Space β)
+    (F : Finset (Lat d)) (L : Finset (Pattern β F))
+    (π : FactorMap (mkSFT F L) X), π.IsOnto ∧
+      topEntropy (mkSFT F L) = topEntropy X
+
+/-! ## Trivial sanity lemmas
+
+Every SFT trivially has an entropy-preserving SFT cover (itself, via the
+identity factor map). Every SFT is sofic for the same reason. -/
+
+/-- Every SFT is its own entropy-preserving SFT cover, via the identity
+factor map. -/
+theorem mkSFT_hasEntropyPreservingSFTCover
+    {α : Type} {d : ℕ} [Fintype α] [DecidableEq α]
+    [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) :
+    HasEntropyPreservingSFTCover (mkSFT F L) :=
+  ⟨α, inferInstance, inferInstance, inferInstance, inferInstance,
+    F, L, FactorMap.id (mkSFT F L),
+    FactorMap.id_isOnto _, rfl⟩
+
+/-- Every `mkSFT` is sofic — it factors onto itself via the identity. -/
+theorem mkSFT_isSofic {α : Type} {d : ℕ} [Fintype α] [DecidableEq α]
+    [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F)) :
+    IsSofic (mkSFT F L) :=
+  ⟨α, inferInstance, inferInstance, inferInstance, inferInstance,
+    F, L, FactorMap.id (mkSFT F L), FactorMap.id_isOnto _⟩
