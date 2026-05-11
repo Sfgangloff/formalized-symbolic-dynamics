@@ -769,10 +769,8 @@ theorem primrec_intMulNatEnc : Primrec₂ intMulNatEnc := by
     (Primrec.ite h_encEven h_branch_pos h_branch_neg)
 
 -- Correctness lemma `intMulNatEnc_eq` (TODO): matches actual Int * Nat
--- multiplication under the standard ℤ encoding. The encoded case analysis
--- aligns with the standard `Encodable` instance for ℤ
--- (`ofNat m ↦ 2m`, `negSucc m ↦ 2m + 1`), but the proof requires careful
--- Int arithmetic and Nat-subtraction handling, deferred to the next pass.
+-- multiplication under the standard ℤ encoding. Two cases on `i` (ofNat /
+-- negSucc) with Nat-subtraction bookkeeping. Deferred to next session.
 
 /-! ## Encoded Int addition `intAddEnc`
 
