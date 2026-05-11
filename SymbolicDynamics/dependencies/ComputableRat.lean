@@ -768,6 +768,12 @@ theorem primrec_intMulNatEnc : Primrec₂ intMulNatEnc := by
   exact Primrec.ite h_kEq0 (Primrec.const 0)
     (Primrec.ite h_encEven h_branch_pos h_branch_neg)
 
+-- Correctness lemma `intMulNatEnc_eq` (TODO): matches actual Int * Nat
+-- multiplication under the standard ℤ encoding. The encoded case analysis
+-- aligns with the standard `Encodable` instance for ℤ
+-- (`ofNat m ↦ 2m`, `negSucc m ↦ 2m + 1`), but the proof requires careful
+-- Int arithmetic and Nat-subtraction handling, deferred to the next pass.
+
 /-! ## Encoded Int addition `intAddEnc`
 
 For two encoded Ints `e1, e2`, computes the encoding of their sum.
