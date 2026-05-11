@@ -2,4 +2,6 @@ import papers.HochmanMeyerovitch.HochmanMeyerovitch
 import dependencies.ComputableRat
 import dependencies.Subshift
 import dependencies.FactorMap
+import dependencies.Percolation
 import openProblems.WeissConjecture.WeissConjecture
+import openProblems.OddShiftSoficity.OddShiftSoficity

@@ -32,11 +32,9 @@ construction is known.
 ## Files in this folder
 
 - [`README.md`](README.md) — problem statement and pointers (this file).
-- [`formalization_plan.md`](formalization_plan.md) — formalization plan.
-- [`implementation_list.md`](implementation_list.md) — implementation
-  checklist.
 - [`WeissConjecture.lean`](WeissConjecture.lean) — Lean formalization of the
-  statement (definitions of `FactorMap`, `IsSofic`, and the conjecture).
+  statement. All supporting definitions (`IsSFT`, `FactorMap`, `IsSofic`,
+  `HasEntropyPreservingSFTCover`) live in `../../dependencies/`.
 
 ## References
 
