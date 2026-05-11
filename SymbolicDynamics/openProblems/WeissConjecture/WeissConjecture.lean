@@ -1,9 +1,4 @@
 import dependencies.FactorMap
--- TODO: migrate `topEntropy` from `papers/HochmanMeyerovitch/HochmanMeyerovitch.lean`
--- to `dependencies/Subshift.lean` (or a sibling `dependencies/Entropy.lean`) so
--- Weiss no longer transitively depends on the paper-specific HM file. For now,
--- import HM to obtain `topEntropy`.
-import papers.HochmanMeyerovitch.HochmanMeyerovitch
 
 /-! # Weiss conjecture — entropy-preserving SFT covers of sofic shifts
 

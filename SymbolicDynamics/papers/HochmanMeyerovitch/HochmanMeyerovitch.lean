@@ -107,12 +107,7 @@ def IsIrreducibleShift {α : Type*} {d : ℕ} [TopologicalSpace α]
 
 namespace Pattern
 
-/-! ## B1  GloballyAdmissible — pattern appears in some point of X -/
-
-/-- Pattern `p` is globally admissible for `X` if it appears somewhere in some point of `X`. -/
-def GloballyAdmissible {α : Type*} {d : ℕ} [TopologicalSpace α]
-    {F : Finset (Lat d)} (X : Subshift α d) (p : Pattern α F) : Prop :=
-  ∃ x ∈ X, Appears p x
+-- `GloballyAdmissible` moved to `dependencies/Subshift.lean`.
 
 /-! ## B2  globallyAdmissible_iff_exists_offset -/
 
@@ -140,12 +135,7 @@ theorem globally_imp_locally {α : Type*} {d : ℕ} [TopologicalSpace α] [T1Spa
 
 end Pattern
 
-/-! ## B4  N_X — number of globally admissible F-patterns in a subshift -/
-
-/-- The number of globally admissible `F`-patterns in subshift `X`. -/
-noncomputable def N_X {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
-    (X : Subshift α d) (F : Finset (Lat d)) : ℕ :=
-  Set.ncard {p : Pattern α F | Pattern.GloballyAdmissible X p}
+-- `N_X` moved to `dependencies/Subshift.lean`.
 
 /-! ## B5  N_X_pos_of_nonempty — N_X is positive when X has a point -/
 
@@ -204,11 +194,7 @@ theorem N_X_mono_support {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace �
     rw [this]
     exact happ v
 
-/-! ## C1  box — the cube {0,...,n-1}^d in ℤ^d -/
-
-/-- The discrete cube `{0,...,n-1}^d ⊆ ℤ^d`. -/
-def box (d n : ℕ) : Finset (Lat d) :=
-  Fintype.piFinset (fun _ : Fin d => Finset.Ico (0 : ℤ) (n : ℤ))
+-- `box` moved to `dependencies/Subshift.lean`.
 
 /-! ## C2  box_card -/
 
@@ -524,13 +510,7 @@ theorem N_X_submultiplicative {α : Type*} {d : ℕ} [Fintype α] [TopologicalSp
     · exact congr_fun (congr_arg Prod.fst hpq) ⟨v, hvF⟩
     · exact congr_fun (congr_arg Prod.snd hpq) ⟨v, hvG⟩
 
-/-! ## D2  logN — log of the box pattern count -/
-
-/-- `logN X n` is `log (N_X X (box d n))`, the log of the count of globally admissible
-    patterns on the box `F_n = {0,...,n-1}^d`. -/
-noncomputable def logN {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
-    (X : Subshift α d) (n : ℕ) : ℝ :=
-  Real.log (N_X X (box d n))
+-- `logN` moved to `dependencies/Subshift.lean`.
 
 /-! ## D3  logN_subadditive — 1D subadditivity of logN -/
 
@@ -648,13 +628,7 @@ theorem logN_div_pow_tendsto {α : Type*} [Fintype α] [TopologicalSpace α]
     · exact Real.log_natCast_nonneg _
     · exact hn'.le
 
-/-! ## E1  topEntropy — topological entropy of a subshift -/
-
-/-- Topological entropy: the infimum of `logN X n / n^d` over `n ≥ 1`.
-    For 1D subshifts, this equals `(logN_subadditive X).lim` by Fekete's lemma. -/
-noncomputable def topEntropy {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
-    (X : Subshift α d) : ℝ :=
-  sInf ((fun n : ℕ => logN X n / (n : ℝ) ^ d) '' Set.Ici 1)
+-- `topEntropy` moved to `dependencies/Subshift.lean`.
 
 /-! ## E2  topEntropy_nonneg -/
 

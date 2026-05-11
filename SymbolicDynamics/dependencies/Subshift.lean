@@ -12,6 +12,7 @@ import Mathlib.Data.Fintype.Pi
 import Mathlib.Data.Int.Interval
 import Mathlib.MeasureTheory.MeasurableSpace.Constructions
 import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 /-! # Subshift basics
 
@@ -20,7 +21,9 @@ Foundational types and operations for symbolic dynamics on `ℤ^d`:
 - the full shift `FullShift α d = α^{ℤ^d}` with shift action and Pi-topology,
 - patterns on finite windows `Pattern α F`,
 - closed shift-invariant subshifts `Subshift α d`,
-- shifts of finite type via `mkSFT F L`.
+- shifts of finite type via `mkSFT F L`,
+- the discrete cube `box d n`, the global-pattern count `N_X`,
+  `logN`, and topological entropy `topEntropy`.
 
 Originally lived inside `papers/HochmanMeyerovitch/HochmanMeyerovitch.lean`;
 moved here for reuse by other papers and open-problem formalizations
@@ -424,3 +427,45 @@ theorem mem_mkSFT {α : Type*} {d : ℕ} [TopologicalSpace α] [T1Space α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F)) (x : FullShift α d) :
     x ∈ mkSFT F L ↔ SFT_admissible F L x :=
   Iff.rfl
+
+/-! ## B1  GloballyAdmissible — pattern appears in some point of X -/
+
+namespace Pattern
+
+/-- Pattern `p` is globally admissible for `X` if it appears somewhere in
+some point of `X`. -/
+def GloballyAdmissible {α : Type*} {d : ℕ} [TopologicalSpace α]
+    {F : Finset (Lat d)} (X : Subshift α d) (p : Pattern α F) : Prop :=
+  ∃ x ∈ X, Appears p x
+
+end Pattern
+
+/-! ## B4  N_X — number of globally admissible F-patterns in a subshift -/
+
+/-- The number of globally admissible `F`-patterns in subshift `X`. -/
+noncomputable def N_X {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
+    (X : Subshift α d) (F : Finset (Lat d)) : ℕ :=
+  Set.ncard {p : Pattern α F | Pattern.GloballyAdmissible X p}
+
+/-! ## C1  box — the cube `{0,...,n-1}^d` in `ℤ^d` -/
+
+/-- The discrete cube `{0,...,n-1}^d ⊆ ℤ^d`. -/
+def box (d n : ℕ) : Finset (Lat d) :=
+  Fintype.piFinset (fun _ : Fin d => Finset.Ico (0 : ℤ) (n : ℤ))
+
+/-! ## D2  logN — log of the box pattern count -/
+
+/-- `logN X n` is `log (N_X X (box d n))`, the log of the count of globally
+admissible patterns on the box `F_n = {0,...,n-1}^d`. -/
+noncomputable def logN {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
+    (X : Subshift α d) (n : ℕ) : ℝ :=
+  Real.log (N_X X (box d n))
+
+/-! ## E1  topEntropy — topological entropy of a subshift -/
+
+/-- Topological entropy: the infimum of `logN X n / n^d` over `n ≥ 1`.
+For 1D subshifts, this equals the Fekete limit of the subadditive sequence
+`logN X`. -/
+noncomputable def topEntropy {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
+    (X : Subshift α d) : ℝ :=
+  sInf ((fun n : ℕ => logN X n / (n : ℝ) ^ d) '' Set.Ici 1)
