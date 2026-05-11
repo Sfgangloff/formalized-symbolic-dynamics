@@ -1,5 +1,7 @@
 # Weiss conjecture — entropy-preserving SFT covers of sofic shifts
 
+**Status:** `solved` (`d = 1`, classical) / `open` (`d ≥ 2`).
+
 **Conjecture (B. Weiss, ca. 1973).** *Every sofic `ℤ^d`-shift admits an SFT
 cover of the same topological entropy.*
 
