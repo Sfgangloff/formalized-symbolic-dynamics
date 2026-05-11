@@ -737,4 +737,91 @@ theorem computable_rat_num : Computable (fun q : ℚ => q.num) :=
 theorem computable_rat_den : Computable (fun q : ℚ => q.den) :=
   primrec_rat_den.to_comp
 
+/-! ## Encoded Int multiplication by a positive Nat
+
+`intMulNatEnc encInt k` computes the encoding of `(decoded encInt) * k` where
+`k : ℕ`. Used as a building block for rational addition: `(a/b) + (c/d) =
+(a*d + c*b) / (b*d)` requires multiplying numerators by denominators. -/
+
+/-- Multiply an encoded Int by a Nat. For `encInt = 2m` (positive), result is
+`2 * m * k = encInt * k`. For `encInt = 2m + 1` (negative `-(m+1)`), result is
+encoded `-(k * (m+1))`, which is `2 * (k * (m+1)) - 1 = (encInt + 1) * k - 1`
+provided `k ≥ 1`; for `k = 0`, result is `0` (zero). -/
+def intMulNatEnc (encInt k : ℕ) : ℕ :=
+  if k = 0 then 0
+  else if encInt % 2 = 0 then encInt * k
+  else (encInt + 1) * k - 1
+
+theorem primrec_intMulNatEnc : Primrec₂ intMulNatEnc := by
+  -- Decompose the if-then-else into Primrec building blocks.
+  have h_kEq0 : PrimrecPred (fun p : ℕ × ℕ => p.2 = 0) :=
+    Primrec.eq.comp Primrec.snd (Primrec.const 0)
+  have h_encEven : PrimrecPred (fun p : ℕ × ℕ => p.1 % 2 = 0) :=
+    Primrec.eq.comp (Primrec.nat_mod.comp Primrec.fst (Primrec.const 2))
+      (Primrec.const 0)
+  have h_branch_pos : Primrec (fun p : ℕ × ℕ => p.1 * p.2) :=
+    Primrec.nat_mul.comp Primrec.fst Primrec.snd
+  have h_branch_neg : Primrec (fun p : ℕ × ℕ => (p.1 + 1) * p.2 - 1) :=
+    Primrec.nat_sub.comp
+      (Primrec.nat_mul.comp (Primrec.succ.comp Primrec.fst) Primrec.snd)
+      (Primrec.const 1)
+  exact Primrec.ite h_kEq0 (Primrec.const 0)
+    (Primrec.ite h_encEven h_branch_pos h_branch_neg)
+
+/-! ## Encoded Int addition `intAddEnc`
+
+For two encoded Ints `e1, e2`, computes the encoding of their sum.
+Handles four sign cases:
+- Both even (≥ 0): `e1 + e2`.
+- Both odd (< 0, magnitudes m1+1, m2+1): `e1 + e2 + 1`
+  (encodes `-(m1+m2+2)` as `2(m1+m2+1)+1 = e1+e2+1`).
+- Mixed signs: subtract magnitudes; sign tracks the larger magnitude. -/
+
+/-- Encoded Int addition. -/
+def intAddEnc (e1 e2 : ℕ) : ℕ :=
+  if e1 % 2 = 0 then
+    if e2 % 2 = 0 then e1 + e2
+    else if e1 > e2 then e1 - e2 - 1 else e2 - e1
+  else
+    if e2 % 2 = 0 then
+      if e2 > e1 then e2 - e1 - 1 else e1 - e2
+    else e1 + e2 + 1
+
+theorem primrec_intAddEnc : Primrec₂ intAddEnc := by
+  have h_e1Even : PrimrecPred (fun p : ℕ × ℕ => p.1 % 2 = 0) :=
+    Primrec.eq.comp (Primrec.nat_mod.comp Primrec.fst (Primrec.const 2))
+      (Primrec.const 0)
+  have h_e2Even : PrimrecPred (fun p : ℕ × ℕ => p.2 % 2 = 0) :=
+    Primrec.eq.comp (Primrec.nat_mod.comp Primrec.snd (Primrec.const 2))
+      (Primrec.const 0)
+  have h_e1gt : PrimrecPred (fun p : ℕ × ℕ => p.1 > p.2) :=
+    Primrec.nat_lt.comp Primrec.snd Primrec.fst
+  have h_e2gt : PrimrecPred (fun p : ℕ × ℕ => p.2 > p.1) :=
+    Primrec.nat_lt.comp Primrec.fst Primrec.snd
+  have h_sum : Primrec (fun p : ℕ × ℕ => p.1 + p.2) :=
+    Primrec.nat_add.comp Primrec.fst Primrec.snd
+  have h_sumPlus1 : Primrec (fun p : ℕ × ℕ => p.1 + p.2 + 1) :=
+    Primrec.succ.comp h_sum
+  have h_e1subE2sub1 : Primrec (fun p : ℕ × ℕ => p.1 - p.2 - 1) :=
+    Primrec.nat_sub.comp
+      (Primrec.nat_sub.comp Primrec.fst Primrec.snd) (Primrec.const 1)
+  have h_e2subE1 : Primrec (fun p : ℕ × ℕ => p.2 - p.1) :=
+    Primrec.nat_sub.comp Primrec.snd Primrec.fst
+  have h_e2subE1sub1 : Primrec (fun p : ℕ × ℕ => p.2 - p.1 - 1) :=
+    Primrec.nat_sub.comp
+      (Primrec.nat_sub.comp Primrec.snd Primrec.fst) (Primrec.const 1)
+  have h_e1subE2 : Primrec (fun p : ℕ × ℕ => p.1 - p.2) :=
+    Primrec.nat_sub.comp Primrec.fst Primrec.snd
+  -- Outer if (e1 even):
+  --   inner if (e2 even): h_sum, else if (e1 > e2): h_e1subE2sub1, else h_e2subE1.
+  -- Outer else (e1 odd):
+  --   inner if (e2 even): if (e2 > e1): h_e2subE1sub1, else h_e1subE2;
+  --   else (both odd): h_sumPlus1.
+  exact Primrec.ite h_e1Even
+    (Primrec.ite h_e2Even h_sum
+      (Primrec.ite h_e1gt h_e1subE2sub1 h_e2subE1))
+    (Primrec.ite h_e2Even
+      (Primrec.ite h_e2gt h_e2subE1sub1 h_e1subE2)
+      h_sumPlus1)
+
 end ComputableRat
