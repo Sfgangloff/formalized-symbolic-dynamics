@@ -26,8 +26,10 @@ SymbolicDynamics/
 │       ├── implementation_list.md
 │       └── HochmanMeyerovitch.lean   # the Lean formalization
 ├── dependencies/                 # cross-paper Lean helpers
-│   └── ComputableRat.lean
-└── open-problems/                # placeholder for open-problem formalizations
+│   ├── ComputableRat.lean
+│   └── FactorMap.lean
+└── openProblems/                 # open-problem formalizations
+    └── WeissConjecture/
 ```
 
 **Per-paper folders are self-contained**: PDF, plan, checklist, and Lean source

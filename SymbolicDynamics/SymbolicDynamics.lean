@@ -1,2 +1,5 @@
 import papers.HochmanMeyerovitch.HochmanMeyerovitch
 import dependencies.ComputableRat
+import dependencies.Subshift
+import dependencies.FactorMap
+import openProblems.WeissConjecture.WeissConjecture
