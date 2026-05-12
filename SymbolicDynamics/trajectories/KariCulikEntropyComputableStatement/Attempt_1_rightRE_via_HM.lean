@@ -1,3 +1,4 @@
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import dependencies.Subshift
 import dependencies.LocallyAdmissible
 import dependencies.GloballyAdmissible
@@ -7,6 +8,7 @@ import dependencies.IrreducibleConsequences
 import dependencies.KariCulik
 import axioms.KariCulik
 import openProblems.KariCulikEntropy.KariCulikEntropy
+import openProblems.KariCulikEntropy.generated_questions.Computability
 import papers.HochmanMeyerovitch.HochmanMeyerovitch
 
 /-! # Attempt 1 — reduce computability to irreducibility
@@ -136,3 +138,122 @@ theorem kariCulikEntropy_isComputableReal_of_irreducible
   change IsComputableReal (topEntropy kariCulikShift)
   rw [h_top]
   exact topEntropy_irreducible_computable F L h_ne h_irr'
+
+/-! ## Numerical interval bounds
+
+Combining the positive-entropy axiom with the universal upper bound
+`topEntropy_le_log_card` from `dependencies/Entropy.lean` pins
+`kariCulikEntropy` to the half-open interval `(0, log 13]`. -/
+
+/-- **Upper bound** by `log |α|`. The Kari–Culik entropy is at most the
+log of the alphabet size, by the universal SFT entropy bound. -/
+theorem kariCulikEntropy_le_log_card :
+    kariCulikEntropy ≤ Real.log (Fintype.card KCTile) :=
+  topEntropy_le_log_card kariCulikShift
+
+/-- **Numerical upper bound.** `kariCulikEntropy ≤ log 13`. -/
+theorem kariCulikEntropy_le_log_13 :
+    kariCulikEntropy ≤ Real.log 13 := by
+  have h := kariCulikEntropy_le_log_card
+  have hcard : Fintype.card KCTile = 13 := by
+    simp [KCTile, Fintype.card_fin]
+  rw [hcard] at h
+  exact_mod_cast h
+
+/-- **Interval bound.** `0 < kariCulikEntropy ≤ log 13`. Combines
+`kariCulikShift_entropy_pos` (Durand–Gamard–Grandjean 2013) with the
+universal upper bound. -/
+theorem kariCulikEntropy_bounds :
+    0 < kariCulikEntropy ∧ kariCulikEntropy ≤ Real.log 13 :=
+  ⟨kariCulikShift_entropy_pos, kariCulikEntropy_le_log_13⟩
+
+/-- **Summary under irreducibility.** Assuming the Kari–Culik shift is
+irreducible (the open auxiliary question), the entropy is a computable
+real in the interval `(0, log 13]`. -/
+theorem kariCulikEntropy_full_picture_under_irreducible
+    (h_irr : IsIrreducibleShift kariCulikShift) :
+    IsComputableReal kariCulikEntropy ∧
+      0 < kariCulikEntropy ∧
+      kariCulikEntropy ≤ Real.log 13 :=
+  ⟨kariCulikEntropy_isComputableReal_of_irreducible h_irr,
+   kariCulikShift_entropy_pos,
+   kariCulikEntropy_le_log_13⟩
+
+/-! ## Open content of `KariCulikEntropyComputableStatement`
+
+Since `IsRightRE kariCulikEntropy` is unconditional
+(`kariCulikEntropy_isRightRE`), and `IsComputableReal` factors as
+`IsLeftRE ∧ IsRightRE` (`computable_iff_leftRE_and_rightRE` in
+`dependencies/Computable.lean`), the open computability question
+reduces *precisely* to whether `kariCulikEntropy` is **left** r.e. -/
+
+/-- **The open content of `KariCulikEntropyComputableStatement` is
+exactly `IsLeftRE kariCulikEntropy`.** The right-r.e. half is already
+established unconditionally; combining the two gives `IsComputableReal`
+via `computable_iff_leftRE_and_rightRE`. -/
+theorem kariCulikEntropy_isComputableReal_iff_isLeftRE :
+    IsComputableReal kariCulikEntropy ↔ IsLeftRE kariCulikEntropy := by
+  refine ⟨computable_imp_leftRE, fun h_left => ?_⟩
+  exact computable_iff_leftRE_and_rightRE.mpr ⟨h_left, kariCulikEntropy_isRightRE⟩
+
+/-- Named-Prop version: `KariCulikEntropyComputableStatement` is
+equivalent to `IsLeftRE kariCulikEntropy`. -/
+theorem KariCulikEntropyComputableStatement_iff_isLeftRE :
+    KariCulikEntropyComputableStatement ↔ IsLeftRE kariCulikEntropy :=
+  kariCulikEntropy_isComputableReal_iff_isLeftRE
+
+/-! ## A strictly weaker sufficient condition
+
+The conditional `kariCulikEntropy_isComputableReal_of_irreducible`
+requires `kariCulikShift` *itself* to be irreducible. But a reducible
+SFT can still admit an irreducible "maximum-entropy component" — a
+sub-SFT whose entropy matches the original. We record the
+corresponding strictly weaker sufficient condition.
+
+For instance: if `kariCulikShift` decomposes as the disjoint union of
+its zero-entropy Sturmian-row sub-system (which is *minimal*, hence
+irreducible-with-zero-entropy; Siefken 2014) together with a positive-
+entropy irreducible component, then this weaker condition is satisfied
+even though `kariCulikShift` as a whole is not irreducible. -/
+
+/-- **Strictly weaker reduction.** If there exists an irreducible
+sub-SFT `Y` of `kariCulikShift` realising the full entropy
+(`topEntropy Y = kariCulikEntropy`), then `kariCulikEntropy` is
+computable.
+
+This is **strictly weaker** than full irreducibility of
+`kariCulikShift`: irreducibility of the whole gives the hypothesis
+with `Y := kariCulikShift`, but the converse fails — a *reducible*
+SFT may admit an irreducible sub-SFT with maximal entropy.
+
+The `hY_sub` hypothesis is not used in the proof (the proof goes
+through any irreducible SFT with matching entropy), but is recorded
+to document the intended use: search among sub-SFTs of
+`kariCulikShift`. -/
+theorem kariCulikEntropy_isComputableReal_of_irreducible_full_subshift
+    (Y : Subshift KCTile 2) (_hY_sub : Y.carrier ⊆ kariCulikShift.carrier)
+    (hY_SFT : IsSFT Y) (hY_ne : Y.carrier.Nonempty)
+    (hY_irr : IsIrreducibleShift Y)
+    (hY_entropy : topEntropy Y = kariCulikEntropy) :
+    IsComputableReal kariCulikEntropy := by
+  obtain ⟨F, L, h_eq⟩ := hY_SFT
+  have h_top_Y : topEntropy Y = topEntropy (mkSFT F L) :=
+    topEntropy_congr_carrier h_eq
+  have h_ne_mk : (mkSFT F L).carrier.Nonempty := by
+    rw [← h_eq]; exact hY_ne
+  have h_irr_mk : IsIrreducibleShift (mkSFT F L) :=
+    (IsIrreducibleShift_congr_carrier h_eq).mp hY_irr
+  have h_comp : IsComputableReal (topEntropy (mkSFT F L)) :=
+    topEntropy_irreducible_computable F L h_ne_mk h_irr_mk
+  rw [← hY_entropy, h_top_Y]
+  exact h_comp
+
+/-- **Cross-check that the new reduction subsumes the irreducibility
+one.** The original conditional
+`kariCulikEntropy_isComputableReal_of_irreducible` factors through the
+sub-SFT version with `Y := kariCulikShift`. -/
+example (h_irr : IsIrreducibleShift kariCulikShift) :
+    IsComputableReal kariCulikEntropy :=
+  kariCulikEntropy_isComputableReal_of_irreducible_full_subshift
+    kariCulikShift (Set.Subset.refl _) kariCulikShift_isSFT
+    kariCulikShift_carrier_nonempty h_irr rfl
