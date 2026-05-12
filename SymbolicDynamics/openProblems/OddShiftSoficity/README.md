@@ -46,10 +46,6 @@ and remarks that `X_d` is sofic (in particular in `d = 2`) — an
 ## Files in this folder
 
 - [`README.md`](README.md) — problem statement (this file).
-- [`formalization_plan.md`](formalization_plan.md) — formalization
-  plan.
-- [`implementation_list.md`](implementation_list.md) — implementation
-  checklist.
 - [`OddShiftSoficity.lean`](OddShiftSoficity.lean) — Lean formalization
   of the statement.
 

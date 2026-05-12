@@ -9,6 +9,11 @@ Each open problem gets a folder with
 - a `README.md` writing up the problem statement and references,
 - a `<ProblemName>.lean` recording the **statement** in Lean
   (supporting definitions live in `../dependencies/`),
+- a `generated_questions/` subfolder collecting **auxiliary
+  questions** — formal Lean sub-renderings of the main question,
+  open questions taken from the literature, computational
+  experiments, and any other auxiliary results whose resolution
+  would shed light on the main problem,
 - optionally a `formalization_plan.md` / `implementation_list.md`
   while the formalization is still in flux (delete once the
   statement is fully recorded).
@@ -41,3 +46,6 @@ dimensions), the README's body should make that explicit.
 - [`OddShiftSoficity/`](OddShiftSoficity/) — is the multidimensional
   odd shift sofic? Status: `solved` (`d = 1`, trivial) /
   `partially-solved` + `unpublished` (`d = 2`) / `open` (`d ≥ 3`).
+- [`KariCulikEntropy/`](KariCulikEntropy/) — what is the value of the
+  topological entropy of the Kari–Culik shift? Status: `open` (positive
+  entropy known by Durand–Gamard–Grandjean 2013; exact value unknown).
