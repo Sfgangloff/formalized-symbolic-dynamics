@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "symdyn-shifts-mcp"
+version = "0.1.0"
+description = "MCP server for 1D and Z^d SFT and sofic primitives: language, entropy, Fischer/Krieger covers, DFA-based sofic tests"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "fastmcp>=2.0",
+    # Phase B will add: numpy, scipy, networkx
+]
+
+[project.scripts]
+symdyn-shifts-mcp = "symdyn_shifts.server:main"
+
+[dependency-groups]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.23"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/symdyn_shifts"]

@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "symdyn-tilings-mcp"
+version = "0.1.0"
+description = "MCP server for Wang tilesets and 2D SFTs: SAT-based tileability, transfer-matrix entropy bounds, named-tileset catalog (Berger, Robinson, Kari, Culik, Kari-Culik, Jeandel-Rao)"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "fastmcp>=2.0",
+    # Phase B will add: z3-solver, numpy
+]
+
+[project.scripts]
+symdyn-tilings-mcp = "symdyn_tilings.server:main"
+
+[dependency-groups]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.23"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/symdyn_tilings"]

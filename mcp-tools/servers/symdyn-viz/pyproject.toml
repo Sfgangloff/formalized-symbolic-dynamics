@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "symdyn-viz-mcp"
+version = "0.1.0"
+description = "MCP server for symbolic-dynamics visualization: 2D patterns, Wang tilings, Fischer covers, complexity curves"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "fastmcp>=2.0",
+    # Phase B will add: matplotlib, networkx, pillow, numpy
+]
+
+[project.scripts]
+symdyn-viz-mcp = "symdyn_viz.server:main"
+
+[dependency-groups]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.23"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/symdyn_viz"]
