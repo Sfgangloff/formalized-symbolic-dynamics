@@ -25,3 +25,4 @@ import openProblems.KariCulikEntropy.generated_questions.Algebraicity
 import openProblems.KariCulikEntropy.generated_questions.DGGQ1
 import openProblems.KariCulikEntropy.generated_questions.DGGQ2
 import openProblems.KariCulikEntropy.generated_questions.DGGQ3
+import trajectories.KariCulikEntropyComputableStatement.Attempt_1_rightRE_via_HM
