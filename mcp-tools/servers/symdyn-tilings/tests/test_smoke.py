@@ -2,10 +2,13 @@ import json
 import math
 
 from symdyn_tilings.server import (
+    symdyn_lean_emit_tileset,
     symdyn_tileset_catalog_get,
     symdyn_tileset_catalog_list,
     symdyn_tilings_info,
     symdyn_wang_entropy_upper_bound,
+    symdyn_wang_finite_tileability,
+    symdyn_wang_periodic_search,
     symdyn_wang_transfer_matrix_size,
 )
 
@@ -68,3 +71,30 @@ def test_entropy_bound_full_kn_shift_via_unconstrained_tiles():
         assert r["n_rows"] == k
         # ρ(M_1) for all-1s k×k matrix is k; log k / 1 = log k.
         assert math.isclose(r["bound"], math.log(k), rel_tol=1e-9)
+
+
+def test_finite_tileability_one_tile_tiles_anything():
+    one_tile = json.dumps([{"N": "a", "S": "a", "E": "a", "W": "a"}])
+    out = json.loads(symdyn_wang_finite_tileability(one_tile, 3, 3))
+    assert out["tileable"] is True
+    assert out["witness"] == [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+
+
+def test_finite_tileability_kari_culik_small_rectangle():
+    # 2×2 tiling of KC must exist (the shift is nonempty).
+    out = json.loads(symdyn_wang_finite_tileability("kari_culik_13", 2, 2))
+    assert out["tileable"] is True
+    assert out["witness"] is not None
+
+
+def test_periodic_search_kari_culik_is_aperiodic_at_small_periods():
+    # Kari–Culik is aperiodic: no periodic tiling at any (small) period.
+    for p in (1, 2, 3):
+        out = json.loads(symdyn_wang_periodic_search("kari_culik_13", p, p))
+        assert out["periodic"] is False, f"unexpected periodic tiling at period {p}"
+
+
+def test_lean_emit_tileset_contains_name_and_tile_count():
+    stub = symdyn_lean_emit_tileset("kari_culik_13", "KariCulikShift")
+    assert "KariCulikShift" in stub
+    assert "13 tiles" in stub

@@ -9,16 +9,14 @@ and `uv` as the workspace manager.
 
 ## Servers
 
-| Server | Status | Scope |
-|---|---|---|
-| `symdyn-shifts` | skeleton | 1D / Zᵈ SFT and sofic primitives — language enumeration, transition-matrix entropy, Fischer/Krieger covers, DFA-based sofic tests |
-| `symdyn-tilings` | skeleton | Wang tilesets and 2D SFT specifics — SAT-based tileability, transfer-matrix entropy bounds, named-tileset catalog (Berger, Robinson, Kari, Culik, Kari–Culik, Jeandel–Rao) |
-| `symdyn-complexity` | skeleton | Pattern-complexity tooling — `p_X(n)`, `p_x(m,n)`, period search, Nivat-condition tests, Morse–Hedlund |
-| `symdyn-viz` | skeleton | Rendering for 2D patterns, Wang tilings, Fischer covers, complexity curves |
+| Server | Status | Tools | Scope |
+|---|---|---|---|
+| `symdyn-shifts` | Phase B | 4 | 1D SFT admissible counts, exact entropy via spectral radius, Lean stub emit. Planned: sofic / Fischer / 2D bounds. |
+| `symdyn-tilings` | Phase B | 8 | Named Wang-tileset catalog (`kari_culik_13`, `kari_culik_14_dgg`, `two_color_full_2d`); transfer-matrix entropy upper bound `log ρ(M_n)/n`; DFS-based finite tileability and periodic search; Lean stub emit. |
+| `symdyn-complexity` | Phase B | 5 | 1D factor complexity (`p_X(n)` for SFTs, words, periodic words); Morse–Hedlund eventual-periodicity test. Planned: 2D / Nivat. |
+| `symdyn-viz` | Phase B | 4 | PNG rendering of Wang tilesets and tilings (hash-colored N/E/S/W triangles); log-y complexity-curve plot with M–H and Sturmian reference lines. |
 
-All four servers are currently in **Phase A**: they boot, register, and expose a single
-`*_info` tool that describes the planned tool surface. Real tool implementations land
-in Phase B.
+Each server boots stand-alone and exposes `<name>_info` describing its surface.
 
 ## Targeted research problems
 

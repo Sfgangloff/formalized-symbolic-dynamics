@@ -11,6 +11,7 @@ license = { text = "MIT" }
 dependencies = [
     "fastmcp>=2.0",
     # Phase B will add: numpy, scipy, networkx
+    "numpy>=2.4.4",
 ]
 
 [project.scripts]

@@ -2,7 +2,7 @@ import json
 
 from fastmcp import FastMCP
 
-from . import tilesets, transfer
+from . import lean_emit, tileability, tilesets, transfer
 
 mcp = FastMCP("symdyn-tilings")
 
@@ -12,18 +12,24 @@ def symdyn_tilings_info() -> str:
     """Describe this server and its tool surface (Phase B)."""
     return (
         "symdyn-tilings — Wang tilesets and 2D SFT primitives.\n\n"
-        "Status: Phase B (transfer-matrix entropy bounds + named-tileset catalog).\n\n"
+        "Status: Phase B (entropy bounds + tileability search + Lean emit).\n\n"
         "Tools:\n"
         "  - symdyn_tileset_catalog_list():\n"
-        "      list available named tilesets (e.g. 'kari_culik_13')\n"
+        "      list available named tilesets\n"
         "  - symdyn_tileset_catalog_get(name):\n"
-        "      retrieve a named tileset as JSON list of (N,S,E,W) tiles\n"
-        "  - symdyn_wang_entropy_upper_bound(tileset_json_or_name, n):\n"
-        "      log(spectral_radius(M_n)) / n — upper bound on h_top\n"
-        "  - symdyn_wang_transfer_matrix_size(tileset_json_or_name, n):\n"
-        "      report number of horizontally-compatible rows of width n\n"
-        "\nNamed tilesets exposed: 'kari_culik_13', 'kari_culik_14_dgg',\n"
-        "'two_color_full_2d'. (Berger / Robinson / Jeandel–Rao TBD.)\n"
+        "      retrieve a named tileset as JSON\n"
+        "  - symdyn_wang_transfer_matrix_size(tileset, n):\n"
+        "      number of horizontally-compatible n-rows\n"
+        "  - symdyn_wang_entropy_upper_bound(tileset, n):\n"
+        "      log(rho(M_n)) / n — upper bound on h_top\n"
+        "  - symdyn_wang_finite_tileability(tileset, m, n):\n"
+        "      DFS search for an m × n tiling; returns witness if any\n"
+        "  - symdyn_wang_periodic_search(tileset, period_h, period_v):\n"
+        "      search for a (period_h, period_v)-periodic tiling\n"
+        "  - symdyn_lean_emit_tileset(tileset, name):\n"
+        "      Lean 4 stub for the tileset\n"
+        "\nNamed tilesets: 'kari_culik_13', 'kari_culik_14_dgg',\n"
+        "'two_color_full_2d'.\n"
     )
 
 
@@ -97,6 +103,47 @@ def symdyn_wang_entropy_upper_bound(tileset: str, n: int) -> str:
     tiles = _resolve_tiles(tileset)
     result = transfer.entropy_upper_bound(tiles, n)
     return json.dumps(result)
+
+
+@mcp.tool()
+def symdyn_wang_finite_tileability(tileset: str, m: int, n: int) -> str:
+    """DFS-search for an `m × n` Wang tiling.
+
+    `tileset` is a catalog name or JSON tile list. Returns JSON
+    `{tileable, n_solutions, witness}` where `witness` is an `m × n`
+    grid of tile indices (top-to-bottom, left-to-right) or `null`.
+
+    Practical for small rectangles (`m·n ≤ 64`); larger sizes may be
+    slow with backtracking.
+    """
+    tiles = _resolve_tiles(tileset)
+    return json.dumps(tileability.is_tileable_rectangle(tiles, m, n))
+
+
+@mcp.tool()
+def symdyn_wang_periodic_search(tileset: str, period_h: int, period_v: int) -> str:
+    """DFS-search for a `(period_h, period_v)`-periodic Wang tiling.
+
+    Returns `{periodic, witness}`. A `null` witness with `periodic=false`
+    means no periodic tiling of those exact periods exists.
+
+    For the Kari–Culik shift, this should return `periodic=false` for
+    every `(period_h, period_v)`: the shift is aperiodic.
+    """
+    tiles = _resolve_tiles(tileset)
+    return json.dumps(tileability.search_periodic_tiling(tiles, period_h, period_v))
+
+
+@mcp.tool()
+def symdyn_lean_emit_tileset(tileset: str, name: str) -> str:
+    """Emit a Lean 4 stub for a Wang tileset.
+
+    Output is a Lean `def` listing the tiles plus a placeholder
+    `Subshift` definition. Adapt to match the project's `mkSFT`
+    convention.
+    """
+    tiles = _resolve_tiles(tileset)
+    return lean_emit.emit_tileset_stub(tiles, name)
 
 
 def main() -> None:
