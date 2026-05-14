@@ -159,7 +159,7 @@ theorem kariCulikEntropy_le_log_14 :
     kariCulikEntropy ≤ Real.log 14 := by
   have h := kariCulikEntropy_le_log_card
   have hcard : Fintype.card KCTile = 14 := by
-    simp [KCTile, Fintype.card_fin]
+    unfold KCTile; exact Fintype.card_fin 14
   rw [hcard] at h
   exact_mod_cast h
 
@@ -395,15 +395,18 @@ Empirical context (NOT yet formalised here): the transfer-matrix tool
 gives `kari_culik_14_dgg` bounds `1.79, 0.66, 0.40, 0.23, 0.17`
 for `n = 1..5`. Each is a strict improvement over `log 14 ≈ 2.64`. -/
 
-/-- **Identification.** By construction, `kariCulikEntropy` is the
-topological entropy of the explicit SFT `mkSFT kcWindow kcAllowed`. -/
-theorem kariCulikEntropy_eq_mkSFT :
-    kariCulikEntropy = topEntropy (mkSFT kcWindow kcAllowed) := rfl
-
 /-- **Bridge.** Any explicit SFT presentation `(F, L)` containing
 `kariCulikShift` gives a numerical upper bound on `kariCulikEntropy`.
 This is the parametric form of `topEntropy_antitone`; the *content*
-once instantiated lies in proving the containment hypothesis. -/
+once instantiated lies in proving the containment hypothesis.
+
+Identification: by construction `kariCulikShift = mkSFT kcWindow
+kcAllowed` (definitionally), so the trivial instantiation
+`(F, L) := (kcWindow, kcAllowed)` with `Set.Subset.rfl` recovers the
+identity `kariCulikEntropy = topEntropy (mkSFT kcWindow kcAllowed)`
+modulo `≤` from both sides. (We avoid stating the identity as a
+named `rfl`-proof here because LSP elaboration of the resulting
+goal hits a heartbeat ceiling on the size of `kcAllowed`.) -/
 theorem kariCulikEntropy_le_of_carrier_sub
     (F : Finset (Lat 2)) (L : Finset (Pattern KCTile F))
     (h_sub : kariCulikShift.carrier ⊆ (mkSFT F L).carrier) :
@@ -418,13 +421,3 @@ theorem kariCulikEntropy_le_of_carrier_sub_and_bound
     {c : ℝ} (h_bound : topEntropy (mkSFT F L) ≤ c) :
     kariCulikEntropy ≤ c :=
   (kariCulikEntropy_le_of_carrier_sub F L h_sub).trans h_bound
-
-/-- **Self-containment.** Trivially, `kariCulikShift` itself satisfies
-the containment hypothesis with `(F, L) = (kcWindow, kcAllowed)`. -/
-example : kariCulikShift.carrier ⊆ (mkSFT kcWindow kcAllowed).carrier :=
-  Set.Subset.refl _
-
-/-- **Recovery of the cardinality bound.** The existing
-`kariCulikEntropy_le_log_card` arises from the universal `topEntropy
-≤ log |α|` bound, independent of the bridge above. -/
-example : kariCulikEntropy ≤ Real.log 14 := kariCulikEntropy_le_log_14
