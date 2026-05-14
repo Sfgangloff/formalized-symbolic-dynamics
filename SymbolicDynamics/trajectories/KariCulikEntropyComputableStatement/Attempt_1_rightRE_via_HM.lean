@@ -143,7 +143,10 @@ theorem kariCulikEntropy_isComputableReal_of_irreducible
 
 Combining the positive-entropy axiom with the universal upper bound
 `topEntropy_le_log_card` from `dependencies/Entropy.lean` pins
-`kariCulikEntropy` to the half-open interval `(0, log 13]`. -/
+`kariCulikEntropy` to the half-open interval `(0, log 14]`. The
+alphabet size is 14 because `kariCulikShift` is now formalised as the
+Durand–Gamard–Grandjean 14-tile variant (see
+`dependencies/KariCulik.lean`). -/
 
 /-- **Upper bound** by `log |α|`. The Kari–Culik entropy is at most the
 log of the alphabet size, by the universal SFT entropy bound. -/
@@ -151,33 +154,33 @@ theorem kariCulikEntropy_le_log_card :
     kariCulikEntropy ≤ Real.log (Fintype.card KCTile) :=
   topEntropy_le_log_card kariCulikShift
 
-/-- **Numerical upper bound.** `kariCulikEntropy ≤ log 13`. -/
-theorem kariCulikEntropy_le_log_13 :
-    kariCulikEntropy ≤ Real.log 13 := by
+/-- **Numerical upper bound.** `kariCulikEntropy ≤ log 14`. -/
+theorem kariCulikEntropy_le_log_14 :
+    kariCulikEntropy ≤ Real.log 14 := by
   have h := kariCulikEntropy_le_log_card
-  have hcard : Fintype.card KCTile = 13 := by
+  have hcard : Fintype.card KCTile = 14 := by
     simp [KCTile, Fintype.card_fin]
   rw [hcard] at h
   exact_mod_cast h
 
-/-- **Interval bound.** `0 < kariCulikEntropy ≤ log 13`. Combines
+/-- **Interval bound.** `0 < kariCulikEntropy ≤ log 14`. Combines
 `kariCulikShift_entropy_pos` (Durand–Gamard–Grandjean 2013) with the
 universal upper bound. -/
 theorem kariCulikEntropy_bounds :
-    0 < kariCulikEntropy ∧ kariCulikEntropy ≤ Real.log 13 :=
-  ⟨kariCulikShift_entropy_pos, kariCulikEntropy_le_log_13⟩
+    0 < kariCulikEntropy ∧ kariCulikEntropy ≤ Real.log 14 :=
+  ⟨kariCulikShift_entropy_pos, kariCulikEntropy_le_log_14⟩
 
 /-- **Summary under irreducibility.** Assuming the Kari–Culik shift is
 irreducible (the open auxiliary question), the entropy is a computable
-real in the interval `(0, log 13]`. -/
+real in the interval `(0, log 14]`. -/
 theorem kariCulikEntropy_full_picture_under_irreducible
     (h_irr : IsIrreducibleShift kariCulikShift) :
     IsComputableReal kariCulikEntropy ∧
       0 < kariCulikEntropy ∧
-      kariCulikEntropy ≤ Real.log 13 :=
+      kariCulikEntropy ≤ Real.log 14 :=
   ⟨kariCulikEntropy_isComputableReal_of_irreducible h_irr,
    kariCulikShift_entropy_pos,
-   kariCulikEntropy_le_log_13⟩
+   kariCulikEntropy_le_log_14⟩
 
 /-! ## Open content of `KariCulikEntropyComputableStatement`
 
@@ -257,3 +260,171 @@ example (h_irr : IsIrreducibleShift kariCulikShift) :
   kariCulikEntropy_isComputableReal_of_irreducible_full_subshift
     kariCulikShift (Set.Subset.refl _) kariCulikShift_isSFT
     kariCulikShift_carrier_nonempty h_irr rfl
+
+/-! ## Dropping the sub-shift hypothesis
+
+The previous lemma carried `Y.carrier ⊆ kariCulikShift.carrier` as
+documentation of intended use, but that hypothesis is never invoked in
+the proof: the conclusion only depends on `topEntropy Y =
+kariCulikEntropy` and the irreducibility of `Y`. We record the strictly
+weaker sufficient condition here and a direct `(F, L)`-form variant. -/
+
+/-- **Strictly weaker still.** Any irreducible nonempty SFT realising
+`kariCulikEntropy` — *not necessarily* a sub-shift of
+`kariCulikShift` — yields computability of `kariCulikEntropy`. This
+follows from `topEntropy_irreducible_computable` applied to the
+external SFT, then transported across the entropy equality.
+
+Note: this is *strictly* weaker than the sub-SFT version because no
+inclusion of carriers is required. The proof is identical to the
+sub-SFT version (whose `hY_sub` was unused). -/
+theorem kariCulikEntropy_isComputableReal_of_some_irreducible_SFT
+    (Y : Subshift KCTile 2) (hY_SFT : IsSFT Y) (hY_ne : Y.carrier.Nonempty)
+    (hY_irr : IsIrreducibleShift Y)
+    (hY_entropy : topEntropy Y = kariCulikEntropy) :
+    IsComputableReal kariCulikEntropy := by
+  obtain ⟨F, L, h_eq⟩ := hY_SFT
+  have h_top_Y : topEntropy Y = topEntropy (mkSFT F L) :=
+    topEntropy_congr_carrier h_eq
+  have h_ne_mk : (mkSFT F L).carrier.Nonempty := by
+    rw [← h_eq]; exact hY_ne
+  have h_irr_mk : IsIrreducibleShift (mkSFT F L) :=
+    (IsIrreducibleShift_congr_carrier h_eq).mp hY_irr
+  have h_comp : IsComputableReal (topEntropy (mkSFT F L)) :=
+    topEntropy_irreducible_computable F L h_ne_mk h_irr_mk
+  rw [← hY_entropy, h_top_Y]
+  exact h_comp
+
+/-- **Direct `(F, L)`-form.** If a concrete SFT presentation `(F, L)`
+gives an irreducible nonempty SFT whose entropy equals
+`kariCulikEntropy`, then `kariCulikEntropy` is computable. -/
+theorem kariCulikEntropy_isComputableReal_of_mkSFT_irreducible_full_entropy
+    (F : Finset (Lat 2)) (L : Finset (Pattern KCTile F))
+    (h_ne : (mkSFT F L).carrier.Nonempty)
+    (h_irr : IsIrreducibleShift (mkSFT F L))
+    (h_entropy : topEntropy (mkSFT F L) = kariCulikEntropy) :
+    IsComputableReal kariCulikEntropy :=
+  kariCulikEntropy_isComputableReal_of_some_irreducible_SFT
+    (mkSFT F L) (mkSFT_isSFT F L) h_ne h_irr h_entropy
+
+/-- **Subsumption check.** The sub-SFT-with-inclusion version factors
+through the no-inclusion version. -/
+example (Y : Subshift KCTile 2) (_hY_sub : Y.carrier ⊆ kariCulikShift.carrier)
+    (hY_SFT : IsSFT Y) (hY_ne : Y.carrier.Nonempty)
+    (hY_irr : IsIrreducibleShift Y)
+    (hY_entropy : topEntropy Y = kariCulikEntropy) :
+    IsComputableReal kariCulikEntropy :=
+  kariCulikEntropy_isComputableReal_of_some_irreducible_SFT
+    Y hY_SFT hY_ne hY_irr hY_entropy
+
+/-! ## Sufficient-conditions ladder
+
+Strictly nested chain of sufficient conditions for
+`IsComputableReal kariCulikEntropy`, finest first:
+
+  (S1) `IsIrreducibleShift kariCulikShift`
+            (the whole shift is irreducible)
+       — the original Attempt 1 hypothesis.
+
+  (S2) `∃ Y, IsSFT Y ∧ Y.carrier ⊆ kariCulikShift.carrier ∧
+            Y.carrier.Nonempty ∧ IsIrreducibleShift Y ∧
+            topEntropy Y = kariCulikEntropy`
+       — there is an irreducible **sub**-SFT realising the full
+         entropy. Strictly weaker than (S1): if `kariCulikShift`
+         decomposes as a zero-entropy minimal sub-system plus a
+         positive-entropy irreducible component, (S2) holds without
+         (S1).
+
+  (S3) `∃ Y, IsSFT Y ∧ Y.carrier.Nonempty ∧ IsIrreducibleShift Y ∧
+            topEntropy Y = kariCulikEntropy`
+       — there is *any* irreducible SFT (over `KCTile`, dimension 2)
+         with matching entropy. Strictly weaker than (S2): there could
+         be an external irreducible SFT realising the entropy without
+         any sub-SFT of `kariCulikShift` doing so.
+
+  (S4) `IsLeftRE kariCulikEntropy`
+       — the open content of `KariCulikEntropyComputableStatement`,
+         since `IsRightRE kariCulikEntropy` is unconditional. Weaker
+         than (S3) in general (an arbitrary left-RE real need not be
+         the entropy of any irreducible SFT).
+
+The implications (S1) → (S2) → (S3) → (S4) → `IsComputableReal` are
+all witnessed in this file. The reverse implications are open in
+varying degrees of severity. -/
+
+/-- **Ladder step (S1) → (S3).** -/
+example (h_irr : IsIrreducibleShift kariCulikShift) :
+    ∃ Y : Subshift KCTile 2, IsSFT Y ∧ Y.carrier.Nonempty ∧
+      IsIrreducibleShift Y ∧ topEntropy Y = kariCulikEntropy :=
+  ⟨kariCulikShift, kariCulikShift_isSFT,
+   kariCulikShift_carrier_nonempty, h_irr, rfl⟩
+
+/-- **Ladder step (S3) → `IsComputableReal`.** -/
+example
+    (h : ∃ Y : Subshift KCTile 2, IsSFT Y ∧ Y.carrier.Nonempty ∧
+        IsIrreducibleShift Y ∧ topEntropy Y = kariCulikEntropy) :
+    IsComputableReal kariCulikEntropy := by
+  obtain ⟨Y, hY_SFT, hY_ne, hY_irr, hY_entropy⟩ := h
+  exact kariCulikEntropy_isComputableReal_of_some_irreducible_SFT
+    Y hY_SFT hY_ne hY_irr hY_entropy
+
+/-- **Ladder step `IsComputableReal` → (S4).** Records the trivial
+forward implication for completeness. -/
+example (h : IsComputableReal kariCulikEntropy) :
+    IsLeftRE kariCulikEntropy := computable_imp_leftRE h
+
+/-! ## Conditional numerical upper bounds via SFT containment
+
+`kariCulikShift` is now formalised concretely as
+`mkSFT kcWindow kcAllowed` over the DGG 14-tile alphabet (see
+`dependencies/KariCulik.lean`). The cardinality bound
+`kariCulikEntropy ≤ log 14` (see `kariCulikEntropy_le_log_14`) is
+unconditional. Any *tighter* numerical bound now reduces to a
+calculation on the explicit `(kcWindow, kcAllowed)` presentation, e.g.
+a transfer-matrix bound proved directly inside Lean — or a containment
+into a coarser SFT for which the bound is easier.
+
+This section packages the carrier-containment route. Combined with the
+identification
+  `kariCulikEntropy = topEntropy (mkSFT kcWindow kcAllowed)` (defl.),
+it lets future numerical work plug in a tighter SFT and have the
+bound drop in mechanically.
+
+Empirical context (NOT yet formalised here): the transfer-matrix tool
+`symdyn_wang_entropy_upper_bound` in `mcp-tools/servers/symdyn-tilings`
+gives `kari_culik_14_dgg` bounds `1.79, 0.66, 0.40, 0.23, 0.17`
+for `n = 1..5`. Each is a strict improvement over `log 14 ≈ 2.64`. -/
+
+/-- **Identification.** By construction, `kariCulikEntropy` is the
+topological entropy of the explicit SFT `mkSFT kcWindow kcAllowed`. -/
+theorem kariCulikEntropy_eq_mkSFT :
+    kariCulikEntropy = topEntropy (mkSFT kcWindow kcAllowed) := rfl
+
+/-- **Bridge.** Any explicit SFT presentation `(F, L)` containing
+`kariCulikShift` gives a numerical upper bound on `kariCulikEntropy`.
+This is the parametric form of `topEntropy_antitone`; the *content*
+once instantiated lies in proving the containment hypothesis. -/
+theorem kariCulikEntropy_le_of_carrier_sub
+    (F : Finset (Lat 2)) (L : Finset (Pattern KCTile F))
+    (h_sub : kariCulikShift.carrier ⊆ (mkSFT F L).carrier) :
+    kariCulikEntropy ≤ topEntropy (mkSFT F L) :=
+  topEntropy_antitone h_sub
+
+/-- **Bridge to a numerical scalar bound.** Combining the containment
+with any explicit upper bound `topEntropy (mkSFT F L) ≤ c`. -/
+theorem kariCulikEntropy_le_of_carrier_sub_and_bound
+    (F : Finset (Lat 2)) (L : Finset (Pattern KCTile F))
+    (h_sub : kariCulikShift.carrier ⊆ (mkSFT F L).carrier)
+    {c : ℝ} (h_bound : topEntropy (mkSFT F L) ≤ c) :
+    kariCulikEntropy ≤ c :=
+  (kariCulikEntropy_le_of_carrier_sub F L h_sub).trans h_bound
+
+/-- **Self-containment.** Trivially, `kariCulikShift` itself satisfies
+the containment hypothesis with `(F, L) = (kcWindow, kcAllowed)`. -/
+example : kariCulikShift.carrier ⊆ (mkSFT kcWindow kcAllowed).carrier :=
+  Set.Subset.refl _
+
+/-- **Recovery of the cardinality bound.** The existing
+`kariCulikEntropy_le_log_card` arises from the universal `topEntropy
+≤ log |α|` bound, independent of the bridge above. -/
+example : kariCulikEntropy ≤ Real.log 14 := kariCulikEntropy_le_log_14

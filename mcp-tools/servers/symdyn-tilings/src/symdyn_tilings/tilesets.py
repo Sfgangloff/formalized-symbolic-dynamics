@@ -27,7 +27,15 @@ class WangTile:
 # Kari–Culik tiles, DGG (arXiv:1312.4126v2) encoding: 14 tiles t1..t14
 # with `\newwangstyle{top}{bottom}{right}{left}`. We expose:
 #   - `kari_culik_14_dgg`: all 14 tiles as in the DGG paper
-#   - `kari_culik_13`:    first 13 (drop t14)
+#   - `dgg_14_first_13`:   DGG t1..t13 (drop t14). NOT the original
+#                          Culik 1996 13-tile set — it is a truncation
+#                          of the DGG construction. Empirically its
+#                          transfer-matrix has spectral radius 0 at
+#                          width n ≥ 4 (zero-entropy SFT), which is
+#                          inconsistent with the original 13-tile
+#                          Kari–Culik set's positive-entropy result
+#                          (Durand–Gamard–Grandjean 2013). Retained
+#                          for testing/pedagogy only.
 # Colors are opaque labels matching DGG's TikZ definitions; correctness
 # of graph-theoretic / transfer-matrix work depends only on edge-color
 # equality, which is preserved.
@@ -62,7 +70,7 @@ _TWO_COLOR_FULL = [
 
 CATALOG: dict[str, list[WangTile]] = {
     "kari_culik_14_dgg": _KC_TILES_14,
-    "kari_culik_13": _KC_TILES_14[:13],
+    "dgg_14_first_13": _KC_TILES_14[:13],
     "two_color_full_2d": _TWO_COLOR_FULL,
 }
 

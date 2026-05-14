@@ -28,8 +28,10 @@ def symdyn_tilings_info() -> str:
         "      search for a (period_h, period_v)-periodic tiling\n"
         "  - symdyn_lean_emit_tileset(tileset, name):\n"
         "      Lean 4 stub for the tileset\n"
-        "\nNamed tilesets: 'kari_culik_13', 'kari_culik_14_dgg',\n"
-        "'two_color_full_2d'.\n"
+        "\nNamed tilesets: 'kari_culik_14_dgg', 'dgg_14_first_13',\n"
+        "'two_color_full_2d'. (The original Culik 1996 13-tile set is\n"
+        "NOT in the catalog; 'dgg_14_first_13' is a truncation of the\n"
+        "DGG 14-tile variant and has zero entropy.)\n"
     )
 
 
@@ -58,8 +60,9 @@ def symdyn_tileset_catalog_get(name: str) -> str:
     `symdyn_tileset_catalog_list` to see available names. Throws if the
     name is unknown.
 
-    Example: `name='kari_culik_13'` returns 13 tiles in the
-    Durand–Gamard–Grandjean (arXiv:1312.4126v2) encoding.
+    Example: `name='kari_culik_14_dgg'` returns the 14 tiles of the
+    Durand–Gamard–Grandjean (arXiv:1312.4126v2) variant of the
+    Kari–Culik construction.
     """
     tiles = tilesets.get_tileset(name)
     return json.dumps(tilesets.tiles_to_dicts(tiles))
@@ -69,8 +72,8 @@ def symdyn_tileset_catalog_get(name: str) -> str:
 def symdyn_wang_transfer_matrix_size(tileset: str, n: int) -> str:
     """Count horizontally-compatible rows of width `n` for a tileset.
 
-    `tileset` is either a catalog name (e.g. 'kari_culik_13') or a JSON
-    array of `{N,S,E,W}` tile dicts. Returns a JSON `{n_rows: int}`.
+    `tileset` is either a catalog name (e.g. 'kari_culik_14_dgg') or a
+    JSON array of `{N,S,E,W}` tile dicts. Returns a JSON `{n_rows: int}`.
 
     Sanity check before calling `symdyn_wang_entropy_upper_bound`:
     transfer-matrix size is `n_rows × n_rows`, so this scales with the
@@ -97,8 +100,8 @@ def symdyn_wang_entropy_upper_bound(tileset: str, n: int) -> str:
       - Naive eigenvalue computation; row count > 2000 may be slow.
       - Returns `bound = 0.0` for empty SFTs.
 
-    Example: `symdyn_wang_entropy_upper_bound('kari_culik_13', 3)`
-    yields a bound on the Kari–Culik 2D SFT entropy.
+    Example: `symdyn_wang_entropy_upper_bound('kari_culik_14_dgg', 3)`
+    yields a bound on the DGG variant of the Kari–Culik 2D SFT entropy.
     """
     tiles = _resolve_tiles(tileset)
     result = transfer.entropy_upper_bound(tiles, n)

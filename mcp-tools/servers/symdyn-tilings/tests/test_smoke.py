@@ -21,32 +21,43 @@ def test_info_mentions_server_and_phase():
 
 def test_catalog_list_contains_kari_culik():
     names = json.loads(symdyn_tileset_catalog_list())
-    assert "kari_culik_13" in names
+    assert "dgg_14_first_13" in names
     assert "kari_culik_14_dgg" in names
 
 
-def test_catalog_get_kari_culik_13_has_13_tiles():
-    tiles = json.loads(symdyn_tileset_catalog_get("kari_culik_13"))
+def test_catalog_get_dgg_14_first_13_has_13_tiles():
+    tiles = json.loads(symdyn_tileset_catalog_get("dgg_14_first_13"))
     assert len(tiles) == 13
     for t in tiles:
         assert set(t.keys()) == {"N", "S", "E", "W"}
 
 
-def test_transfer_matrix_size_kari_culik_13():
-    out = json.loads(symdyn_wang_transfer_matrix_size("kari_culik_13", 2))
+def test_transfer_matrix_size_dgg_14_first_13():
+    out = json.loads(symdyn_wang_transfer_matrix_size("dgg_14_first_13", 2))
     # Should be > 0 (some 2-rows are horizontally compatible) and < 13² = 169.
     assert 0 < out["n_rows"] < 169
 
 
-def test_entropy_upper_bound_decreases_in_n_for_kari_culik_13():
-    # The bound log ρ(M_n) / n is non-increasing in n; for KC it
-    # decreases sharply.
-    b1 = json.loads(symdyn_wang_entropy_upper_bound("kari_culik_13", 1))["bound"]
-    b2 = json.loads(symdyn_wang_entropy_upper_bound("kari_culik_13", 2))["bound"]
-    b3 = json.loads(symdyn_wang_entropy_upper_bound("kari_culik_13", 3))["bound"]
+def test_entropy_upper_bound_decreases_in_n_for_kari_culik_14_dgg():
+    # The bound log ρ(M_n) / n is non-increasing in n. For the DGG
+    # 14-tile variant (which DGG show has positive entropy) it decreases
+    # but stays positive at every n.
+    b1 = json.loads(symdyn_wang_entropy_upper_bound("kari_culik_14_dgg", 1))["bound"]
+    b2 = json.loads(symdyn_wang_entropy_upper_bound("kari_culik_14_dgg", 2))["bound"]
+    b3 = json.loads(symdyn_wang_entropy_upper_bound("kari_culik_14_dgg", 3))["bound"]
     assert b1 >= b2 >= b3
-    # Each bound is a valid upper bound on the (positive) KC entropy.
-    assert b3 > 0  # DGG show positive entropy, so the bound must be > 0.
+    assert b3 > 0  # DGG positive-entropy result.
+
+
+def test_dgg_14_first_13_has_zero_entropy_at_width_4():
+    # The DGG truncation (drop t14) is empirically a zero-entropy SFT:
+    # the row transfer matrix at width 4 has spectral radius 0
+    # (the row-graph is acyclic). This is inconsistent with the original
+    # Culik 1996 13-tile set, which has positive entropy — i.e.,
+    # `dgg_14_first_13` is NOT the original Kari–Culik 13-tile set.
+    b = json.loads(symdyn_wang_entropy_upper_bound("dgg_14_first_13", 4))
+    assert b["spectral_radius"] == 0.0
+    assert b["bound"] == 0.0
 
 
 def test_entropy_bound_inline_tileset():
@@ -80,21 +91,32 @@ def test_finite_tileability_one_tile_tiles_anything():
     assert out["witness"] == [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
 
 
-def test_finite_tileability_kari_culik_small_rectangle():
-    # 2×2 tiling of KC must exist (the shift is nonempty).
-    out = json.loads(symdyn_wang_finite_tileability("kari_culik_13", 2, 2))
+def test_finite_tileability_kari_culik_14_dgg_small_rectangle():
+    # 2×2 tiling of the DGG 14-tile variant must exist (positive entropy).
+    out = json.loads(symdyn_wang_finite_tileability("kari_culik_14_dgg", 2, 2))
     assert out["tileable"] is True
     assert out["witness"] is not None
 
 
-def test_periodic_search_kari_culik_is_aperiodic_at_small_periods():
-    # Kari–Culik is aperiodic: no periodic tiling at any (small) period.
+def test_periodic_search_dgg_14_first_13_aperiodic_at_small_periods():
+    # The DGG-truncation `dgg_14_first_13` empirically admits no
+    # periodic tiling at periods 1,2,3. (The original Kari-Culik
+    # 13-tile set is aperiodic; this truncation is a different, much
+    # smaller, zero-entropy SFT — used here only as a regression
+    # fixture.)
     for p in (1, 2, 3):
-        out = json.loads(symdyn_wang_periodic_search("kari_culik_13", p, p))
+        out = json.loads(symdyn_wang_periodic_search("dgg_14_first_13", p, p))
         assert out["periodic"] is False, f"unexpected periodic tiling at period {p}"
 
 
+def test_periodic_search_kari_culik_14_dgg_admits_2x2_periodic():
+    # The DGG 14-tile variant is NOT aperiodic — DGG only claim
+    # positive entropy. A 2×2-periodic tiling exists.
+    out = json.loads(symdyn_wang_periodic_search("kari_culik_14_dgg", 2, 2))
+    assert out["periodic"] is True
+
+
 def test_lean_emit_tileset_contains_name_and_tile_count():
-    stub = symdyn_lean_emit_tileset("kari_culik_13", "KariCulikShift")
+    stub = symdyn_lean_emit_tileset("kari_culik_14_dgg", "KariCulikShift")
     assert "KariCulikShift" in stub
-    assert "13 tiles" in stub
+    assert "14 tiles" in stub

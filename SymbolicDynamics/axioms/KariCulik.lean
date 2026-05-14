@@ -5,13 +5,28 @@ import dependencies.KariCulik
 
 /-! # Axioms about the Kari–Culik shift
 
-The 2D Kari–Culik shift is the SFT defined by the 13 Wang tiles of
-Kari–Culik (1995): the smallest known aperiodic tile set. We do not
-formalise the construction of the tile set or any deep facts about it;
-this file records the existence of the shift, a single known
-non-trivial property (positive entropy, Durand–Gamard–Grandjean 2013),
-and a small amount of auxiliary scaffolding used by the open questions
-in `openProblems/KariCulikEntropy/generated_questions/`.
+The 2D Kari–Culik shift is now formalised concretely as the SFT
+`mkSFT kcWindow kcAllowed` over the DGG 14-tile alphabet (see
+`dependencies/KariCulik.lean`). What remains here are the *deep*
+properties — the ones that were genuinely axiomatic even when the
+tile-matching rule was opaque — and the auxiliary scaffolding for the
+DGG open questions.
+
+What is now a theorem (no longer an axiom):
+- `kariCulikShift` itself — a `def` based on explicit Wang tile data.
+- `kariCulikShift_isSFT` — direct from `mkSFT_isSFT`.
+
+What remains axiomatic:
+- `kariCulikShift_carrier_nonempty` — the witness `kcWitness` (a 2×2-
+  periodic configuration) is exhibited concretely in
+  `dependencies/KariCulik.lean`, and the MCP transfer-matrix /
+  periodic-search tools confirm it; the membership proof
+  `kcWitness ∈ kariCulikShift.carrier` is mechanical lattice-parity
+  case analysis kept axiomatic for now.
+- `kariCulikShift_entropy_pos` — DGG's positive-entropy result; a
+  substantial proof not formalised in this project.
+- The DGG-paper open-problem scaffolding (`Pattern.hasPositiveDensity`,
+  `dgg_A1` …, `kariCulikShift_forbid`, `kariCulikHorizontalShift`).
 
 References:
 - J. Kari, *A small aperiodic set of Wang tiles*, Discrete Math. 160
@@ -23,19 +38,12 @@ References:
   `../papers/DurandGamardGrandjean/1312.4126v2.pdf`.
 -/
 
-/-! ## The shift itself -/
+/-! ## Non-emptiness and positive entropy -/
 
-/-- The Kari–Culik 2D shift: a subshift of `(KCTile)^{ℤ²}` whose
-configurations are the valid Wang tilings of `ℤ²` by the 13 Kari–Culik
-tiles. -/
-axiom kariCulikShift : Subshift KCTile 2
-
-/-- The Kari–Culik shift is a shift of finite type (it is presented by
-a finite local rule — the tile-matching constraint at each pair of
-adjacent positions). -/
-axiom kariCulikShift_isSFT : IsSFT kariCulikShift
-
-/-- The Kari–Culik shift is nonempty: the 13 tiles do tile `ℤ²`. -/
+/-- The Kari–Culik shift is nonempty: the DGG 14 tiles tile `ℤ²`.
+A concrete 2×2-periodic witness `kcWitness` is given in
+`dependencies/KariCulik.lean`; the membership proof is left
+axiomatic here pending a finite parity case analysis. -/
 axiom kariCulikShift_carrier_nonempty : kariCulikShift.carrier.Nonempty
 
 /-- **Durand–Gamard–Grandjean (2013).** The Kari–Culik shift has
@@ -63,11 +71,11 @@ axiom Pattern.hasPositiveDensity {α : Type*} {d : ℕ} [TopologicalSpace α]
 two substitutive pairs `(A₁, A'₁)` and `(A₂, A'₂)`. They appear with
 concrete tile values in Section 4 (subsection "Coming back to the
 function" → figures `A_1`, `A'_1`, `A_2`, `A'_2`) of arXiv:1312.4126,
-v2. Axiomatised here since the Kari–Culik tile encoding `KCTile ≃ Fin 13`
-is not specified. -/
-axiom dgg_A1  : Pattern KCTile (box 2 2)
+v2. Axiomatised here since the explicit `Fin 14`-coordinate transcription
+has not been performed. -/
+axiom dgg_A1 : Pattern KCTile (box 2 2)
 axiom dgg_A1' : Pattern KCTile (box 2 2)
-axiom dgg_A2  : Pattern KCTile (box 2 2)
+axiom dgg_A2 : Pattern KCTile (box 2 2)
 axiom dgg_A2' : Pattern KCTile (box 2 2)
 
 /-- The subshift obtained from `kariCulikShift` by additionally forbidding

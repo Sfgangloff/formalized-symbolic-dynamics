@@ -12,7 +12,7 @@ and `uv` as the workspace manager.
 | Server | Status | Tools | Scope |
 |---|---|---|---|
 | `symdyn-shifts` | Phase B | 4 | 1D SFT admissible counts, exact entropy via spectral radius, Lean stub emit. Planned: sofic / Fischer / 2D bounds. |
-| `symdyn-tilings` | Phase B | 8 | Named Wang-tileset catalog (`kari_culik_13`, `kari_culik_14_dgg`, `two_color_full_2d`); transfer-matrix entropy upper bound `log ρ(M_n)/n`; DFS-based finite tileability and periodic search; Lean stub emit. |
+| `symdyn-tilings` | Phase B | 8 | Named Wang-tileset catalog (`kari_culik_14_dgg`, `dgg_14_first_13`, `two_color_full_2d`); transfer-matrix entropy upper bound `log ρ(M_n)/n`; DFS-based finite tileability and periodic search; Lean stub emit. The original Culik 1996 13-tile set is not in the catalog; `dgg_14_first_13` is a DGG-truncation and has zero entropy. |
 | `symdyn-complexity` | Phase B | 5 | 1D factor complexity (`p_X(n)` for SFTs, words, periodic words); Morse–Hedlund eventual-periodicity test. Planned: 2D / Nivat. |
 | `symdyn-viz` | Phase B | 4 | PNG rendering of Wang tilesets and tilings (hash-colored N/E/S/W triangles); log-y complexity-curve plot with M–H and Sturmian reference lines. |
 
