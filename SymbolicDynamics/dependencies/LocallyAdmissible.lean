@@ -19,6 +19,7 @@ moved here for reuse across papers.
 
 /-- Pattern `a` over `E` is locally admissible for syntax `(F, L)` if for every
     translate `F + u ⊆ E` the de-translated restriction lands in `L`. -/
+-- @ontology: hm:def:locally-admissible
 def locallyAdmissible {α : Type*} {d : ℕ} {E : Finset (Lat d)}
     (F : Finset (Lat d)) (L : Finset (Pattern α F)) (a : Pattern α E) : Prop :=
   ∀ u : Lat d, ∀ (h : ∀ v : F, v.val + u ∈ E),
@@ -84,6 +85,7 @@ def ShiftIrreducible {α : Type*} {d : ℕ} [TopologicalSpace α]
       ∃ x ∈ X, Pattern.AppearsAt a x 0 ∧ Pattern.AppearsAt b x 0
 
 /-- A subshift is irreducible if it is `r`-irreducible for some `r > 0`. -/
+-- @ontology: hm:def:irreducible-sft
 def IsIrreducibleShift {α : Type*} {d : ℕ} [TopologicalSpace α]
     (X : Subshift α d) : Prop :=
   ∃ r : ℕ, 0 < r ∧ ShiftIrreducible X r

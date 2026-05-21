@@ -104,6 +104,7 @@ Kari–Culik shift is right recursively enumerable, by transporting
 Hochman–Meyerovitch Theorem 3.1 along the carrier equality
 `kariCulikShift.carrier = (mkSFT F L).carrier` supplied by
 `kariCulikShift_isSFT`. -/
+-- @ontology: kc:thm:entropy-right-re
 theorem kariCulikEntropy_isRightRE : IsRightRE kariCulikEntropy := by
   obtain ⟨F, L, h_eq⟩ := kariCulikShift_isSFT
   have h_top : topEntropy kariCulikShift = topEntropy (mkSFT F L) :=

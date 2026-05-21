@@ -22,6 +22,7 @@ whose image of `Y.carrier` lies inside `X.carrier`.
 
 Note the direction: a factor map `Y → X` sends points of `Y` into points
 of `X`. `Y` is the **extension** (or "cover"), `X` is the **factor**. -/
+-- @ontology: hm:def:factor-map
 structure FactorMap {α β : Type*} {d : ℕ}
     [TopologicalSpace α] [TopologicalSpace β]
     (Y : Subshift β d) (X : Subshift α d) where
@@ -65,6 +66,7 @@ alphabet `β`, an SFT `Y : Subshift β d`, and an onto factor map `Y → X`.
 Concretely: we package the SFT data `(F, L)` together with the onto
 factor map. The discrete-topology instance on `β` is required for
 `mkSFT` to be well-typed. -/
+-- @ontology: hm:def:sofic-shift
 def IsSofic {α : Type*} {d : ℕ} [TopologicalSpace α]
     (X : Subshift α d) : Prop :=
   ∃ (β : Type) (_ : Fintype β) (_ : DecidableEq β)
@@ -75,6 +77,7 @@ def IsSofic {α : Type*} {d : ℕ} [TopologicalSpace α]
 /-- A subshift `X : Subshift α d` has an **entropy-preserving SFT cover**
 if there exists a finite alphabet `β`, an SFT `Y : Subshift β d`, and an
 onto factor map `Y → X` with `topEntropy Y = topEntropy X`. -/
+-- @ontology: kc:def:has-entropy-preserving-cover
 def HasEntropyPreservingSFTCover {α : Type*} {d : ℕ}
     [Fintype α] [TopologicalSpace α]
     (X : Subshift α d) : Prop :=

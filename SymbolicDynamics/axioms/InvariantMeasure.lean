@@ -32,12 +32,14 @@ axiom InvMeasure.instInhabited {α : Type} [MeasurableSpace α] {d : ℕ}
 measure, valued in `ℝ≥0` (`NNReal`). Opaque; in the full development this is
 the Kolmogorov–Sinai entropy of the `Lat d`-action. Returning `NNReal` makes
 non-negativity automatic. -/
+-- @ontology: hm:def:measure-entropy
 axiom measureEntropy {α : Type} [MeasurableSpace α] {d : ℕ} [TopologicalSpace α]
     {X : Subshift α d} (μ : InvMeasure X) : NNReal
 
 /-- **Variational principle.** For a nonempty subshift `X`, the topological
 entropy equals the supremum of measure-theoretic entropies (coerced to `ℝ`)
 over all shift-invariant probability measures on `X`. -/
+-- @ontology: hm:cited:variational-principle
 axiom variationalPrinciple {α : Type} [MeasurableSpace α] {d : ℕ} [Fintype α]
     [TopologicalSpace α] {X : Subshift α d} (hX : X.carrier.Nonempty) :
     topEntropy X = ⨆ μ : InvMeasure X, ((measureEntropy μ : NNReal) : ℝ)
@@ -45,6 +47,7 @@ axiom variationalPrinciple {α : Type} [MeasurableSpace α] {d : ℕ} [Fintype �
 /-- **Upper semi-continuity of entropy.** The real-valued map
 `μ ↦ ((measureEntropy μ : NNReal) : ℝ)` is upper semi-continuous in the
 weak-* topology on `InvMeasure X`. -/
+-- @ontology: hm:cited:usc-entropy
 axiom measureEntropy_uppersemicontinuous {α : Type} [MeasurableSpace α] {d : ℕ}
     [TopologicalSpace α] [SecondCountableTopology α] [BorelSpace α]
     (X : Subshift α d) :

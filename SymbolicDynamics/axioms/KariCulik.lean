@@ -44,10 +44,12 @@ References:
 A concrete 2×2-periodic witness `kcWitness` is given in
 `dependencies/KariCulik.lean`; the membership proof is left
 axiomatic here pending a finite parity case analysis. -/
+-- @ontology: kc:thm:nonempty
 axiom kariCulikShift_carrier_nonempty : kariCulikShift.carrier.Nonempty
 
 /-- **Durand–Gamard–Grandjean (2013).** The Kari–Culik shift has
 strictly positive topological entropy. -/
+-- @ontology: kc:thm:positive-entropy
 axiom kariCulikShift_entropy_pos : 0 < topEntropy kariCulikShift
 
 /-! ## Auxiliary scaffolding for the open questions in

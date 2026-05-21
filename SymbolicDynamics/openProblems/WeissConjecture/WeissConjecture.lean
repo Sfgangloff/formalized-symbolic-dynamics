@@ -23,6 +23,7 @@ finite alphabet `α`, and every sofic subshift `X : Subshift α d`,
 Recorded as a `Prop` (not proved). The proof would be a major open
 problem for `d ≥ 2`; the `d = 1` case is a classical theorem (separate
 formalization effort). -/
+-- @ontology: op:weiss-conjecture
 def WeissConjectureStatement (d : ℕ) : Prop :=
   ∀ (α : Type) (_ : Fintype α) (_ : DecidableEq α)
     (_ : TopologicalSpace α) (_ : T1Space α)

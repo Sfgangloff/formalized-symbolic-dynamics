@@ -25,6 +25,7 @@ moved here for reuse.
 
 /-- `h : ℝ` is right recursively enumerable if it is the limit of a computable sequence
     of rationals approaching from above. -/
+-- @ontology: hm:def:right-re
 def IsRightRE (h : ℝ) : Prop :=
   ∃ r : ℕ → ℚ, Computable r ∧ (∀ n, h ≤ (r n : ℝ)) ∧
     Filter.Tendsto (fun n => (r n : ℝ)) Filter.atTop (nhds h)
@@ -37,6 +38,7 @@ def IsLeftRE (h : ℝ) : Prop :=
 
 /-- `h : ℝ` is computable if there is a computable sequence of rationals
     approximating it with effective rate `1/(n+1)`. -/
+-- @ontology: hm:def:computable-real
 def IsComputableReal (h : ℝ) : Prop :=
   ∃ q : ℕ → ℚ, Computable q ∧ ∀ n, |((q n : ℝ)) - h| ≤ 1 / (n + 1)
 
@@ -116,6 +118,7 @@ theorem computable_imp_rightRE {h : ℝ} (hcomp : IsComputableReal h) : IsRightR
     push_cast
     ring
 
+-- @ontology: hm:lean:computable-iff
 theorem computable_iff_leftRE_and_rightRE {h : ℝ} :
     IsComputableReal h ↔ IsLeftRE h ∧ IsRightRE h := by
   refine ⟨fun hcomp => ⟨computable_imp_leftRE hcomp, computable_imp_rightRE hcomp⟩, ?_⟩

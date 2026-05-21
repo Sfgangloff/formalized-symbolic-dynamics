@@ -223,6 +223,7 @@ theorem Lemma_3_4_case_GA {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
 recursively enumerable. Combines `existsPeriodicCount_for_irreducible_SFT`
 (periodic-point count bound + convergence) with
 `rationalLowerApprox_log_div_pow_of_computable`. -/
+-- @ontology: hm:lean:leftRE-irreducible
 theorem topEntropy_leftRE_irreducible {α : Type*} {d : ℕ}
     [Fintype α] [DecidableEq α] [Encodable α] [TopologicalSpace α] [T1Space α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F))

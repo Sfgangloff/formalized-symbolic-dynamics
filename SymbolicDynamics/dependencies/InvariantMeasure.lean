@@ -28,6 +28,7 @@ Restricted to `α : Type` (universe 0) for compatibility with Mathlib's
 measure-theoretic infrastructure. Downstream theorems that take an
 `α : Type*` (universe-polymorphic) need to be specialised to `α : Type` to
 talk about `InvMeasure`. -/
+-- @ontology: hm:def:invariant-measure
 def InvMeasure {α : Type} [MeasurableSpace α] {d : ℕ} [TopologicalSpace α]
     (X : Subshift α d) : Type :=
   { μ : MeasureTheory.ProbabilityMeasure (FullShift α d) //

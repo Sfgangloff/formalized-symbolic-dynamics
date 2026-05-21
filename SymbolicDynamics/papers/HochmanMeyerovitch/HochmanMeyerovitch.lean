@@ -31,6 +31,7 @@ Combines `topEntropy_le_log_N_bar_div_pow` (upper bound),
 `log_N_bar_div_pow_tendsto_topEntropy` (convergence axiom, deep
 ergodic-theory content), and `rationalUpperApprox_log_N_bar` (computable
 rational upper approximation). -/
+-- @ontology: hm:thm:3.1
 theorem topEntropy_rightRE {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
     [Encodable α] [TopologicalSpace α] [T1Space α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F))
@@ -61,6 +62,7 @@ globally admissible (case 2), with the corresponding effective consequence.
 The two cases (`Lemma_3_4_case_notGA` proved by compactness of the full
 shift, `Lemma_3_4_case_GA` proved via the irreducibility-gluing axiom)
 live in `dependencies/IrreducibleConsequences.lean`. -/
+-- @ontology: hm:lem:3.4
 theorem Lemma_3_4 {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
     [TopologicalSpace α] [T1Space α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F))
@@ -85,6 +87,7 @@ computable, derived from the right-r.e. (Theorem 3.1, `topEntropy_rightRE`) and
 left-r.e. (`topEntropy_leftRE_irreducible`, in
 `dependencies/IrreducibleConsequences.lean`) approximations via
 `computable_iff_leftRE_and_rightRE`. -/
+-- @ontology: hm:thm:1.3
 theorem topEntropy_irreducible_computable {α : Type*} {d : ℕ}
     [Fintype α] [DecidableEq α] [Encodable α] [TopologicalSpace α] [T1Space α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F))

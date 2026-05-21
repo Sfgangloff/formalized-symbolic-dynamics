@@ -26,6 +26,7 @@ See [`README.md`](README.md) for known cases and references. -/
 set `oddShiftSet d`, and `S` is sofic.
 
 Recorded as a `def`, not proved. -/
+-- @ontology: op:odd-shift-soficity
 def OddShiftSoficityStatement (d : ℕ) : Prop :=
   ∃ S : Subshift Bool d,
     S.carrier = Percolation.oddShiftSet d ∧ IsSofic S

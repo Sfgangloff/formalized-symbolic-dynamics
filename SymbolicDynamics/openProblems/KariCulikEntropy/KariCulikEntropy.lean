@@ -30,4 +30,5 @@ See [`README.md`](README.md) for context and references. -/
 
 /-- The topological entropy of the Kari–Culik shift. Its exact value
 is the subject of the open problem. -/
+-- @ontology: op:kari-culik-entropy-value
 noncomputable def kariCulikEntropy : ℝ := topEntropy kariCulikShift

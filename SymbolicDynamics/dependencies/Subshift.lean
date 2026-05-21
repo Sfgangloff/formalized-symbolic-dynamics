@@ -288,6 +288,7 @@ end Pattern
 
 /-! ## Subshifts -/
 
+-- @ontology: hm:def:subshift
 structure Subshift (α : Type*) (d : ℕ) [TopologicalSpace α] where
   carrier : Set (FullShift α d)
   isClosed : IsClosed carrier
@@ -380,6 +381,7 @@ theorem SFT_carrier_isClosed {α : Type*} {d : ℕ} [TopologicalSpace α] [T1Spa
 
 
 /-- The SFT with window `F` and allowed patterns `L`. -/
+-- @ontology: hm:def:sft
 def mkSFT {α : Type*} {d : ℕ} [TopologicalSpace α] [T1Space α]
     (F : Finset (Lat d)) (L : Finset (Pattern α F)) : Subshift α d where
   carrier   := SFT_carrier F L
@@ -413,6 +415,7 @@ namespace Pattern
 
 /-- Pattern `p` is globally admissible for `X` if it appears somewhere in
 some point of `X`. -/
+-- @ontology: hm:def:globally-admissible
 def GloballyAdmissible {α : Type*} {d : ℕ} [TopologicalSpace α]
     {F : Finset (Lat d)} (X : Subshift α d) (p : Pattern α F) : Prop :=
   ∃ x ∈ X, Appears p x
@@ -443,6 +446,7 @@ noncomputable def logN {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
 /-- Topological entropy: the infimum of `logN X n / n^d` over `n ≥ 1`.
 For 1D subshifts, this equals the Fekete limit of the subadditive sequence
 `logN X`. -/
+-- @ontology: hm:def:top-entropy
 noncomputable def topEntropy {α : Type*} {d : ℕ} [Fintype α] [TopologicalSpace α]
     (X : Subshift α d) : ℝ :=
   sInf ((fun n : ℕ => logN X n / (n : ℝ) ^ d) '' Set.Ici 1)

@@ -47,6 +47,7 @@ abbrev KCVColor : Type := Fin 6
 /-! ## The 14-tile alphabet -/
 
 /-- The DGG 14-tile alphabet. -/
+-- @ontology: kari-culik-tile-set
 def KCTile : Type := Fin 14
 
 namespace KCTile
@@ -132,6 +133,7 @@ def kcAllowed : Finset (Pattern KCTile kcWindow) :=
 
 /-- The Kari–Culik 2D shift: the SFT presented by the L-shape window
 and the edge-matching constraints on the 14 DGG tiles. -/
+-- @ontology: kari-culik-shift
 def kariCulikShift : Subshift KCTile 2 := mkSFT kcWindow kcAllowed
 
 /-! ## Trivial structural facts -/
