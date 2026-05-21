@@ -1,2 +1,11 @@
 .DS_Store
 .mcp.json
+
+# ontology derived build artifacts + raw corpus (rebuildable from snapshots/)
+ontology/build/
+ontology/corpus/
+ontology/.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/

@@ -1,0 +1,3130 @@
+{
+  "citations": [
+    {
+      "from_node": "arxiv:math/0703206",
+      "key": "friedland1997",
+      "where": "bibliography"
+    },
+    {
+      "from_node": "arxiv:math/0703206",
+      "key": "B66",
+      "where": "bibliography"
+    },
+    {
+      "from_node": "arxiv:math/0703206",
+      "key": "robinson71",
+      "where": "bibliography"
+    },
+    {
+      "from_node": "arxiv:math/0703206",
+      "key": "W73",
+      "where": "bibliography"
+    },
+    {
+      "from_node": "arxiv:math/0703206",
+      "key": "mozes89",
+      "where": "bibliography"
+    },
+    {
+      "from_node": "arxiv:math/0703206",
+      "key": "M76",
+      "where": "bibliography"
+    },
+    {
+      "from_node": "arxiv:math/0703206",
+      "key": "LM95",
+      "where": "bibliography"
+    },
+    {
+      "from_node": "arxiv:math/0703206",
+      "key": "CP75",
+      "where": "bibliography"
+    },
+    {
+      "from_node": "arxiv:math/0703206",
+      "key": "D06",
+      "where": "bibliography"
+    }
+  ],
+  "edges": [
+    {
+      "confidence": 1.0,
+      "dst": "concept:subshift",
+      "human_verified": true,
+      "id": "e:8f3463bba3dda1a8",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "definition:3d56b59a07f77ad8b387",
+      "type": "instance_of",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "concept:sft",
+      "human_verified": true,
+      "id": "e:05c6acb0ae4fed5e",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "definition:494abf367edf42d2fdd7",
+      "type": "instance_of",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "concept:subshift",
+      "human_verified": true,
+      "id": "e:fe492f71eb94285d",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "definition:494abf367edf42d2fdd7",
+      "type": "instance_of",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "concept:sofic-shift",
+      "human_verified": true,
+      "id": "e:c90fde9b184d4f35",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "definition:adb59433e48086acfde3",
+      "type": "instance_of",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "concept:subshift",
+      "human_verified": true,
+      "id": "e:d122dea3f9a84449",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "definition:adb59433e48086acfde3",
+      "type": "instance_of",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "concept:topological-entropy",
+      "human_verified": true,
+      "id": "e:a00f73c9dec08f40",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "definition:987f9d75a48711de141d",
+      "type": "instance_of",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "concept:irreducible-shift",
+      "human_verified": true,
+      "id": "e:6b8a4b0968788748",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "definition:9c440e33347fdcf25b00",
+      "type": "instance_of",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "concept:factor-map",
+      "human_verified": true,
+      "id": "e:55488a275a5ad20b",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "definition:c92127dd91128297583f",
+      "type": "instance_of",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "concept:right-recursively-enumerable",
+      "human_verified": true,
+      "id": "e:e28c48f1232e15e7",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "definition:bc05d586b50e6c5e31ab",
+      "type": "instance_of",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "concept:computable-real",
+      "human_verified": true,
+      "id": "e:af794d34ecaf8ecc",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "definition:1c39147ab1b7e744c7a0",
+      "type": "instance_of",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:3d56b59a07f77ad8b387",
+      "human_verified": true,
+      "id": "e:bf966010c481db01",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:494abf367edf42d2fdd7",
+      "human_verified": true,
+      "id": "e:8816643592d56250",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:bbca0feb4804a7aa53bd",
+      "human_verified": true,
+      "id": "e:09ae66fe01c572bc",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:1340fac0ea6f42efa772",
+      "human_verified": true,
+      "id": "e:8e11c7bd44dc8ee9",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:9c440e33347fdcf25b00",
+      "human_verified": true,
+      "id": "e:3a433f07d9469e21",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:987f9d75a48711de141d",
+      "human_verified": true,
+      "id": "e:b1e05278d25c2693",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:c92127dd91128297583f",
+      "human_verified": true,
+      "id": "e:3b7f6097b72efb55",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:adb59433e48086acfde3",
+      "human_verified": true,
+      "id": "e:5032fa9761b6f333",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:070143f2c989b81c25e6",
+      "human_verified": true,
+      "id": "e:70a47cd97e7b0077",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:8aef23c81e724ac3b983",
+      "human_verified": true,
+      "id": "e:a8675587c2b6e66b",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:1c39147ab1b7e744c7a0",
+      "human_verified": true,
+      "id": "e:a78c8cdd52e6305e",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:bc05d586b50e6c5e31ab",
+      "human_verified": true,
+      "id": "e:5db0732dca11d702",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:8ff213f7516156077b7d",
+      "human_verified": true,
+      "id": "e:d2757be04e60e97d",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:7c44aae53511046380f7",
+      "human_verified": true,
+      "id": "e:ec10201aa78b1e14",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:b158e27d111ac6b6a523",
+      "human_verified": true,
+      "id": "e:c1e171324258deba",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:dcd6d1196b674b15edd5",
+      "human_verified": true,
+      "id": "e:b046c01f0221d835",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:6255c9f2b61d534f8595",
+      "human_verified": true,
+      "id": "e:9855d19118868279",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "corollary:64099a1c8f14129f2fe6",
+      "human_verified": true,
+      "id": "e:0f08e32019c76311",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "lemma:21326fbc4e66fc7dd7c0",
+      "human_verified": true,
+      "id": "e:7a2c465f8bdfb495",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "corollary:01b081a1c9ddc279782f",
+      "human_verified": true,
+      "id": "e:fa51038e6e3fcba3",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:2f63394298a0fea751dd",
+      "human_verified": true,
+      "id": "e:d75437084df35b71",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:4c52a4a1227207b85bf5",
+      "human_verified": true,
+      "id": "e:e14b168fdadf87f4",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "openproblem:2060296ead7063cfe0dd",
+      "human_verified": true,
+      "id": "e:61cf47372ded3284",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "openproblem:e310e2ed2cc485868a42",
+      "human_verified": true,
+      "id": "e:dda47424170f83c7",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:math/0703206",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:494abf367edf42d2fdd7",
+      "human_verified": true,
+      "id": "e:75f8b8081b0d37b6",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:8ff213f7516156077b7d",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:987f9d75a48711de141d",
+      "human_verified": true,
+      "id": "e:fcb2d9210239bc48",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:8ff213f7516156077b7d",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:bc05d586b50e6c5e31ab",
+      "human_verified": true,
+      "id": "e:1e7e74f6ae6320cc",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:8ff213f7516156077b7d",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:494abf367edf42d2fdd7",
+      "human_verified": true,
+      "id": "e:689432aa4dbd9422",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:7c44aae53511046380f7",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:adb59433e48086acfde3",
+      "human_verified": true,
+      "id": "e:6c87d021883b3d47",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:7c44aae53511046380f7",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:987f9d75a48711de141d",
+      "human_verified": true,
+      "id": "e:7610966f7121e7ef",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:7c44aae53511046380f7",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:494abf367edf42d2fdd7",
+      "human_verified": true,
+      "id": "e:14ee557d46cd8eb3",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:b158e27d111ac6b6a523",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:9c440e33347fdcf25b00",
+      "human_verified": true,
+      "id": "e:e4bbce40e4a3eb33",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:b158e27d111ac6b6a523",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:987f9d75a48711de141d",
+      "human_verified": true,
+      "id": "e:a5550603c5336f57",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:b158e27d111ac6b6a523",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:1c39147ab1b7e744c7a0",
+      "human_verified": true,
+      "id": "e:5b53df47d9c2b02e",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:b158e27d111ac6b6a523",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:494abf367edf42d2fdd7",
+      "human_verified": true,
+      "id": "e:34d0b80a64f9f711",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:dcd6d1196b674b15edd5",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:bbca0feb4804a7aa53bd",
+      "human_verified": true,
+      "id": "e:cb41708b3cc95797",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:dcd6d1196b674b15edd5",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:987f9d75a48711de141d",
+      "human_verified": true,
+      "id": "e:a58e7843eac959ab",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:dcd6d1196b674b15edd5",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:bc05d586b50e6c5e31ab",
+      "human_verified": true,
+      "id": "e:3b6d041d7c077cd3",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:dcd6d1196b674b15edd5",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:adb59433e48086acfde3",
+      "human_verified": true,
+      "id": "e:731dad4169c4025d",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:6255c9f2b61d534f8595",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:c92127dd91128297583f",
+      "human_verified": true,
+      "id": "e:1cac2d74adf490ff",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:6255c9f2b61d534f8595",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:bbca0feb4804a7aa53bd",
+      "human_verified": true,
+      "id": "e:2a0a5032427ba3a1",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:6255c9f2b61d534f8595",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:987f9d75a48711de141d",
+      "human_verified": true,
+      "id": "e:98d5aa75bbfba91d",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:6255c9f2b61d534f8595",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:bc05d586b50e6c5e31ab",
+      "human_verified": true,
+      "id": "e:e927136aae648685",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:6255c9f2b61d534f8595",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:adb59433e48086acfde3",
+      "human_verified": true,
+      "id": "e:fe7bcb7ecb37ac00",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "corollary:64099a1c8f14129f2fe6",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:987f9d75a48711de141d",
+      "human_verified": true,
+      "id": "e:ee14de715b4832d2",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "corollary:64099a1c8f14129f2fe6",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:bc05d586b50e6c5e31ab",
+      "human_verified": true,
+      "id": "e:f1c00d1ff0161209",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "corollary:64099a1c8f14129f2fe6",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:494abf367edf42d2fdd7",
+      "human_verified": true,
+      "id": "e:6972f9a51683d0d6",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "lemma:21326fbc4e66fc7dd7c0",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:9c440e33347fdcf25b00",
+      "human_verified": true,
+      "id": "e:2362b2a65a386fee",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "lemma:21326fbc4e66fc7dd7c0",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:bbca0feb4804a7aa53bd",
+      "human_verified": true,
+      "id": "e:7b43428f1b88e3eb",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "lemma:21326fbc4e66fc7dd7c0",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:1340fac0ea6f42efa772",
+      "human_verified": true,
+      "id": "e:3ce2570a8419134a",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "lemma:21326fbc4e66fc7dd7c0",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:494abf367edf42d2fdd7",
+      "human_verified": true,
+      "id": "e:38c8a9910ba59111",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "corollary:01b081a1c9ddc279782f",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:9c440e33347fdcf25b00",
+      "human_verified": true,
+      "id": "e:c03e774f5436ec56",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "corollary:01b081a1c9ddc279782f",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:1340fac0ea6f42efa772",
+      "human_verified": true,
+      "id": "e:aaea497558926b5e",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "corollary:01b081a1c9ddc279782f",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:987f9d75a48711de141d",
+      "human_verified": true,
+      "id": "e:76840339b2bfce4b",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:2f63394298a0fea751dd",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:8aef23c81e724ac3b983",
+      "human_verified": true,
+      "id": "e:5b0b9bdff917c17a",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:2f63394298a0fea751dd",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:070143f2c989b81c25e6",
+      "human_verified": true,
+      "id": "e:220b6120f8b90954",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:2f63394298a0fea751dd",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:8aef23c81e724ac3b983",
+      "human_verified": true,
+      "id": "e:def41ec775aded3b",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:4c52a4a1227207b85bf5",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:070143f2c989b81c25e6",
+      "human_verified": true,
+      "id": "e:155db86276ff3abc",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:4c52a4a1227207b85bf5",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:494abf367edf42d2fdd7",
+      "human_verified": true,
+      "id": "e:0aa60622f6bf7f8b",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:369842c7f50602b99d31",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:9c440e33347fdcf25b00",
+      "human_verified": true,
+      "id": "e:84da0fb594143621",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:369842c7f50602b99d31",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:987f9d75a48711de141d",
+      "human_verified": true,
+      "id": "e:93c51950847fd4f7",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:369842c7f50602b99d31",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:2f63394298a0fea751dd",
+      "human_verified": true,
+      "id": "e:b8eab1d848b133f9",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:dcd6d1196b674b15edd5",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:4c52a4a1227207b85bf5",
+      "human_verified": true,
+      "id": "e:bb87a23314837430",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:dcd6d1196b674b15edd5",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:2f63394298a0fea751dd",
+      "human_verified": true,
+      "id": "e:5ecd7882853f18d4",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:6255c9f2b61d534f8595",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:4c52a4a1227207b85bf5",
+      "human_verified": true,
+      "id": "e:d668686e227bdd01",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:6255c9f2b61d534f8595",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:dcd6d1196b674b15edd5",
+      "human_verified": true,
+      "id": "e:b568cca9702d5303",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:6255c9f2b61d534f8595",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:6255c9f2b61d534f8595",
+      "human_verified": true,
+      "id": "e:085c97631e0dfea7",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "corollary:64099a1c8f14129f2fe6",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:adb59433e48086acfde3",
+      "human_verified": true,
+      "id": "e:47168571cd7748f3",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "corollary:64099a1c8f14129f2fe6",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:dcd6d1196b674b15edd5",
+      "human_verified": true,
+      "id": "e:b8d7f2bd7bb04645",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:b158e27d111ac6b6a523",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "lemma:21326fbc4e66fc7dd7c0",
+      "human_verified": true,
+      "id": "e:21b651033173edf7",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:b158e27d111ac6b6a523",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:369842c7f50602b99d31",
+      "human_verified": true,
+      "id": "e:67da41e26cd19da9",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:b158e27d111ac6b6a523",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:dc15e6553b1b4efc3d2e",
+      "human_verified": true,
+      "id": "e:f7b85c69e0b91836",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:b158e27d111ac6b6a523",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "lemma:21326fbc4e66fc7dd7c0",
+      "human_verified": true,
+      "id": "e:f1d80fa1616160db",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "corollary:01b081a1c9ddc279782f",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "corollary:64099a1c8f14129f2fe6",
+      "human_verified": true,
+      "id": "e:6006179ba5c94e22",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:7c44aae53511046380f7",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:8ff213f7516156077b7d",
+      "human_verified": true,
+      "id": "e:217434dfa06bd574",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:7c44aae53511046380f7",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:6255c9f2b61d534f8595",
+      "human_verified": true,
+      "id": "e:d26bbfd5c45d159a",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "corollary:64099a1c8f14129f2fe6",
+      "type": "corollary_of",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "lemma:21326fbc4e66fc7dd7c0",
+      "human_verified": true,
+      "id": "e:4fc9f82cc2966071",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "corollary:01b081a1c9ddc279782f",
+      "type": "corollary_of",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:8ff213f7516156077b7d",
+      "human_verified": true,
+      "id": "e:b09bdb038346a89c",
+      "in_lean": false,
+      "notes": "partial:necessity",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "d>=2",
+      "src": "theorem:dcd6d1196b674b15edd5",
+      "type": "resolves",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "arxiv:weiss1973",
+      "human_verified": true,
+      "id": "e:84b09c621eee37cd",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "definition:adb59433e48086acfde3",
+      "type": "attributed_to",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "arxiv:berger1966",
+      "human_verified": true,
+      "id": "e:410d567d1ea832a1",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:8ff213f7516156077b7d",
+      "type": "attributed_to",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "arxiv:robinson1971",
+      "human_verified": true,
+      "id": "e:92c759acac0fde79",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:8ff213f7516156077b7d",
+      "type": "attributed_to",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "arxiv:friedland1997",
+      "human_verified": true,
+      "id": "e:95573e3eb76e7be1",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:dcd6d1196b674b15edd5",
+      "type": "attributed_to",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "arxiv:mozes1989",
+      "human_verified": true,
+      "id": "e:fea9bc55a5775c9a",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:2f63394298a0fea751dd",
+      "type": "attributed_to",
+      "where_": ""
+    }
+  ],
+  "extractors": [
+    "gold-hand-curated"
+  ],
+  "nodes": [
+    {
+      "aliases": [
+        "subshift"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "concept:subshift",
+      "kind": "Concept",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "subshift",
+      "parameters": [],
+      "provenance": [],
+      "statement_latex": "",
+      "statement_text": "closed shift-invariant subset of a full shift",
+      "status": "",
+      "structural_sig": "ec72325d7bad16a6",
+      "tags": [],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "sft"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "concept:sft",
+      "kind": "Concept",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "shift of finite type",
+      "parameters": [],
+      "provenance": [],
+      "statement_latex": "",
+      "statement_text": "subshift defined by a finite local syntax",
+      "status": "",
+      "structural_sig": "ec72325d7bad16a6",
+      "tags": [],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "sofic-shift"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "concept:sofic-shift",
+      "kind": "Concept",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "sofic shift",
+      "parameters": [],
+      "provenance": [],
+      "statement_latex": "",
+      "statement_text": "continuous shift-commuting factor of an SFT",
+      "status": "",
+      "structural_sig": "ec72325d7bad16a6",
+      "tags": [],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "topological-entropy"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "concept:topological-entropy",
+      "kind": "Concept",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "topological entropy",
+      "parameters": [],
+      "provenance": [],
+      "statement_latex": "",
+      "statement_text": "asymptotic growth rate of admissible patterns",
+      "status": "",
+      "structural_sig": "ec72325d7bad16a6",
+      "tags": [],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "right-recursively-enumerable"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "concept:right-recursively-enumerable",
+      "kind": "Concept",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "right r.e. real",
+      "parameters": [],
+      "provenance": [],
+      "statement_latex": "",
+      "statement_text": "real with a computable rational upper-approximation sequence",
+      "status": "",
+      "structural_sig": "ec72325d7bad16a6",
+      "tags": [],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "computable-real"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "concept:computable-real",
+      "kind": "Concept",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "computable real",
+      "parameters": [],
+      "provenance": [],
+      "statement_latex": "",
+      "statement_text": "real with a computable two-sided rational approximation sequence",
+      "status": "",
+      "structural_sig": "ec72325d7bad16a6",
+      "tags": [],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "irreducible-shift"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "concept:irreducible-shift",
+      "kind": "Concept",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "irreducible subshift",
+      "parameters": [],
+      "provenance": [],
+      "statement_latex": "",
+      "statement_text": "globally admissible far-apart patterns can be glued",
+      "status": "",
+      "structural_sig": "ec72325d7bad16a6",
+      "tags": [],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "factor-map"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "concept:factor-map",
+      "kind": "Concept",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "factor map",
+      "parameters": [],
+      "provenance": [],
+      "statement_latex": "",
+      "statement_text": "continuous surjection commuting with the shift action",
+      "status": "",
+      "structural_sig": "ec72325d7bad16a6",
+      "tags": [],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:def:subshift"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "88d10147bd401a29f6cf059ae8e194d19d91594bd22f1ee8a389355da942dac5",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "definition:3d56b59a07f77ad8b387",
+      "kind": "Definition",
+      "lean_decl": "dependencies.Subshift.Subshift",
+      "lean_status": "stated",
+      "merged_from": [],
+      "name": "Subshift (Hochman\u2013Meyerovitch \u00a72.1)",
+      "parameters": [
+        "dimension d",
+        "finite alphabet"
+      ],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "Preliminaries \u00a72.1"
+        }
+      ],
+      "statement_latex": "A closed shift-invariant subset $X\\subseteq \\Sigma^{\\mathbb{Z}^d}$ is a $\\mathbb{Z}^d$-subshift.",
+      "statement_text": "A closed, shift-invariant subset of the full shift.",
+      "status": "",
+      "structural_sig": "8fc776b54aeecc0d",
+      "tags": [
+        "subshift"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:def:sft"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "3074dc2382d3d9af965edecafc6e503b9f9f73ab7339e1f8ddb13018355a316e",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "definition:494abf367edf42d2fdd7",
+      "kind": "Definition",
+      "lean_decl": "dependencies.Subshift.mkSFT",
+      "lean_status": "stated",
+      "merged_from": [],
+      "name": "Shift of finite type (Hochman\u2013Meyerovitch \u00a72.1)",
+      "parameters": [
+        "dimension d",
+        "finite alphabet"
+      ],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "Preliminaries \u00a72.1"
+        }
+      ],
+      "statement_latex": "An SFT is defined by a finite alphabet $\\Sigma$, a finite $F\\subseteq \\mathbb{Z}^d$ and a syntax $L\\subseteq \\Sigma^F$; the carrier is the set of $x\\in\\Sigma^{\\mathbb{Z}^d}$ all of whose translated $F$-patterns lie in $L$.",
+      "statement_text": "Subshift defined by a finite local syntax.",
+      "status": "",
+      "structural_sig": "da8793f0c5d49190",
+      "tags": [
+        "sft"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:def:locally-admissible"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "fdc15c22882c4eea279a2123da2f23e32ab01a2ae4eccf41ca490a3610936481",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "definition:bbca0feb4804a7aa53bd",
+      "kind": "Definition",
+      "lean_decl": "dependencies.LocallyAdmissible.locallyAdmissible",
+      "lean_status": "stated",
+      "merged_from": [],
+      "name": "Locally admissible pattern (\u00a72.1)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a72.1"
+        }
+      ],
+      "statement_latex": "$a\\in\\Sigma^E$ is locally admissible for the syntax $L$ if $a|_{F+u}$ is congruent to a pattern in $L$ whenever $F+u\\subseteq E$.",
+      "statement_text": "Every translate of the syntax window contained in the domain matches some allowed pattern.",
+      "status": "",
+      "structural_sig": "1ad1539429aae050",
+      "tags": [
+        "sft",
+        "patterns"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:def:globally-admissible"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "50de49702b9b172ebfc57f91d301340a7d14595d0d03efcecebdb927731b2aef",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "definition:1340fac0ea6f42efa772",
+      "kind": "Definition",
+      "lean_decl": "dependencies.GloballyAdmissible.Pattern.GloballyAdmissible",
+      "lean_status": "stated",
+      "merged_from": [],
+      "name": "Globally admissible pattern (\u00a72.1)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a72.1"
+        }
+      ],
+      "statement_latex": "A finite pattern $a$ is globally admissible for $X$ if it appears in some $x\\in X$.",
+      "statement_text": "Pattern that occurs in some point of the subshift.",
+      "status": "",
+      "structural_sig": "1ad1539429aae050",
+      "tags": [
+        "sft",
+        "patterns"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:def:irreducible-sft"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "5b2a7498ac5a54238aa6c87349a0cee03e67015bb6ba7f195b9d347f44195104",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "definition:9c440e33347fdcf25b00",
+      "kind": "Definition",
+      "lean_decl": "dependencies.LocallyAdmissible.IsIrreducibleShift",
+      "lean_status": "stated",
+      "merged_from": [],
+      "name": "Irreducible SFT (\u00a72.1)",
+      "parameters": [
+        "gap r",
+        "dimension d"
+      ],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a72.1"
+        }
+      ],
+      "statement_latex": "An SFT $X$ is irreducible if there is a gap $r>0$ such that for every $A,B\\subseteq\\mathbb{Z}^d$ with $\\|u-v\\|_\\infty\\geq r$ for $u\\in A,v\\in B$ and every globally admissible $a\\in\\Sigma^A,\\ b\\in\\Sigma^B$, the union $a\\cup b$ is globally admissible.",
+      "statement_text": "Far-apart globally admissible patterns can always be glued.",
+      "status": "",
+      "structural_sig": "54f15eced19968c3",
+      "tags": [
+        "sft",
+        "irreducibility"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:def:top-entropy"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "82eb229c50becd134f0ec313a422a4e3ad854c38f615cbfa1b8a7b6ab9a70f37",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "definition:987f9d75a48711de141d",
+      "kind": "Definition",
+      "lean_decl": "dependencies.Subshift.topEntropy",
+      "lean_status": "stated",
+      "merged_from": [],
+      "name": "Topological entropy of a subshift (\u00a72.2)",
+      "parameters": [
+        "dimension d",
+        "finite alphabet"
+      ],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a72.2"
+        }
+      ],
+      "statement_latex": "$h(X)=\\lim_{n\\to\\infty}\\frac{1}{|F_n|}\\log N_X(F_n)$ where $F_n=\\{1,\\dots,n\\}^d$.",
+      "statement_text": "Asymptotic growth rate of the number of admissible patterns on cubes.",
+      "status": "",
+      "structural_sig": "cae3218c98427ae6",
+      "tags": [
+        "entropy"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:def:factor-map"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "4bc90e42de9376144f29fd09646e9c4633a846c7e3f36c09192c9bb25fd17849",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "definition:c92127dd91128297583f",
+      "kind": "Definition",
+      "lean_decl": "dependencies.FactorMap.FactorMap",
+      "lean_status": "stated",
+      "merged_from": [],
+      "name": "Factor map / one-block map (\u00a72.3)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a72.3"
+        }
+      ],
+      "statement_latex": "A factor map $\\varphi:X\\to Y$ is a continuous surjection commuting with the shift action; equivalently it is a block code arising from $\\varphi_0:\\Sigma^F\\to\\Delta$. It is one-block if $|F|=1$.",
+      "statement_text": "Continuous shift-commuting surjection.",
+      "status": "",
+      "structural_sig": "a9c25af4fd8fddeb",
+      "tags": [
+        "factor"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:def:sofic-shift"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "9a4b9eacf61accb263f5b83a280647d5c94e8d17c82125f474f8106a021ed863",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "definition:adb59433e48086acfde3",
+      "kind": "Definition",
+      "lean_decl": "dependencies.FactorMap.IsSofic",
+      "lean_status": "stated",
+      "merged_from": [],
+      "name": "Sofic shift (\u00a72.3)",
+      "parameters": [
+        "dimension d"
+      ],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a72.3"
+        }
+      ],
+      "statement_latex": "A subshift $Y$ is sofic if it is a factor of some SFT.",
+      "statement_text": "Factor of a shift of finite type.",
+      "status": "",
+      "structural_sig": "fc4e0c6f4ae895a5",
+      "tags": [
+        "sofic"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:def:invariant-measure"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "0433652be326b1d76b73692c250eba065f84745b549c1756066d9eab3f830d0e",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "definition:070143f2c989b81c25e6",
+      "kind": "Definition",
+      "lean_decl": "dependencies.InvariantMeasure.InvMeasure",
+      "lean_status": "stated",
+      "merged_from": [],
+      "name": "Shift-invariant Borel probability measure (\u00a72.4)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a72.4"
+        }
+      ],
+      "statement_latex": "$\\mathcal{M}(X)$ denotes the set of $\\sigma$-invariant Borel probability measures on $X$, with the weak-$*$ topology.",
+      "statement_text": "Borel probability measure invariant under the shift action.",
+      "status": "",
+      "structural_sig": "01ab96c3dab67eca",
+      "tags": [
+        "measure"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:def:measure-entropy"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "2d0945b464aa8cc771847ab902cc7d5b2cdfac54a79bb38a99a0836534afdc66",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "definition:8aef23c81e724ac3b983",
+      "kind": "Definition",
+      "lean_decl": "axioms.InvariantMeasure.measureEntropy",
+      "lean_status": "axiomatized",
+      "merged_from": [],
+      "name": "Measure-theoretic entropy h(\u03bc) (\u00a72.4, cited)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a72.4"
+        }
+      ],
+      "statement_latex": "For $\\mu\\in\\mathcal{M}(X)$, $h(\\mu)$ denotes its Kolmogorov\u2013Sinai entropy.",
+      "statement_text": "Kolmogorov\u2013Sinai entropy of a shift-invariant measure.",
+      "status": "",
+      "structural_sig": "4939bae9688be566",
+      "tags": [
+        "measure",
+        "entropy"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:def:computable-real"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "e411a92935279d29ee4817e7ca20d7288ee510064a65ab4d1c55d10daaa33887",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "definition:1c39147ab1b7e744c7a0",
+      "kind": "Definition",
+      "lean_decl": "dependencies.Computable.IsComputableReal",
+      "lean_status": "stated",
+      "merged_from": [],
+      "name": "Computable real (\u00a71)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a71"
+        }
+      ],
+      "statement_latex": "$h\\in\\mathbb{R}$ is computable if there is an algorithm that, given $n\\in\\mathbb{N}$, produces a rational $r(n)$ with $|h-r(n)|<1/n$.",
+      "statement_text": "Real with a computable rational approximation to arbitrary precision.",
+      "status": "",
+      "structural_sig": "b65ca15a5083ee05",
+      "tags": [
+        "computability"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:def:right-re"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "f947d8ea5aef66ff347c735ba243f2b17f4e12ca75dfd50e3b958385706c44e9",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "definition:bc05d586b50e6c5e31ab",
+      "kind": "Definition",
+      "lean_decl": "dependencies.Computable.IsRightRE",
+      "lean_status": "stated",
+      "merged_from": [],
+      "name": "Right recursively enumerable real (\u00a71)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a71"
+        }
+      ],
+      "statement_latex": "$h\\in\\mathbb{R}$ is right recursively enumerable (upper semi-recursive) if there is a computable $r(n)\\geq h$ with $r(n)\\to h$, equivalently the right Dedekind cut $\\{q\\in\\mathbb{Q}\\mid q>h\\}$ is recursive.",
+      "statement_text": "Real with a computable monotone rational approximation from above.",
+      "status": "",
+      "structural_sig": "b65ca15a5083ee05",
+      "tags": [
+        "computability"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:thm:1.1"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "80947bc58f9271aefac1a4ab0b43cfd3fa08dca3a4e0b725212dee48fedc8558",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "theorem:8ff213f7516156077b7d",
+      "kind": "Theorem",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Theorem 1.1 [MAIN]",
+      "parameters": [
+        "d>=2"
+      ],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "thm",
+          "human_verified": true,
+          "label": "thm:main",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a71"
+        }
+      ],
+      "statement_latex": "For $d\\geq 2$ the class of entropies of $d$-dimensional SFTs is exactly the class of non-negative right recursively enumerable real numbers.",
+      "statement_text": "In dimension d \u2265 2, the entropies of SFTs are exactly the non-negative right r.e. reals.",
+      "status": "",
+      "structural_sig": "f2b7d0af416836ad",
+      "tags": [
+        "main",
+        "sft",
+        "entropy",
+        "computability"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:thm:1.2"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "9e0f97c1f9caa6935e792643585a0c25e28c5780dd169c360f1b0828f2edc582",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "theorem:7c44aae53511046380f7",
+      "kind": "Theorem",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Theorem 1.2 [MAIN]",
+      "parameters": [
+        "d>=2"
+      ],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "thm",
+          "human_verified": true,
+          "label": "thm:sofic",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a71"
+        }
+      ],
+      "statement_latex": "For $d\\geq 2$, the class of entropies of $d$-dimensional sofic shifts is the same as that of $d$-dimensional SFTs.",
+      "statement_text": "For d \u2265 2 the entropy set of sofic shifts equals that of SFTs.",
+      "status": "",
+      "structural_sig": "09fe007f60e2f4b2",
+      "tags": [
+        "main",
+        "sofic",
+        "sft",
+        "entropy"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:thm:1.3"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "b2148a8436b34726ee182ba1d1a3d270d7039778ee4064fdf2d751bf71bf2e3b",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "theorem:b158e27d111ac6b6a523",
+      "kind": "Theorem",
+      "lean_decl": "papers.HochmanMeyerovitch.HochmanMeyerovitch.topEntropy_irreducible_computable",
+      "lean_status": "proved",
+      "merged_from": [],
+      "name": "Theorem 1.3 [MAIN]",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "thm",
+          "human_verified": true,
+          "label": "thm:irreducible",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a71"
+        }
+      ],
+      "statement_latex": "The topological entropy of a non-empty irreducible SFT is computable.",
+      "statement_text": "Entropy of an irreducible SFT is a computable real.",
+      "status": "",
+      "structural_sig": "5657050329634ab6",
+      "tags": [
+        "main",
+        "sft",
+        "entropy",
+        "irreducibility",
+        "computability"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:thm:3.1"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "78f2e15e4f2e2fcd4328c8ae14b0af629943c6204a34e140b620e51db25d258c",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "theorem:dcd6d1196b674b15edd5",
+      "kind": "Theorem",
+      "lean_decl": "papers.HochmanMeyerovitch.HochmanMeyerovitch.topEntropy_rightRE",
+      "lean_status": "proved",
+      "merged_from": [],
+      "name": "Theorem 3.1 (= necessity half of 1.1)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "thm",
+          "human_verified": true,
+          "label": "thm:SFT-entropies-are-co-RE",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a73"
+        }
+      ],
+      "statement_latex": "For an SFT $X$ defined by syntax $L$ and $\\tilde N_n=\\#\\{\\text{locally admissible }F_n\\text{-patterns}\\}$, $\\frac{1}{n^d}\\log\\tilde N_n\\to h(X)$ from above; consequently $h(X)$ is right r.e.",
+      "statement_text": "Locally admissible counts give a computable upper-approximation; SFT entropy is right r.e.",
+      "status": "",
+      "structural_sig": "9245ee919c025612",
+      "tags": [
+        "sft",
+        "entropy",
+        "right-re"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:thm:3.2"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "c32eba78ca19abf98ed7f2330e28a02e9cf9b4bf8b52801fb965431009587d1d",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "theorem:6255c9f2b61d534f8595",
+      "kind": "Theorem",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Theorem (sofic version of 3.1)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "thm",
+          "human_verified": true,
+          "label": "thm:sofic-entropies-are-co-RE",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a73"
+        }
+      ],
+      "statement_latex": "Let $Y$ be a sofic shift, factor of an SFT $X$ via the one-block map $\\varphi_0$, and $\\tilde M_n=\\#\\{\\varphi(a):a\\in W_n\\}$. Then $\\frac{1}{|F_n|}\\log\\tilde M_n\\to h(Y)$ from above; consequently $h(Y)$ is right r.e.",
+      "statement_text": "Sofic shifts admit a computable upper-approximation of entropy via image counts.",
+      "status": "",
+      "structural_sig": "da08e6eb4527948a",
+      "tags": [
+        "sofic",
+        "entropy",
+        "right-re"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:cor:sofic-right-re"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "6cc07295cb51607cd3aa0e24244bb2b2ac9daef1c474478e655ba0c7a66f9deb",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "corollary:64099a1c8f14129f2fe6",
+      "kind": "Corollary",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Corollary (sofic entropies are right r.e.)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "cor",
+          "human_verified": true,
+          "label": "cor:sofic-entropies",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a73"
+        }
+      ],
+      "statement_latex": "The topological entropy of every sofic shift is right recursively enumerable.",
+      "statement_text": "Every sofic shift entropy is right r.e.",
+      "status": "",
+      "structural_sig": "165f0417e3987c77",
+      "tags": [
+        "sofic",
+        "entropy",
+        "right-re"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:lem:3.4"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "7c3a660aca99447ee1bd491dc519163e62e3dd362a9dec58b4def779d4e8b977",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "lemma:21326fbc4e66fc7dd7c0",
+      "kind": "Lemma",
+      "lean_decl": "papers.HochmanMeyerovitch.HochmanMeyerovitch.Lemma_3_4",
+      "lean_status": "proved",
+      "merged_from": [],
+      "name": "Lemma 3.4 (irreducibility dichotomy)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "lem",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a73"
+        }
+      ],
+      "statement_latex": "Let $X$ be a non-empty irreducible SFT and $a\\in\\Sigma^{Q_k}$. Then exactly one of: (1) $a$ is not a sub-pattern of any locally admissible $b\\in\\Sigma^{Q_N}$ for large $N$ (so $a$ is not globally admissible); or (2) $a$ and every locally admissible $b\\in\\Sigma^{Q_N}$ are $\\sqrt N$-compatible for large $N$ (so $a$ is globally admissible).",
+      "statement_text": "For an irreducible SFT, every cube pattern either fails to extend or extends with compatibility on all large cubes.",
+      "status": "",
+      "structural_sig": "398eb88c34e2c5ab",
+      "tags": [
+        "sft",
+        "irreducibility",
+        "patterns"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:cor:3.5"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "d77689d7123e80f8221e735c62ec0cf4a57cadcffa123f439dd2e033f4281e07",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "corollary:01b081a1c9ddc279782f",
+      "kind": "Corollary",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Corollary 3.5 (decidable global admissibility)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "cor",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a73"
+        }
+      ],
+      "statement_latex": "For a non-empty irreducible SFT $X$ it is decidable whether a finite pattern $a$ is globally admissible.",
+      "statement_text": "Global admissibility is decidable for nonempty irreducible SFTs.",
+      "status": "",
+      "structural_sig": "cc8d64f46f087189",
+      "tags": [
+        "sft",
+        "irreducibility",
+        "decidability"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:cited:variational-principle"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "973a61218bfe84c3a4197d85efafe23fecb72fdd8bea8cbf8e4fe1a90e034731",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "theorem:2f63394298a0fea751dd",
+      "kind": "Theorem",
+      "lean_decl": "axioms.InvariantMeasure.variationalPrinciple",
+      "lean_status": "axiomatized",
+      "merged_from": [],
+      "name": "Variational principle (cited, Misiurewicz 1976)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a72.4"
+        }
+      ],
+      "statement_latex": "$h(X)=\\sup_{\\mu\\in\\mathcal{M}(X)}h(\\mu)$, achieved at some equilibrium measure.",
+      "statement_text": "Topological entropy equals the supremum of measure-theoretic entropies.",
+      "status": "",
+      "structural_sig": "7c126a1882805ae3",
+      "tags": [
+        "entropy",
+        "measure",
+        "cited"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:cited:usc-entropy"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "d1737743334f0b96a6f842c7215f3cffa4b21b9835f9646b2431c7cd275961fa",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "theorem:4c52a4a1227207b85bf5",
+      "kind": "Theorem",
+      "lean_decl": "axioms.InvariantMeasure.measureEntropy_uppersemicontinuous",
+      "lean_status": "axiomatized",
+      "merged_from": [],
+      "name": "Upper semi-continuity of measure entropy (cited)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a72.4"
+        }
+      ],
+      "statement_latex": "$\\mu\\mapsto h(\\mu)$ is upper semi-continuous on $\\mathcal{M}(X)$ with the weak-$*$ topology.",
+      "statement_text": "Measure entropy is upper semi-continuous in the weak-* topology.",
+      "status": "",
+      "structural_sig": "7c126a1882805ae3",
+      "tags": [
+        "entropy",
+        "measure",
+        "cited"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:lean:leftRE-irreducible"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "06acc43facf2b36c42dbb3d351fcc6ffdebfd9211ca1bb53bacaf08ab7cd7e60",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "theorem:369842c7f50602b99d31",
+      "kind": "Theorem",
+      "lean_decl": "dependencies.IrreducibleConsequences.topEntropy_leftRE_irreducible",
+      "lean_status": "axiomatized",
+      "merged_from": [],
+      "name": "topEntropy_leftRE_irreducible (left-r.e. half of 1.3)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "lean-axiom",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "(Lean axiomatization derived from Lemma 3.4)"
+        }
+      ],
+      "statement_latex": "For a non-empty irreducible SFT, $h(X)$ is left recursively enumerable.",
+      "statement_text": "Left-r.e. counterpart for irreducible SFTs.",
+      "status": "",
+      "structural_sig": "00e3d0ef392d1b12",
+      "tags": [
+        "sft",
+        "entropy",
+        "left-re",
+        "irreducibility"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:lean:computable-iff"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "5d8f04a070edd4ed0f24edcf7287e78d5bd6eda30f5060b8e624fbe5af45dfe5",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "theorem:dc15e6553b1b4efc3d2e",
+      "kind": "Theorem",
+      "lean_decl": "dependencies.Computable.computable_iff_leftRE_and_rightRE",
+      "lean_status": "proved",
+      "merged_from": [],
+      "name": "computable_iff_leftRE_and_rightRE (Lean)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "lean-thm",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "(Lean dependency)"
+        }
+      ],
+      "statement_latex": "A real is computable iff it is both left and right recursively enumerable.",
+      "statement_text": "Computable \u21d4 left-r.e. \u2227 right-r.e.",
+      "status": "",
+      "structural_sig": "efebe30f2b330287",
+      "tags": [
+        "computability"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:op:irr-converse"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "31cf298816ae115d0f11d8596f7f66386bb525e76000b256976c4322641a777a",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "openproblem:2060296ead7063cfe0dd",
+      "kind": "OpenProblem",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Open: is irreducibility necessary for computability?",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a71"
+        }
+      ],
+      "statement_latex": "Does $h(X)$ computable imply $X$ irreducible? (Theorem 1.3 gives one direction; the converse is open per \u00a71.)",
+      "statement_text": "Converse of Theorem 1.3; raised explicitly in \u00a71 after Theorem 1.3.",
+      "status": "open",
+      "structural_sig": "6893162651d262d5",
+      "tags": [
+        "entropy",
+        "computability",
+        "irreducibility",
+        "open"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    },
+    {
+      "aliases": [
+        "hm:op:sofic-covering"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "895ed995cac4db2af75155b85e76f9d8dadeb4b54bb52363000c8a7197fc9b43",
+      "created_run": "gold-hm-2026-05-20",
+      "hypotheses": [],
+      "id": "openproblem:e310e2ed2cc485868a42",
+      "kind": "OpenProblem",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Open: SFT cover of sofic shifts of equal entropy (d \u2265 2)",
+      "parameters": [
+        "d>=2"
+      ],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:math/0703206",
+          "run_id": "gold-hm-2026-05-20",
+          "section": "\u00a71"
+        }
+      ],
+      "statement_latex": "For $d\\geq 2$, does every sofic shift have an SFT extension of the same entropy? (Coven\u2013Paul covering theorem in $d=1$.)",
+      "statement_text": "Multidimensional analog of the Coven\u2013Paul covering theorem; partial result by Desai 2006.",
+      "status": "open",
+      "structural_sig": "779aaf3124de6777",
+      "tags": [
+        "sofic",
+        "sft",
+        "entropy",
+        "open"
+      ],
+      "updated_run": "gold-hm-2026-05-20"
+    }
+  ],
+  "paper": "arxiv:math/0703206",
+  "run_id": "gold-hm-2026-05-20",
+  "source": "entropies-of-SFTs.arxiv.tex"
+}

@@ -1,0 +1,20 @@
+{
+  "counts": {
+    "edges": 523,
+    "merges": 1,
+    "nodes": 327,
+    "papers": 20,
+    "shards": 0
+  },
+  "generated": "20260521T040648Z",
+  "hashes": {
+    "edges": "9f6ea7198a14cd1828e32a2bbfd7a1e27361159f2ec55fe1b4929519df6babf6",
+    "merges": "c240251b09bd83ace8766f448457b0b79138065733f6cc73f5532ce5c55dede1",
+    "nodes": "3ca41eedf7c96caf3f5927b88ed689fe1b2a37809c0201b5d3da6a6f67f2cf03",
+    "papers": "0ac4ef5cae6de7728a605ba70a6c21ca3017bdba8ae9729f94e595fe2c8e26ec",
+    "shards": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "run_id": "run-20260521T040648Z",
+  "schema_version": 1,
+  "snapshot_hash": "04cbf8924482c3fb4d9bd0042c7078493ca86281abde090c3499c4b164a5879e"
+}

@@ -1,0 +1,1181 @@
+{
+  "citations": [
+    {
+      "from_node": "arxiv:1312.4126",
+      "key": "Kari",
+      "where": "bibliography"
+    },
+    {
+      "from_node": "arxiv:1312.4126",
+      "key": "Culik",
+      "where": "bibliography"
+    },
+    {
+      "from_node": "arxiv:1312.4126",
+      "key": "Wang",
+      "where": "bibliography"
+    },
+    {
+      "from_node": "arxiv:1312.4126",
+      "key": "BergerPhD",
+      "where": "bibliography"
+    },
+    {
+      "from_node": "arxiv:1312.4126",
+      "key": "Robinson",
+      "where": "bibliography"
+    },
+    {
+      "from_node": "arxiv:1312.4126",
+      "key": "thierry",
+      "where": "bibliography"
+    },
+    {
+      "from_node": "arxiv:1312.4126",
+      "key": "ollinger",
+      "where": "bibliography"
+    },
+    {
+      "from_node": "arxiv:1312.4126",
+      "key": "DBLP:journals/jcss/DurandRS12",
+      "where": "bibliography"
+    }
+  ],
+  "edges": [
+    {
+      "confidence": 1.0,
+      "dst": "concept:topological-entropy",
+      "human_verified": true,
+      "id": "e:ebb62dd24bce9564",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "definition:b6ecae6186c1909a3afe",
+      "type": "instance_of",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "construction:kari-culik-shift",
+      "human_verified": true,
+      "id": "e:50cc41b4e286e938",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:6717120a73e05055034a",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "concept:topological-entropy",
+      "human_verified": true,
+      "id": "e:60f46c9c287f5b32",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:6717120a73e05055034a",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:10ce98f7bf4af3a36cf7",
+      "human_verified": true,
+      "id": "e:45bb5af0b4747f27",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "lemma:041e5b2ce414f4b19506",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "lemma:041e5b2ce414f4b19506",
+      "human_verified": true,
+      "id": "e:0ab4d6e56e633cfd",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "proposition:a589203bee5f8db30706",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "construction:kari-culik-shift",
+      "human_verified": true,
+      "id": "e:5fec4b4f83716be2",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "proposition:b63598601f0e1846416b",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "proposition:b63598601f0e1846416b",
+      "human_verified": true,
+      "id": "e:1473ce5114a4b3e8",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "lemma:c90f7821d6ec3369f206",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:a9cb5a1478be4c9d543e",
+      "human_verified": true,
+      "id": "e:c78058d9e924b437",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:6717120a73e05055034a",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "construction:dgg:constr:dgg-substitutive-pairs",
+      "human_verified": true,
+      "id": "e:a7fd5efa92a52d16",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:6717120a73e05055034a",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "lemma:c90f7821d6ec3369f206",
+      "human_verified": true,
+      "id": "e:b106ed41fc9717b2",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:6717120a73e05055034a",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "proposition:a589203bee5f8db30706",
+      "human_verified": true,
+      "id": "e:2c7a0aa912f91c48",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:6717120a73e05055034a",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "proposition:b63598601f0e1846416b",
+      "human_verified": true,
+      "id": "e:f82d8a87b5b89333",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:6717120a73e05055034a",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:6717120a73e05055034a",
+      "human_verified": true,
+      "id": "e:087f382326156451",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "corollary:647e1fff540099122a2a",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "conjecture:2e0d4bc49c78269b4d02",
+      "human_verified": true,
+      "id": "e:fa7217a0e742fc04",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "corollary:647e1fff540099122a2a",
+      "type": "refutes",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:b6ecae6186c1909a3afe",
+      "human_verified": true,
+      "id": "e:81cadbf2eaf59811",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "conjecture:2e0d4bc49c78269b4d02",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "arxiv:kari1996",
+      "human_verified": true,
+      "id": "e:4d686e8281f28f92",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "construction:dgg:constr:dgg-substitutive-pairs",
+      "type": "attributed_to",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "arxiv:culik1996",
+      "human_verified": true,
+      "id": "e:80274f161c089554",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "construction:dgg:constr:dgg-substitutive-pairs",
+      "type": "attributed_to",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "arxiv:pavlovSchraudner",
+      "human_verified": true,
+      "id": "e:a4f361c446132ddf",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "definition:b6ecae6186c1909a3afe",
+      "type": "attributed_to",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:10ce98f7bf4af3a36cf7",
+      "human_verified": true,
+      "id": "e:02fbe910635715fb",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:a9cb5a1478be4c9d543e",
+      "human_verified": true,
+      "id": "e:8cdd6f6a9fd41df8",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "construction:dgg:constr:dgg-substitutive-pairs",
+      "human_verified": true,
+      "id": "e:0d4ae03a5199c839",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:b6ecae6186c1909a3afe",
+      "human_verified": true,
+      "id": "e:0c3b1f6759d2e2d7",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "lemma:041e5b2ce414f4b19506",
+      "human_verified": true,
+      "id": "e:a13ced6f1de8b7e7",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "proposition:a589203bee5f8db30706",
+      "human_verified": true,
+      "id": "e:421e2c853329a9d9",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "proposition:b63598601f0e1846416b",
+      "human_verified": true,
+      "id": "e:52838fa85878895a",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "lemma:c90f7821d6ec3369f206",
+      "human_verified": true,
+      "id": "e:f717801395855c8f",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:6717120a73e05055034a",
+      "human_verified": true,
+      "id": "e:d4c27d623d80a2a8",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "conjecture:2e0d4bc49c78269b4d02",
+      "human_verified": true,
+      "id": "e:c98150cf89b44624",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "corollary:647e1fff540099122a2a",
+      "human_verified": true,
+      "id": "e:89fed409a51f55c9",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "openproblem:18b087a696c561815260",
+      "human_verified": true,
+      "id": "e:77697ebfb3a67a2d",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "openproblem:afcf1644c6ccc02f59eb",
+      "human_verified": true,
+      "id": "e:3bfb829d475a9708",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "states",
+      "where_": ""
+    }
+  ],
+  "extractors": [
+    "gold-hand-curated"
+  ],
+  "nodes": [
+    {
+      "aliases": [
+        "dgg:def:kc-function-f"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "fe61a848a899acf2994ef12b957c0eb62b42cb32aaa172c9b4ddf3d30e9503cd",
+      "created_run": "gold-dgg-2026-05-20",
+      "hypotheses": [],
+      "id": "definition:10ce98f7bf4af3a36cf7",
+      "kind": "Definition",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Kari\u2013Culik base function f",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20",
+          "section": "\u00a73.2"
+        }
+      ],
+      "statement_latex": "$f:[\\tfrac13,2]\\to[\\tfrac13,2]$ defined by $f(x)=2x$ for $x\\in[\\tfrac13,1]$ and $f(x)=x/3$ for $x\\in[1,2]$.",
+      "statement_text": "Piecewise-linear base function underlying the Kari\u2013Culik construction; conjugate to an irrational rotation of angle log2/(log2+log3).",
+      "status": "",
+      "structural_sig": "db76b1322f0b960c",
+      "tags": [
+        "kari-culik",
+        "dynamics",
+        "rotation"
+      ],
+      "updated_run": "gold-dgg-2026-05-20"
+    },
+    {
+      "aliases": [
+        "dgg:def:substitutive-pair"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "0068796e4c47dec23e212323ef97e60ee1d4baecb88befc408d34dc34f1b5230",
+      "created_run": "gold-dgg-2026-05-20",
+      "hypotheses": [],
+      "id": "definition:a9cb5a1478be4c9d543e",
+      "kind": "Definition",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Substitutive pair",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20",
+          "section": "\u00a73.1"
+        }
+      ],
+      "statement_latex": "A \\emph{substitutive pair} is a couple of different patterns with the same borders.",
+      "statement_text": "Two distinct Wang patterns with identical boundary colors (a swap one for the other in any tiling).",
+      "status": "",
+      "structural_sig": "17b8d785853461dc",
+      "tags": [
+        "wang",
+        "patterns",
+        "substitution"
+      ],
+      "updated_run": "gold-dgg-2026-05-20"
+    },
+    {
+      "aliases": [
+        "dgg:constr:dgg-substitutive-pairs"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "a4f71f6c59920baf453fd7f0bf03504691f695c02a3ed62e34ab4e4a3a6ffb8b",
+      "created_run": "gold-dgg-2026-05-20",
+      "hypotheses": [],
+      "id": "construction:dgg:constr:dgg-substitutive-pairs",
+      "kind": "Construction",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "DGG substitutive pairs (A_1, A'_1) and (A_2, A'_2)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20",
+          "section": "\u00a73.1"
+        }
+      ],
+      "statement_latex": "Two explicit pairs of $2\\times 2$ Wang patterns over the 14-tile DGG alphabet, each pair sharing identical north/south/east/west boundary colours.",
+      "statement_text": "Two explicit 2x2 substitutive pairs in the 14-tile Kari\u2013Culik tileset.",
+      "status": "",
+      "structural_sig": "1595ebf9e3019a7f",
+      "tags": [
+        "wang",
+        "kari-culik",
+        "construction",
+        "substitution"
+      ],
+      "updated_run": "gold-dgg-2026-05-20"
+    },
+    {
+      "aliases": [
+        "dgg:def:cylindricity"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "7443334ed83ab8c953e483beda5c856a972948711ce92c6c2c49e42aa926a1cc",
+      "created_run": "gold-dgg-2026-05-20",
+      "hypotheses": [],
+      "id": "definition:b6ecae6186c1909a3afe",
+      "kind": "Definition",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Cylindricity function (Monteil)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20",
+          "section": "\u00a74"
+        }
+      ],
+      "statement_latex": "For an aperiodic tileset, the \\emph{cylindricity function} maps $n$ to the smallest growing bound on the vertical size of a tilable portion of a horizontal cylinder of perimeter $n$.",
+      "statement_text": "Maximal tilable vertical height of a horizontal cylinder of given perimeter (Monteil 2012).",
+      "status": "",
+      "structural_sig": "c236ebd06631bed1",
+      "tags": [
+        "tilings",
+        "complexity",
+        "cited"
+      ],
+      "updated_run": "gold-dgg-2026-05-20"
+    },
+    {
+      "aliases": [
+        "dgg:lem:dense-f"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "79f9d7eebfaee54a7ada2771652c7478f448bdd1b799c130a5cb9c4c276394f7",
+      "created_run": "gold-dgg-2026-05-20",
+      "hypotheses": [],
+      "id": "lemma:041e5b2ce414f4b19506",
+      "kind": "Lemma",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Orbits of f are dense",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "lemma",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20",
+          "section": "\u00a73.2"
+        }
+      ],
+      "statement_latex": "The orbits of $f$ are dense in $[\\tfrac13,2]$.",
+      "statement_text": "The base function f has dense orbits; via the log-coordinate the dynamics is an irrational rotation.",
+      "status": "",
+      "structural_sig": "dec2bf34e83744e0",
+      "tags": [
+        "kari-culik",
+        "dynamics"
+      ],
+      "updated_run": "gold-dgg-2026-05-20"
+    },
+    {
+      "aliases": [
+        "dgg:prop:dense2"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "b278843cea45336f79b7f3794e2c8f7c9f7baa37c6b581a90c9d4bb2dc80ff7c",
+      "created_run": "gold-dgg-2026-05-20",
+      "hypotheses": [],
+      "id": "proposition:a589203bee5f8db30706",
+      "kind": "Proposition",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Bounded return time of f in any interval",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prop",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20",
+          "section": "\u00a73.2"
+        }
+      ],
+      "statement_latex": "Given any interval $I\\subseteq[\\tfrac13,2]$, the maximal number of iterations of $f$ between two consecutive occurrences in $I$ is bounded.",
+      "statement_text": "Bounded gap between consecutive returns of an orbit of f to any fixed interval.",
+      "status": "",
+      "structural_sig": "fe4e40de5b14fbe6",
+      "tags": [
+        "kari-culik",
+        "dynamics"
+      ],
+      "updated_run": "gold-dgg-2026-05-20"
+    },
+    {
+      "aliases": [
+        "dgg:prop:line-average"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "90d355f7eaf997f57c4821fc6e320a9363b487a6d0fa8fa13eb71ef938e3ff7f",
+      "created_run": "gold-dgg-2026-05-20",
+      "hypotheses": [],
+      "id": "proposition:b63598601f0e1846416b",
+      "kind": "Proposition",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Every horizontal line has an average",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prop",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20",
+          "section": "\u00a73.2"
+        }
+      ],
+      "statement_latex": "Every horizontal line in any tiling by the DGG 14-tile set has an average (in the sense of frequencies).",
+      "statement_text": "In any Kari\u2013Culik tiling, each horizontal line of bottom labels has a well-defined frequency.",
+      "status": "",
+      "structural_sig": "d256f7a00572821f",
+      "tags": [
+        "kari-culik",
+        "tilings",
+        "frequency"
+      ],
+      "updated_run": "gold-dgg-2026-05-20"
+    },
+    {
+      "aliases": [
+        "dgg:lem:linear-pattern-density"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "35b5416b08d14f1ff73a4dde7617e97e190f03020c238d1b1ab139d998481879",
+      "created_run": "gold-dgg-2026-05-20",
+      "hypotheses": [],
+      "id": "lemma:c90f7821d6ec3369f206",
+      "kind": "Lemma",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Family 01^\u03b10 appears with positive density",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "lemma",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20",
+          "section": "\u00a73.3"
+        }
+      ],
+      "statement_latex": "The family of patterns $\\{01^\\alpha 0 \\mid \\alpha>3\\}$ appears with positive density on every horizontal line whose density lies in $(\\tfrac45,\\tfrac9{10})$.",
+      "statement_text": "Linear-pattern density on lines whose 1-density lies in the gap interval (4/5, 9/10).",
+      "status": "",
+      "structural_sig": "b8feba36a7f1e57f",
+      "tags": [
+        "kari-culik",
+        "tilings",
+        "density"
+      ],
+      "updated_run": "gold-dgg-2026-05-20"
+    },
+    {
+      "aliases": [
+        "dgg:thm:positive-entropy"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "7d9314b36325a30dea447f84cd8864efbe3712301c6b30c1b0f1f80c5b87f526",
+      "created_run": "gold-dgg-2026-05-20",
+      "hypotheses": [],
+      "id": "theorem:6717120a73e05055034a",
+      "kind": "Theorem",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Theorem [MAIN] \u2014 Kari\u2013Culik tileset has positive entropy",
+      "parameters": [
+        "dimension d=2"
+      ],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "theorem",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20",
+          "section": "\u00a73.4"
+        }
+      ],
+      "statement_latex": "$h(X_{\\mathrm{KC}})>0$.",
+      "statement_text": "The topological entropy of the Kari\u2013Culik shift is strictly positive (DGG 2013).",
+      "status": "",
+      "structural_sig": "2343897b2802d02b",
+      "tags": [
+        "kari-culik",
+        "entropy",
+        "main"
+      ],
+      "updated_run": "gold-dgg-2026-05-20"
+    },
+    {
+      "aliases": [
+        "dgg:conj:monteil-linear-complexity"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "2dae430c51728796f39c8985366e5c9a385c7fb984253526d9f252060a55813b",
+      "created_run": "gold-dgg-2026-05-20",
+      "hypotheses": [],
+      "id": "conjecture:2e0d4bc49c78269b4d02",
+      "kind": "Conjecture",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Monteil's linear-complexity conjecture (refuted)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20",
+          "section": "\u00a74"
+        }
+      ],
+      "statement_latex": "The 2D pattern complexity of the Kari\u2013Culik shift satisfies $\\log p(n,n)=O(n)$ (conjectured by Monteil 2012).",
+      "statement_text": "Conjecture (Monteil) that the Kari\u2013Culik pattern count grows only sub-exponentially in n^2.",
+      "status": "refuted",
+      "structural_sig": "bd3df6356561894d",
+      "tags": [
+        "complexity",
+        "cited",
+        "refuted"
+      ],
+      "updated_run": "gold-dgg-2026-05-20"
+    },
+    {
+      "aliases": [
+        "dgg:cor:refutes-monteil"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "389a8f1110a57a8a3beb8914dfd4fb87d02dc18097053b12fb503ec55a28ce25",
+      "created_run": "gold-dgg-2026-05-20",
+      "hypotheses": [],
+      "id": "corollary:647e1fff540099122a2a",
+      "kind": "Corollary",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "DGG main theorem refutes Monteil's conjecture",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20",
+          "section": "\u00a74"
+        }
+      ],
+      "statement_latex": "Positivity of $h(X_{\\mathrm{KC}})$ implies $\\log p(n,n)\\in\\Theta(n^2)$, refuting the Monteil conjecture.",
+      "statement_text": "Positive entropy on a 2D SFT means n^2 growth, contradicting Monteil's O(n) conjecture.",
+      "status": "",
+      "structural_sig": "cfa57f8d0ff9e534",
+      "tags": [
+        "kari-culik",
+        "complexity",
+        "refutation"
+      ],
+      "updated_run": "gold-dgg-2026-05-20"
+    },
+    {
+      "aliases": [
+        "dgg:op:single-pair-dense"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "b2cfddc812ed912c64fa1afa725ed4e6282d43a6765c27ee13cd43329557b794",
+      "created_run": "gold-dgg-2026-05-20",
+      "hypotheses": [],
+      "id": "openproblem:18b087a696c561815260",
+      "kind": "OpenProblem",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Is one substitutive pair alone dense?",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20",
+          "section": "\u00a73.5"
+        }
+      ],
+      "statement_latex": "Is one of the two DGG substitutive pairs dense alone in some tiling?",
+      "statement_text": "Whether one of A_i,A'_i (rather than the joint family) is dense by itself.",
+      "status": "open",
+      "structural_sig": "ac3672ceb4fef9c6",
+      "tags": [
+        "kari-culik",
+        "open"
+      ],
+      "updated_run": "gold-dgg-2026-05-20"
+    },
+    {
+      "aliases": [
+        "dgg:op:forbid-pattern"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "463f302861ad747e554e884ce423288f106f0dd7cce5d2de359c6f7d6f95b6fe",
+      "created_run": "gold-dgg-2026-05-20",
+      "hypotheses": [],
+      "id": "openproblem:afcf1644c6ccc02f59eb",
+      "kind": "OpenProblem",
+      "lean_decl": "",
+      "lean_status": "",
+      "merged_from": [],
+      "name": "Forbidding one pattern of each pair: entropy still positive?",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-dgg-2026-05-20",
+          "section": "\u00a73.5"
+        }
+      ],
+      "statement_latex": "Forbidding one pattern from each substitutive pair gives a sub-tileset. Is its entropy still positive? More generally, can finitely many forbidden patterns force entropy zero?",
+      "statement_text": "Sub-SFT obtained by forbidding one pattern from each DGG pair \u2014 positive entropy?",
+      "status": "open",
+      "structural_sig": "a8877efa5ba8b206",
+      "tags": [
+        "kari-culik",
+        "entropy",
+        "open"
+      ],
+      "updated_run": "gold-dgg-2026-05-20"
+    }
+  ],
+  "paper": "arxiv:1312.4126",
+  "run_id": "gold-dgg-2026-05-20",
+  "source": "article_entropie_kari.tex"
+}

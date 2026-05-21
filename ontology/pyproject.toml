@@ -1,0 +1,43 @@
+[project]
+name = "symdyn-ontology"
+version = "0.1.0"
+description = "Literature-wide knowledge graph of symbolic dynamics (see ../ONTOLOGY_PLAN.md)"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+# Optional accelerators. The pipeline runs without these (pure-stdlib
+# fallbacks); install to speed up large graphs.
+faiss = ["faiss-cpu>=1.7"]
+embed = ["sentence-transformers>=2.2"]
+
+[project.scripts]
+onto = "ontology.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.4",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["ontology"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+# Gold subgraph builders are data-as-code: columnar layout (one node per
+# line) is more readable than wrapping every concept/definition row.
+"gold/*.py" = ["E501"]
+
+[tool.pytest.ini_options]
+addopts = "--import-mode=importlib"

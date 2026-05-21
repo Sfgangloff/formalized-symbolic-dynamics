@@ -1,0 +1,997 @@
+{
+  "citations": [],
+  "edges": [
+    {
+      "confidence": 1.0,
+      "dst": "concept:sft",
+      "human_verified": true,
+      "id": "e:b4d0ed9d9ac1af44",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "construction:kari-culik-shift",
+      "type": "instance_of",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "concept:subshift",
+      "human_verified": true,
+      "id": "e:9cb777b16abd4029",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "construction:kari-culik-shift",
+      "type": "instance_of",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "construction:kari-culik-shift",
+      "human_verified": true,
+      "id": "e:018deeedca41a3ab",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:e0be8d05383a90dc7b4d",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "construction:kari-culik-shift",
+      "human_verified": true,
+      "id": "e:482d1f6189a8fa59",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:dcfb9bb5ed5dba90a892",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "concept:topological-entropy",
+      "human_verified": true,
+      "id": "e:5d0efbbe033dadf9",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:dcfb9bb5ed5dba90a892",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:3a123cf579a2134dc98a",
+      "human_verified": true,
+      "id": "e:7107a6d4878beafa",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "openproblem:8ca8af600834b308c78a",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "concept:sofic-shift",
+      "human_verified": true,
+      "id": "e:0e4f6981731d5bcd",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "openproblem:8ca8af600834b308c78a",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "concept:sofic-shift",
+      "human_verified": true,
+      "id": "e:a17e77c0a4a7667a",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "openproblem:5847ffd9442129c8c790",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "construction:kari-culik-shift",
+      "human_verified": true,
+      "id": "e:87095cda03a6df95",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "openproblem:72acf2b521e4b5bd6c69",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "concept:topological-entropy",
+      "human_verified": true,
+      "id": "e:56f33aa1cc704bb2",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "openproblem:72acf2b521e4b5bd6c69",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:dcfb9bb5ed5dba90a892",
+      "human_verified": true,
+      "id": "e:b0d3aa6f321094d4",
+      "in_lean": false,
+      "notes": "positivity (DGG) is the only proved value information so far",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "openproblem:72acf2b521e4b5bd6c69",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "construction:kari-culik-shift",
+      "human_verified": true,
+      "id": "e:29dd567650bee700",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:adfc95991db92834f1d3",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "concept:topological-entropy",
+      "human_verified": true,
+      "id": "e:4caf914d8c0efdfc",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:adfc95991db92834f1d3",
+      "type": "uses_definition",
+      "where_": "in_statement"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:dcd6d1196b674b15edd5",
+      "human_verified": true,
+      "id": "e:4a9441dc27cc76d8",
+      "in_lean": false,
+      "notes": "lifts HM Theorem 3.1 to the specific shift",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:adfc95991db92834f1d3",
+      "type": "depends_on",
+      "where_": "in_proof"
+    },
+    {
+      "confidence": 1.0,
+      "dst": "openproblem:72acf2b521e4b5bd6c69",
+      "human_verified": true,
+      "id": "e:846f24077caec98b",
+      "in_lean": false,
+      "notes": "right-r.e. half of the computability question",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "partial:right-re",
+      "src": "theorem:adfc95991db92834f1d3",
+      "type": "resolves",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "arxiv:kari1996",
+      "human_verified": true,
+      "id": "e:d05ff27368aa99aa",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "construction:kari-culik-tile-set",
+      "type": "attributed_to",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "arxiv:culik1996",
+      "human_verified": true,
+      "id": "e:6e96fa724e2c3dbd",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "construction:kari-culik-tile-set",
+      "type": "attributed_to",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "arxiv:kari1996",
+      "human_verified": true,
+      "id": "e:f6a4d724a0be6450",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "construction:kari-culik-shift",
+      "type": "attributed_to",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "arxiv:culik1996",
+      "human_verified": true,
+      "id": "e:4e1c815a0bfd5ab5",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "construction:kari-culik-shift",
+      "type": "attributed_to",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "arxiv:1312.4126",
+      "human_verified": true,
+      "id": "e:885a4af3e75b14c1",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "theorem:dcfb9bb5ed5dba90a892",
+      "type": "attributed_to",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "arxiv:weiss1973",
+      "human_verified": true,
+      "id": "e:355bacbb07272f36",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "openproblem:8ca8af600834b308c78a",
+      "type": "attributed_to",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "arxiv:hochman2009",
+      "human_verified": true,
+      "id": "e:373772d4d050e37a",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "openproblem:5847ffd9442129c8c790",
+      "type": "attributed_to",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "construction:kari-culik-tile-set",
+      "human_verified": true,
+      "id": "e:d223c3ae3e04c27d",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "construction:kari-culik-shift",
+      "human_verified": true,
+      "id": "e:a1e16a793312fe2f",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:e0be8d05383a90dc7b4d",
+      "human_verified": true,
+      "id": "e:badb0a53fc697e4b",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:dcfb9bb5ed5dba90a892",
+      "human_verified": true,
+      "id": "e:cff233eb807184b7",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "definition:3a123cf579a2134dc98a",
+      "human_verified": true,
+      "id": "e:4ac7a46c858b2fa9",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "defines",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "openproblem:8ca8af600834b308c78a",
+      "human_verified": true,
+      "id": "e:8bd9e108f2dfe74a",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "openproblem:5847ffd9442129c8c790",
+      "human_verified": true,
+      "id": "e:74b7887b1228a639",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "openproblem:72acf2b521e4b5bd6c69",
+      "human_verified": true,
+      "id": "e:b5de8c6b2e507e11",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "states",
+      "where_": ""
+    },
+    {
+      "confidence": 1.0,
+      "dst": "theorem:adfc95991db92834f1d3",
+      "human_verified": true,
+      "id": "e:be48ca9129c95ca4",
+      "in_lean": false,
+      "notes": "",
+      "proved": "",
+      "provenance": [
+        {
+          "char_span": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20"
+        }
+      ],
+      "regime": "",
+      "src": "arxiv:1312.4126",
+      "type": "states",
+      "where_": ""
+    }
+  ],
+  "extractors": [
+    "gold-hand-curated-bootstrap"
+  ],
+  "nodes": [
+    {
+      "aliases": [
+        "kari-culik-tile-set"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "c7803cb2d020dbcdd4f5a76cea18296ca11bb85b4a2d2807a328b1e8c3edae71",
+      "created_run": "gold-kc-bootstrap-2026-05-20",
+      "hypotheses": [],
+      "id": "construction:kari-culik-tile-set",
+      "kind": "Construction",
+      "lean_decl": "dependencies.KariCulik.KCTile",
+      "lean_status": "stated",
+      "merged_from": [],
+      "name": "Kari\u2013Culik 14-tile Wang set (DGG variant)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20",
+          "section": "DGG 2013 \u00a72"
+        }
+      ],
+      "statement_latex": "A Wang tileset of $|T|=14$ tiles whose horizontal alphabet is $\\mathbb{F}_3$ and vertical alphabet is $\\mathbb{F}_6=\\mathbb{F}_2\\times\\mathbb{F}_3$, defined explicitly via the maps $\\mathrm{kcN},\\mathrm{kcS}:T\\to\\mathbb{F}_3$ and $\\mathrm{kcE},\\mathrm{kcW}:T\\to\\mathbb{F}_6$.",
+      "statement_text": "The DGG 14-tile Wang set that defines the Kari\u2013Culik shift.",
+      "status": "",
+      "structural_sig": "d8cc6a0f67a42a6b",
+      "tags": [
+        "wang",
+        "kari-culik",
+        "construction"
+      ],
+      "updated_run": "gold-kc-bootstrap-2026-05-20"
+    },
+    {
+      "aliases": [
+        "kari-culik-shift"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "a1f7b83540c401d0e07f68ae23fbceb1eb52dbd60a3d4347a762b96c4ddba698",
+      "created_run": "gold-kc-bootstrap-2026-05-20",
+      "hypotheses": [],
+      "id": "construction:kari-culik-shift",
+      "kind": "Construction",
+      "lean_decl": "dependencies.KariCulik.kariCulikShift",
+      "lean_status": "stated",
+      "merged_from": [],
+      "name": "Kari\u2013Culik shift (2D SFT, DGG variant)",
+      "parameters": [
+        "dimension d=2"
+      ],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20",
+          "section": "DGG 2013 \u00a72"
+        }
+      ],
+      "statement_latex": "$X_{\\mathrm{KC}}\\subseteq T^{\\mathbb{Z}^2}$, the SFT defined by the 14-tile syntax (north\u2013south matching on $\\mathbb{F}_3$ and east\u2013west matching on $\\mathbb{F}_6$).",
+      "statement_text": "The aperiodic 2D SFT defined by the 14-tile Kari\u2013Culik Wang set.",
+      "status": "",
+      "structural_sig": "1b74dd5873116780",
+      "tags": [
+        "sft",
+        "kari-culik",
+        "aperiodic"
+      ],
+      "updated_run": "gold-kc-bootstrap-2026-05-20"
+    },
+    {
+      "aliases": [
+        "kc:def:has-entropy-preserving-cover"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "49a480620b8d4db0268e4ae56ed0f139050d06c8d070ed0878c001985d7b6654",
+      "created_run": "gold-kc-bootstrap-2026-05-20",
+      "hypotheses": [],
+      "id": "definition:3a123cf579a2134dc98a",
+      "kind": "Definition",
+      "lean_decl": "dependencies.FactorMap.HasEntropyPreservingSFTCover",
+      "lean_status": "stated",
+      "merged_from": [],
+      "name": "Has entropy-preserving SFT cover",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20",
+          "section": ""
+        }
+      ],
+      "statement_latex": "A subshift $Y$ has an entropy-preserving SFT cover if there exists an SFT $X$ and a factor map $\\pi:X\\to Y$ with $h(X)=h(Y)$.",
+      "statement_text": "Existence of an SFT cover with equal topological entropy.",
+      "status": "",
+      "structural_sig": "f1d19be3de3b4500",
+      "tags": [
+        "sofic",
+        "sft",
+        "factor",
+        "cover"
+      ],
+      "updated_run": "gold-kc-bootstrap-2026-05-20"
+    },
+    {
+      "aliases": [
+        "kc:thm:nonempty"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "aa82e3b126f65693307832b35f36b4aaf9917cd0bb126da49911d9c4b6e410f9",
+      "created_run": "gold-kc-bootstrap-2026-05-20",
+      "hypotheses": [],
+      "id": "theorem:e0be8d05383a90dc7b4d",
+      "kind": "Theorem",
+      "lean_decl": "axioms.KariCulik.kariCulikShift_carrier_nonempty",
+      "lean_status": "axiomatized",
+      "merged_from": [],
+      "name": "Kari\u2013Culik shift is non-empty",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20",
+          "section": ""
+        }
+      ],
+      "statement_latex": "$X_{\\mathrm{KC}}\\neq\\varnothing$.",
+      "statement_text": "The Kari\u2013Culik 14-tile set admits a tiling of the plane.",
+      "status": "",
+      "structural_sig": "914be0b63804f444",
+      "tags": [
+        "kari-culik",
+        "wang",
+        "tileability"
+      ],
+      "updated_run": "gold-kc-bootstrap-2026-05-20"
+    },
+    {
+      "aliases": [
+        "kc:thm:positive-entropy"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "7d9314b36325a30dea447f84cd8864efbe3712301c6b30c1b0f1f80c5b87f526",
+      "created_run": "gold-kc-bootstrap-2026-05-20",
+      "hypotheses": [],
+      "id": "theorem:dcfb9bb5ed5dba90a892",
+      "kind": "Theorem",
+      "lean_decl": "axioms.KariCulik.kariCulikShift_entropy_pos",
+      "lean_status": "axiomatized",
+      "merged_from": [],
+      "name": "Kari\u2013Culik shift has positive entropy (DGG 2013)",
+      "parameters": [
+        "dimension d=2"
+      ],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20",
+          "section": ""
+        }
+      ],
+      "statement_latex": "$h(X_{\\mathrm{KC}})>0$.",
+      "statement_text": "The topological entropy of the Kari\u2013Culik shift is strictly positive.",
+      "status": "",
+      "structural_sig": "2343897b2802d02b",
+      "tags": [
+        "kari-culik",
+        "entropy",
+        "main"
+      ],
+      "updated_run": "gold-kc-bootstrap-2026-05-20"
+    },
+    {
+      "aliases": [
+        "op:weiss-conjecture"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "1d9939281a081689687419ea8bae095ac695732885f1513d1f6f8f23e5e6ef6f",
+      "created_run": "gold-kc-bootstrap-2026-05-20",
+      "hypotheses": [],
+      "id": "openproblem:8ca8af600834b308c78a",
+      "kind": "OpenProblem",
+      "lean_decl": "openProblems.WeissConjecture.WeissConjecture.WeissConjectureStatement",
+      "lean_status": "stated",
+      "merged_from": [],
+      "name": "Weiss conjecture: entropy-preserving SFT cover of sofic shifts",
+      "parameters": [
+        "d>=2"
+      ],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20",
+          "section": ""
+        }
+      ],
+      "statement_latex": "For every $d$, every finite alphabet, every sofic $\\mathbb{Z}^d$-shift admits an entropy-preserving SFT cover.",
+      "statement_text": "Every sofic Z^d-shift has an SFT cover of the same entropy (d=1 known, d\u22652 open).",
+      "status": "open",
+      "structural_sig": "391fb5147121fe38",
+      "tags": [
+        "sofic",
+        "sft",
+        "entropy",
+        "cover",
+        "open"
+      ],
+      "updated_run": "gold-kc-bootstrap-2026-05-20"
+    },
+    {
+      "aliases": [
+        "op:odd-shift-soficity"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "8c6f2197b6b6a769185561e9431a99477ff14882709f498c805d3ea425d02c98",
+      "created_run": "gold-kc-bootstrap-2026-05-20",
+      "hypotheses": [],
+      "id": "openproblem:5847ffd9442129c8c790",
+      "kind": "OpenProblem",
+      "lean_decl": "openProblems.OddShiftSoficity.OddShiftSoficity.OddShiftSoficityStatement",
+      "lean_status": "stated",
+      "merged_from": [],
+      "name": "Is the multidimensional odd shift sofic?",
+      "parameters": [
+        "d>=3"
+      ],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20",
+          "section": ""
+        }
+      ],
+      "statement_latex": "For $d\\geq 3$, is the $d$-dim odd shift $Y_d\\subseteq\\{0,1\\}^{\\mathbb{Z}^d}$ (configurations whose finite connected components of occupied sites have odd cardinality) sofic?",
+      "statement_text": "Multidimensional odd shift soficity (d=1 solved; d\u22653 open).",
+      "status": "open",
+      "structural_sig": "322c7f470665badc",
+      "tags": [
+        "sofic",
+        "percolation",
+        "open"
+      ],
+      "updated_run": "gold-kc-bootstrap-2026-05-20"
+    },
+    {
+      "aliases": [
+        "op:kari-culik-entropy-value"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "575c76d8a8d5559f49c473628bf6a5b3bf4b43b35a0fe8f8c7cb11d4f5f2e353",
+      "created_run": "gold-kc-bootstrap-2026-05-20",
+      "hypotheses": [],
+      "id": "openproblem:72acf2b521e4b5bd6c69",
+      "kind": "OpenProblem",
+      "lean_decl": "openProblems.KariCulikEntropy.KariCulikEntropy.kariCulikEntropy",
+      "lean_status": "stated",
+      "merged_from": [],
+      "name": "What is the topological entropy of the Kari\u2013Culik shift?",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20",
+          "section": ""
+        }
+      ],
+      "statement_latex": "Determine $h(X_{\\mathrm{KC}})\\in(0,\\log 14]$ exactly; is it computable, algebraic, ...?",
+      "statement_text": "The value h(X_KC) is positive (DGG) and right-r.e. (HM 3.1); the exact value is open.",
+      "status": "open",
+      "structural_sig": "7b4dc184ba0fa0dc",
+      "tags": [
+        "kari-culik",
+        "entropy",
+        "computability",
+        "open"
+      ],
+      "updated_run": "gold-kc-bootstrap-2026-05-20"
+    },
+    {
+      "aliases": [
+        "kc:thm:entropy-right-re"
+      ],
+      "canonical_id": "",
+      "conclusion": "",
+      "content_hash": "fc46a1f6d5209793433b3576d152357ab44e76e33512508e6088268d6ea5c3d3",
+      "created_run": "gold-kc-bootstrap-2026-05-20",
+      "hypotheses": [],
+      "id": "theorem:adfc95991db92834f1d3",
+      "kind": "Theorem",
+      "lean_decl": "trajectories.KariCulikEntropyComputableStatement.Attempt_1_rightRE_via_HM.kariCulikEntropy_isRightRE",
+      "lean_status": "proved",
+      "merged_from": [],
+      "name": "kariCulikEntropy is right r.e. (Attempt_1)",
+      "parameters": [],
+      "provenance": [
+        {
+          "char_span": "",
+          "confidence": 1.0,
+          "env_name": "prose",
+          "human_verified": true,
+          "label": "",
+          "paper": "arxiv:1312.4126",
+          "run_id": "gold-kc-bootstrap-2026-05-20",
+          "section": ""
+        }
+      ],
+      "statement_latex": "$h(X_{\\mathrm{KC}})$ is right recursively enumerable.",
+      "statement_text": "The entropy of the Kari\u2013Culik shift is right r.e. (special case of HM Thm 3.1).",
+      "status": "",
+      "structural_sig": "8c3e9448e5f0c7b3",
+      "tags": [
+        "kari-culik",
+        "entropy",
+        "right-re",
+        "partial"
+      ],
+      "updated_run": "gold-kc-bootstrap-2026-05-20"
+    }
+  ],
+  "paper": "arxiv:1312.4126",
+  "run_id": "gold-kc-bootstrap-2026-05-20",
+  "source": "lean-bootstrap (no single paper)"
+}
