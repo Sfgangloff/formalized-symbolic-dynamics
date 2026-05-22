@@ -7,6 +7,7 @@ import dependencies.Entropy
 import dependencies.Computable
 import dependencies.NbarComputable
 import dependencies.IrreducibleConsequences
+import dependencies.FactorMap
 import axioms.Computability
 
 /-! # Hochman–Meyerovitch — main theorems
@@ -97,3 +98,75 @@ theorem topEntropy_irreducible_computable {α : Type*} {d : ℕ}
   (computable_iff_leftRE_and_rightRE).mpr
     ⟨topEntropy_leftRE_irreducible F L hX h_irr,
      topEntropy_rightRE F L hX⟩
+
+/-! ## Main theorems — statements only
+
+The following are HM's main results stated as `theorem … := by sorry`.
+Their proofs are not yet formalized; they connect the right-r.e. content
+of `topEntropy_rightRE`, the gluing constructions sketched in §4–§5 of the
+paper, and the sofic factor reduction. Each carries an `@ontology` marker
+so the back-link from the ontology graph survives renames. -/
+
+/-- The set of entropies realized by nonempty `d`-dimensional SFTs. -/
+def entropySetSFT (d : ℕ) : Set ℝ :=
+  { h | ∃ (α : Type) (_ : Fintype α) (_ : DecidableEq α)
+          (_ : Encodable α) (_ : TopologicalSpace α) (_ : T1Space α)
+          (F : Finset (Lat d)) (L : Finset (Pattern α F)),
+      (mkSFT F L).carrier.Nonempty ∧ topEntropy (mkSFT F L) = h }
+
+/-- The set of entropies realized by nonempty `d`-dimensional sofic shifts. -/
+def entropySetSofic (d : ℕ) : Set ℝ :=
+  { h | ∃ (α : Type) (_ : Fintype α) (_ : DecidableEq α)
+          (_ : Encodable α) (_ : TopologicalSpace α) (_ : T1Space α)
+          (X : Subshift α d),
+      X.carrier.Nonempty ∧ IsSofic X ∧ topEntropy X = h }
+
+/-- The set of non-negative right recursively enumerable real numbers. -/
+def nonnegRightREs : Set ℝ := { h | 0 ≤ h ∧ IsRightRE h }
+
+/-- **Theorem 1.1** (HM main). For `d ≥ 2`, the class of entropies of
+`d`-dimensional SFTs is exactly the class of non-negative right
+recursively enumerable real numbers. -/
+-- @ontology: hm:thm:1.1
+theorem HM_Theorem_1_1 {d : ℕ} (_hd : 2 ≤ d) :
+    entropySetSFT d = nonnegRightREs := by
+  sorry
+
+/-- **Theorem 1.2** (HM main). For `d ≥ 2`, the class of entropies of
+`d`-dimensional sofic shifts equals that of `d`-dimensional SFTs. -/
+-- @ontology: hm:thm:1.2
+theorem HM_Theorem_1_2 {d : ℕ} (_hd : 2 ≤ d) :
+    entropySetSofic d = entropySetSFT d := by
+  sorry
+
+/-- **Theorem 3.2** (sofic version of 3.1). The topological entropy of a
+nonempty sofic shift is right recursively enumerable. The proof factors
+through a one-block SFT cover and counts image patterns. -/
+-- @ontology: hm:thm:3.2
+theorem HM_Theorem_3_2 {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
+    [Encodable α] [TopologicalSpace α] [T1Space α]
+    (Y : Subshift α d) (_hY : Y.carrier.Nonempty) (_hSof : IsSofic Y) :
+    IsRightRE (topEntropy Y) := by
+  sorry
+
+/-- **Corollary** (HM). The topological entropy of every sofic shift is
+right recursively enumerable. Direct consequence of `HM_Theorem_3_2`. -/
+-- @ontology: hm:cor:sofic-right-re
+theorem HM_Corollary_sofic_right_re {α : Type*} {d : ℕ} [Fintype α]
+    [DecidableEq α] [Encodable α] [TopologicalSpace α] [T1Space α]
+    (Y : Subshift α d) (hY : Y.carrier.Nonempty) (hSof : IsSofic Y) :
+    IsRightRE (topEntropy Y) :=
+  HM_Theorem_3_2 Y hY hSof
+
+/-- **Corollary 3.5** (HM). For a nonempty irreducible SFT `X`, global
+admissibility of finite patterns is decidable. Stated as a `Nonempty`
+of `Decidable` to keep the conclusion in `Prop`. -/
+-- @ontology: hm:cor:3.5
+theorem HM_Corollary_3_5 {α : Type*} {d : ℕ} [Fintype α] [DecidableEq α]
+    [Encodable α] [TopologicalSpace α] [T1Space α]
+    (F : Finset (Lat d)) (L : Finset (Pattern α F))
+    (_hX : (mkSFT F L).carrier.Nonempty)
+    (_h_irr : IsIrreducibleShift (mkSFT F L))
+    {E : Finset (Lat d)} (_a : Pattern α E) :
+    Nonempty (Decidable (Pattern.GloballyAdmissible (mkSFT F L) _a)) := by
+  sorry
