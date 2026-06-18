@@ -6,6 +6,7 @@ import dependencies.Box
 import dependencies.LocallyAdmissible
 import dependencies.GloballyAdmissible
 import dependencies.Computable
+import dependencies.AdmPredPrimrec
 import axioms.Computability
 
 /-! # Consequences of the computability axioms

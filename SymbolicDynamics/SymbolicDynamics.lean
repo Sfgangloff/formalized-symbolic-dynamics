@@ -5,6 +5,7 @@ import dependencies.LocallyAdmissible
 import dependencies.GloballyAdmissible
 import dependencies.Entropy
 import dependencies.Computable
+import dependencies.AdmPredPrimrec
 import dependencies.InvariantMeasure
 import dependencies.InvMeasureCompactness
 import dependencies.NbarComputable
