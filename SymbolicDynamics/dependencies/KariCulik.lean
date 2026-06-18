@@ -186,3 +186,9 @@ theorem kariCulikShift_carrier_nonempty : kariCulikShift.carrier.Nonempty := by
     Pattern.ofColoring, FullShift.shiftMap]
   rw [wit 0 0, wit 0 1, wit 1 0]
   by_cases h : Even (u 0 + u 1) <;> simp [h, parity_simps] <;> decide
+
+/-- The Kari–Culik shift with a finite set `S` of 2×2 patterns additionally
+forbidden: intersect `kariCulikShift` with the SFT whose allowed 2×2 patterns
+are all those *not* in `S`. Discharges the former opaque axiom of the same name. -/
+def kariCulikShift_forbid (S : Finset (Pattern KCTile (box 2 2))) : Subshift KCTile 2 :=
+  Subshift.inter kariCulikShift (mkSFT (box 2 2) (Finset.univ \ S))

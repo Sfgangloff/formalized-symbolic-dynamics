@@ -74,12 +74,6 @@ axiom dgg_A1' : Pattern KCTile (box 2 2)
 axiom dgg_A2 : Pattern KCTile (box 2 2)
 axiom dgg_A2' : Pattern KCTile (box 2 2)
 
-/-- The subshift obtained from `kariCulikShift` by additionally forbidding
-a finite set of 2×2 patterns. A full definition would extend the
-Kari–Culik SFT presentation by including the given patterns in the
-forbidden list; axiomatised here. -/
-axiom kariCulikShift_forbid :
-    Finset (Pattern KCTile (box 2 2)) → Subshift KCTile 2
 
 /-- The 1D subshift of horizontal lines that appear in valid Kari–Culik
 tilings of `ℤ²`: the closure under horizontal shifts of the set
