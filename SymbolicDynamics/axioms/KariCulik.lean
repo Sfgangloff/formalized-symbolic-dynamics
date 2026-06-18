@@ -40,12 +40,6 @@ References:
 
 /-! ## Non-emptiness and positive entropy -/
 
-/-- The Kari–Culik shift is nonempty: the DGG 14 tiles tile `ℤ²`.
-A concrete 2×2-periodic witness `kcWitness` is given in
-`dependencies/KariCulik.lean`; the membership proof is left
-axiomatic here pending a finite parity case analysis. -/
--- @ontology: kc:thm:nonempty
-axiom kariCulikShift_carrier_nonempty : kariCulikShift.carrier.Nonempty
 
 /-- **Durand–Gamard–Grandjean (2013).** The Kari–Culik shift has
 strictly positive topological entropy. -/

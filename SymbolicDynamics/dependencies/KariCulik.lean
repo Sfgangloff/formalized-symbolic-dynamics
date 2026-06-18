@@ -163,3 +163,26 @@ t6 (`Fin 14` index 5) and t14 (`Fin 14` index 13) by parity of
 `u 0 + u 1`. Witnesses non-emptiness. -/
 def kcWitness : FullShift KCTile 2 := fun u =>
   if Even (u 0 + u 1) then (5 : Fin 14) else (13 : Fin 14)
+
+/-- The Kari–Culik shift is nonempty: the 2×2-periodic `kcWitness` is a valid
+configuration. Discharges the former axiom `kariCulikShift_carrier_nonempty`. -/
+-- @ontology: kc:thm:nonempty
+theorem kariCulikShift_carrier_nonempty : kariCulikShift.carrier.Nonempty := by
+  refine ⟨kcWitness, ?_⟩
+  show SFT_admissible kcWindow kcAllowed kcWitness
+  intro u
+  have sumeq : ∀ a b : ℤ,
+      ((![a, b] : Lat 2) + u) 0 + ((![a, b] : Lat 2) + u) 1 = a + b + (u 0 + u 1) := by
+    intro a b
+    simp only [Pi.add_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    ring
+  have wit : ∀ a b : ℤ, kcWitness ((![a, b] : Lat 2) + u)
+      = if Even (a + b + (u 0 + u 1)) then (5 : Fin 14) else 13 := by
+    intro a b
+    show (if Even (((![a, b] : Lat 2) + u) 0 + ((![a, b] : Lat 2) + u) 1)
+        then (5 : Fin 14) else 13) = _
+    rw [sumeq a b]
+  simp only [kcAllowed, Finset.mem_filter, Finset.mem_univ, true_and,
+    Pattern.ofColoring, FullShift.shiftMap]
+  rw [wit 0 0, wit 0 1, wit 1 0]
+  by_cases h : Even (u 0 + u 1) <;> simp [h, parity_simps] <;> decide
