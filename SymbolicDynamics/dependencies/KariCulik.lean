@@ -3,6 +3,8 @@ import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.Fin.VecNotation
 import Mathlib.Algebra.Ring.Int.Parity
 import dependencies.Subshift
+import dependencies.Box
+import Mathlib.Data.Real.Basic
 
 /-! # Kari–Culik tile alphabet and SFT (DGG 14-tile variant)
 
@@ -223,3 +225,14 @@ def kariCulikHorizontalShift : Subshift KCTile 1 where
     funext v
     show y (kcRowEmbed v + kcRowEmbed u) = y (kcRowEmbed (v + u))
     rw [kcRowEmbed_add]
+
+/-! ## Positive density of patterns -/
+
+/-- `p` appears with **positive (lower) density** in `x`: there is `c > 0` such that,
+for all large `n`, the fraction of offsets in `symBox d n` at which `p` occurs is at
+least `c`. Discharges the former opaque axiom `Pattern.hasPositiveDensity`. -/
+def Pattern.hasPositiveDensity {α : Type*} {d : ℕ} [TopologicalSpace α]
+    {F : Finset (Lat d)} (p : Pattern α F) (x : FullShift α d) : Prop :=
+  ∃ c : ℝ, 0 < c ∧ ∃ N : ℕ, ∀ n ≥ N,
+    c ≤ ({u : Lat d | u ∈ symBox d n ∧ Pattern.AppearsAt p x u}.ncard : ℝ)
+        / ((2 * (n : ℝ) + 1) ^ d)

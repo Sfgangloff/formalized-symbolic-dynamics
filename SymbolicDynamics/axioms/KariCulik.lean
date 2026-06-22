@@ -56,12 +56,6 @@ a pattern-density predicate, the four specific 2×2 patterns DGG
 construct, an extended-forbidden-patterns subshift, and the 1D shift
 of horizontal lines. All four are axiomatised here. -/
 
-/-- "Pattern `p` appears with positive density in configuration `x`":
-the asymptotic frequency of occurrences of `p` along `symBox d n`
-divided by `(2n+1)^d` is strictly positive. Axiomatised here as an
-opaque `Prop`; a full definition would compute the frequency. -/
-axiom Pattern.hasPositiveDensity {α : Type*} {d : ℕ} [TopologicalSpace α]
-    {F : Finset (Lat d)} (p : Pattern α F) (x : FullShift α d) : Prop
 
 /-- The four 2×2 `KCTile` patterns that constitute Durand–Gamard–Grandjean's
 two substitutive pairs `(A₁, A'₁)` and `(A₂, A'₂)`. They appear with
