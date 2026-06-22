@@ -75,8 +75,3 @@ axiom dgg_A2 : Pattern KCTile (box 2 2)
 axiom dgg_A2' : Pattern KCTile (box 2 2)
 
 
-/-- The 1D subshift of horizontal lines that appear in valid Kari–Culik
-tilings of `ℤ²`: the closure under horizontal shifts of the set
-`{x : KCTile^ℤ | ∃ y ∈ kariCulikShift, ∀ i, x i = y (i, 0)}`.
-Axiomatised here. -/
-axiom kariCulikHorizontalShift : Subshift KCTile 1

@@ -192,3 +192,34 @@ forbidden: intersect `kariCulikShift` with the SFT whose allowed 2×2 patterns
 are all those *not* in `S`. Discharges the former opaque axiom of the same name. -/
 def kariCulikShift_forbid (S : Finset (Pattern KCTile (box 2 2))) : Subshift KCTile 2 :=
   Subshift.inter kariCulikShift (mkSFT (box 2 2) (Finset.univ \ S))
+
+/-! ## Horizontal (row-0) projection of the Kari–Culik shift -/
+
+/-- Embed a 1D lattice position as the row-0 position in 2D. -/
+def kcRowEmbed (p : Lat 1) : Lat 2 := ![p 0, 0]
+
+/-- Project a 2D configuration to its row-0 horizontal line. -/
+def kcRowProj (y : FullShift KCTile 2) : FullShift KCTile 1 := fun p => y (kcRowEmbed p)
+
+theorem kcRowEmbed_add (p u : Lat 1) : kcRowEmbed (p + u) = kcRowEmbed p + kcRowEmbed u := by
+  funext j
+  fin_cases j <;>
+    simp [kcRowEmbed, Pi.add_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+
+theorem continuous_kcRowProj : Continuous kcRowProj :=
+  continuous_pi (fun p => continuous_apply (kcRowEmbed p))
+
+/-- The 1D subshift of horizontal (row-0) lines of valid Kari–Culik tilings:
+the image of `kariCulikShift` under the row-0 projection. It is closed (a
+continuous image of a compact set) and shift-invariant. Discharges the former
+opaque axiom `kariCulikHorizontalShift`. -/
+def kariCulikHorizontalShift : Subshift KCTile 1 where
+  carrier := kcRowProj '' kariCulikShift.carrier
+  isClosed := (kariCulikShift.isClosed.isCompact.image continuous_kcRowProj).isClosed
+  isInvariant := by
+    rintro u x ⟨y, hy, rfl⟩
+    refine ⟨FullShift.shiftMap (kcRowEmbed u) y,
+      kariCulikShift.isInvariant (kcRowEmbed u) y hy, ?_⟩
+    funext v
+    show y (kcRowEmbed v + kcRowEmbed u) = y (kcRowEmbed (v + u))
+    rw [kcRowEmbed_add]
